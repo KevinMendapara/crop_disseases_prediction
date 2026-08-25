@@ -12,7 +12,7 @@
     },
     {
       "source": "/api/(.*)",
-      "destination": "https://agroshield-backend.onrender.com"
+      "destination": "https://agroshield-backend.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
