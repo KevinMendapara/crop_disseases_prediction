@@ -625,7 +625,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadReports();
         loadDashboardStats();
     }
-    });
 
     // --- Flag for Expert Review ---
     flagExpertBtn.addEventListener("click", () => {
