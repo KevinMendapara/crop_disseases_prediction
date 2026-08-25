@@ -1,0 +1,56 @@
+[
+    {
+        "id": "mock-log-1",
+        "timestamp": "2026-08-24T18:00:00Z",
+        "temperature": 24.5,
+        "humidity": 85.0,
+        "soil_moisture": 52.0,
+        "pest_count": 12,
+        "notes": "Pheromone trap checked. Pests captured: 12 armyworms."
+    },
+    {
+        "id": "mock-log-2",
+        "timestamp": "2026-08-25T06:00:00Z",
+        "temperature": 22.0,
+        "humidity": 90.0,
+        "soil_moisture": 50.0,
+        "pest_count": 8,
+        "notes": "Morning check."
+    },
+    {
+        "id": "mock-log-3",
+        "timestamp": "2026-08-25T12:00:00Z",
+        "temperature": 29.5,
+        "humidity": 72.0,
+        "soil_moisture": 46.0,
+        "pest_count": 5,
+        "notes": "Pest counts down during mid-day."
+    },
+    {
+        "id": "8286c9ec-7f96-4727-aee4-96048fd4a092",
+        "timestamp": "2026-08-25T14:16:13.890598Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "d491db8f-a768-4e18-b0da-16e6b49548b3",
+        "timestamp": "2026-08-25T14:31:40.434615Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "0991d1fc-3ddf-4c38-addf-41a39f0eb669",
+        "timestamp": "2026-08-25T14:39:01.388037Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    }
+]

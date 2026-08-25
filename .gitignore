@@ -1,0 +1,32 @@
+# Python / Flask
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+env/
+venv/
+*.log
+
+# Large Datasets and Neural Net Model weights
+dataset/
+PlantVillage/
+*.keras
+*.h5
+backend/crop_disease_model.keras
+
+# Local system configurations
+.idea/
+.vscode/
+.system_generated/
+.gemini/
+*.tempmediaStorage/
+browser/
+scratch/
+task.md
+implementation_plan.md
+walkthrough.md
+*.png
+*.mp4
+*.webm

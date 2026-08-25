@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroShield AI - Crop Health & Pest surveillance system</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet.js (Mapping) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Chart.js (Analytics) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-leaf logo-icon"></i>
+                <span class="brand-name">AgroShield <span class="highlight">AI</span></span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-view="farmer">
+                    <i class="fa-solid fa-house-chimney-crack"></i>
+                    <span data-translate="nav_home">Farmer Portal</span>
+                </a>
+                <a href="#" class="nav-item" data-view="map">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span data-translate="nav_map">Surveillance Map</span>
+                </a>
+                <a href="#" class="nav-item" data-view="official">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span data-translate="nav_dashboard">Official Analytics</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <!-- Language Selector -->
+                <div class="lang-selector">
+                    <i class="fa-solid fa-globe"></i>
+                    <select id="langSelect">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="es">Español</option>
+                        <option value="sw">Kiswahili</option>
+                    </select>
+                </div>
+                <div class="system-status">
+                    <span class="status-dot online"></span>
+                    <span data-translate="system_online">Diagnostic Core Active</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="viewTitle" data-translate="farmer_title">Farmer Diagnostics & Risk Forecast</h1>
+                    <p id="viewSubtitle" data-translate="farmer_subtitle">Upload leaf symptoms for instant AI treatment protocols and local risk indexes.</p>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="quick-stat">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                        <div>
+                            <span class="stat-lbl" data-translate="local_temp">Local Temp</span>
+                            <span class="stat-val" id="headerTemp">19.5°C</span>
+                        </div>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fa-solid fa-droplet"></i>
+                        <div>
+                            <span class="stat-lbl" data-translate="humidity">Humidity</span>
+                            <span class="stat-val" id="headerHumidity">87%</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="content-body">
+                
+                <!-- View 1: Farmer & Field Log -->
+                <section id="view-farmer" class="view-section active">
+                    <div class="grid-2col">
+                        <!-- Diagnostic Card -->
+                        <div class="card glass">
+                            <div class="card-header">
+                                <h2 data-translate="diagnostic_lab"><i class="fa-solid fa-microscope"></i> AI Diagnostic Lab</h2>
+                                <span class="badge badge-emerald" data-translate="image_based">Image Diagnostic</span>
+                            </div>
+                            
+                            <div class="card-content">
+                                <div class="upload-zone" id="dropZone">
+                                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                                    <div class="upload-prompt">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                        <h3 data-translate="upload_prompt_title">Drag & drop diseased leaf photo</h3>
+                                        <p data-translate="upload_prompt_desc">Supports Tomato, Potato, Pepper, Corn, Apple, Grape, Peach, Squash, Strawberry</p>
+                                        <button class="btn btn-primary" id="browseBtn" data-translate="browse_btn">Browse Leaf Photo</button>
+                                    </div>
+                                    <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                        <img src="" alt="Selected leaf" id="previewImg">
+                                        <div class="preview-overlay">
+                                            <button class="btn btn-danger btn-sm" id="removeImgBtn"><i class="fa-solid fa-trash"></i> Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" style="margin-top: 1.5rem;">
+                                    <label for="farmerNotes" data-translate="field_notes"><i class="fa-solid fa-pen"></i> Add Field Notes (Optional)</label>
+                                    <textarea id="farmerNotes" placeholder="e.g., Symptoms spreading on lower leaves since last week's rain..."></textarea>
+                                </div>
+
+                                <div class="form-row" style="margin-top: 1rem;">
+                                    <div class="form-group">
+                                        <label for="latInput"><i class="fa-solid fa-location-dot"></i> Latitude</label>
+                                        <input type="number" id="latInput" step="0.0001" value="29.9680">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lngInput"><i class="fa-solid fa-location-dot"></i> Longitude</label>
+                                        <input type="number" id="lngInput" step="0.0001" value="76.8180">
+                                    </div>
+                                    <div class="form-group align-bottom">
+                                        <button class="btn btn-secondary btn-icon" id="geolocateBtn"><i class="fa-solid fa-crosshairs"></i> Get GPS</button>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-success btn-large" id="diagnoseBtn" style="margin-top: 1.5rem; width: 100%;" disabled>
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-translate="analyze_btn">Analyze Leaf Health</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Results & Advisory Card -->
+                        <div class="card glass scroll-y" id="advisoryCard">
+                            <div class="card-header">
+                                <h2 data-translate="treatment_protocol"><i class="fa-solid fa-notes-medical"></i> Diagnostic Report</h2>
+                                <span class="badge" id="severityBadge">Pending</span>
+                            </div>
+                            
+                            <div class="card-content">
+                                <!-- Initial State -->
+                                <div class="empty-state" id="advisoryEmpty">
+                                    <i class="fa-solid fa-hourglass-start animate-pulse"></i>
+                                    <h3 data-translate="awaiting_input">Awaiting Leaf Diagnosis</h3>
+                                    <p data-translate="awaiting_input_desc">Upload a crop photo and click "Analyze" to generate a tailored biological and chemical treatment plan.</p>
+                                </div>
+
+                                <!-- Loading State -->
+                                <div class="empty-state" id="advisoryLoading" style="display: none;">
+                                    <i class="fa-solid fa-circle-notch fa-spin spinner"></i>
+                                    <h3 data-translate="analyzing_foliage">Analyzing Foliage Pattern...</h3>
+                                    <p data-translate="matching_features">Matching diagnostic features against PlantVillage neural database...</p>
+                                </div>
+
+                                <!-- Results State -->
+                                <div id="advisoryContent" style="display: none;">
+                                    <div class="result-header">
+                                        <div class="result-details">
+                                            <h3 id="resDisease">Early Blight</h3>
+                                            <p class="scientific" id="resScientific">Alternaria solani</p>
+                                            <div class="meta-row">
+                                                <span class="meta-item"><strong data-translate="crop_lbl">Crop:</strong> <span id="resCrop">Tomato</span></span>
+                                                <span class="meta-item"><strong data-translate="confidence_lbl">Confidence:</strong> <span id="resConfidence">92%</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="advisory-sections">
+                                        <!-- Description -->
+                                        <div class="adv-section">
+                                            <h4><i class="fa-solid fa-circle-info"></i> <span data-translate="desc_hdr">Disease Description</span></h4>
+                                            <p id="advDesc">A fungal pathogen causing target-like brown spots on mature leaves...</p>
+                                        </div>
+                                        
+                                        <!-- Symptoms -->
+                                        <div class="adv-section">
+                                            <h4><i class="fa-solid fa-eye"></i> <span data-translate="symptoms_hdr">Symptoms & Causes</span></h4>
+                                            <p id="advSymptoms">Concentric target board pattern starting on lower foliage.</p>
+                                        </div>
+
+                                        <!-- Cultural Prevention -->
+                                        <div class="adv-section">
+                                            <h4><i class="fa-solid fa-arrows-spin"></i> <span data-translate="cultural_hdr">Cultural / Non-Chemical Prevention</span></h4>
+                                            <p id="advPrevention">Rotate crops out of Solanaceae family for 3 years. Stake plants.</p>
+                                        </div>
+
+                                        <!-- Biological Control -->
+                                        <div class="adv-section">
+                                            <h4><i class="fa-solid fa-bug"></i> <span data-translate="biological_hdr">Biological Control</span></h4>
+                                            <p id="advBiological">Apply bio-agents like Bacillus subtilis.</p>
+                                        </div>
+
+                                        <!-- Chemical Control -->
+                                        <div class="adv-section">
+                                            <h4><i class="fa-solid fa-flask-vial"></i> <span data-translate="chemical_hdr">Chemical Control (Safe Pesticide Usage)</span></h4>
+                                            <div class="chemical-box">
+                                                <p id="advChemical">Spray Mancozeb or Chlorothalonil.</p>
+                                                <div class="dosage-tag">
+                                                    <strong data-translate="safe_dosage_lbl">Safe Dosage:</strong> <span id="advDosage">2g per liter of water</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Follow-up Monitoring -->
+                                        <div class="adv-section highlight-border">
+                                            <h4><i class="fa-solid fa-calendar-check"></i> <span data-translate="monitoring_hdr">Follow-up Monitoring & Alert Timeline</span></h4>
+                                            <p><span data-translate="recheck_lbl">Re-check frequency:</span> <strong id="advMonitoring">Every 7 days</strong></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="advisory-actions">
+                                        <button class="btn btn-secondary" id="downloadPDFBtn"><i class="fa-solid fa-file-pdf"></i> Download Advisory</button>
+                                        <button class="btn btn-secondary" id="speakAdvisoryBtn"><i class="fa-solid fa-volume-high"></i> <span data-translate="speak_advisory">Listen to Advisory</span></button>
+                                        <button class="btn btn-warning" id="flagExpertBtn"><i class="fa-solid fa-circle-exclamation"></i> Flag for Expert Review</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weather Risk Forecast and Sensor Inputs -->
+                    <div class="grid-2col" style="margin-top: 2rem;">
+                        <!-- Sensor Input Card -->
+                        <div class="card glass">
+                            <div class="card-header">
+                                <h2 data-translate="field_sensors"><i class="fa-solid fa-satellite-dish"></i> Pest-Trap & Field Sensors</h2>
+                                <span class="badge badge-teal" data-translate="realtime">Field Inputs</span>
+                            </div>
+                            <div class="card-content">
+                                <form id="sensorForm">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="tempInput"><i class="fa-solid fa-temperature-three-quarters"></i> Temperature (°C)</label>
+                                            <input type="number" id="tempInput" step="0.1" value="23.4" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="humidityInput"><i class="fa-solid fa-droplet"></i> Humidity (%)</label>
+                                            <input type="number" id="humidityInput" step="1" value="82" min="0" max="100" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="soilMoistureInput"><i class="fa-solid fa-water"></i> Soil Moisture (%)</label>
+                                            <input type="number" id="soilMoistureInput" step="1" value="48" min="0" max="100" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pestCountInput"><i class="fa-solid fa-bug"></i> Pheromone Pest Count</label>
+                                            <input type="number" id="pestCountInput" step="1" value="4" min="0" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-top: 0.5rem;">
+                                        <label for="sensorNotes"><i class="fa-solid fa-clipboard"></i> Trap Observations / Notes</label>
+                                        <input type="text" id="sensorNotes" placeholder="e.g. Checked Armyworm trap B. Leafhopper counts normal.">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
+                                        <i class="fa-solid fa-paper-plane"></i> Log Sensor & Trap Reading
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Risk Forecasting Card -->
+                        <div class="card glass">
+                            <div class="card-header">
+                                <h2 data-translate="weather_risk_hdr"><i class="fa-solid fa-cloud-bolt"></i> Weather-based Risk Forecasting</h2>
+                                <span class="badge badge-danger" id="riskLevelBadge">Microclimate Risk</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="risk-summary">
+                                    <div class="risk-meter-container">
+                                        <div class="risk-gauge" id="riskGauge">
+                                            <div class="gauge-arrow" id="gaugeArrow" style="transform: rotate(135deg);"></div>
+                                        </div>
+                                        <div class="risk-value" id="riskValueText">High Risk</div>
+                                    </div>
+                                    <div class="risk-info">
+                                        <p class="forecast-text"><strong data-translate="forecast_lbl">Forecast:</strong> <span id="weatherForecastDesc">Cloudy with light showers expected. Leaf moisture remains persistent.</span></p>
+                                    </div>
+                                </div>
+                                <div class="risk-list" id="riskList">
+                                    <!-- Dynamic risks populated here -->
+                                </div>
+                                <div class="risk-chart-container" style="margin-top: 1.5rem; height: 180px; position: relative;">
+                                    <h4 style="font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                                        <i class="fa-solid fa-chart-area"></i> 7-Day Outbreak Projection Forecast
+                                    </h4>
+                                    <canvas id="projectionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View 2: Geospatial Hotspot Map -->
+                <section id="view-map" class="view-section">
+                    <div class="card glass full-height-card">
+                        <div class="card-header">
+                            <h2 data-translate="map_header"><i class="fa-solid fa-map-location-dot"></i> Geospatial Surveillance Map</h2>
+                            <div class="map-filters">
+                                <select id="mapCropFilter">
+                                    <option value="all">All Crops</option>
+                                    <option value="tomato">Tomato</option>
+                                    <option value="potato">Potato</option>
+                                    <option value="apple">Apple</option>
+                                    <option value="corn">Corn</option>
+                                </select>
+                                <select id="mapStatusFilter">
+                                    <option value="all">All Statuses</option>
+                                    <option value="Expert Verified">Expert Verified Only</option>
+                                    <option value="Unverified">Awaiting Verification</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-content no-padding position-relative">
+                            <div id="map"></div>
+                            <div class="map-legend">
+                                <h4>Legend</h4>
+                                <div><span class="legend-color legend-green"></span> Expert Verified</div>
+                                <div><span class="legend-color legend-orange"></span> Awaiting Expert Review</div>
+                                <div><span class="legend-color legend-red"></span> High Severity Outbreak</div>
+                                <div><span class="legend-color legend-purple"></span> Pest Hotspot (Traps > 10)</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View 3: Official Analytics & Expert Validation -->
+                <section id="view-official" class="view-section">
+                    <!-- Dashboard Indicators -->
+                    <div class="indicators-row">
+                        <div class="indicator-card glass">
+                            <div class="ind-icon bg-emerald"><i class="fa-solid fa-circle-exclamation"></i></div>
+                            <div class="ind-details">
+                                <span class="ind-val" id="statTotalOutbreaks">0</span>
+                                <span class="ind-lbl" data-translate="stat_total">Total Active Reports</span>
+                            </div>
+                        </div>
+                        <div class="indicator-card glass">
+                            <div class="ind-icon bg-warning"><i class="fa-solid fa-user-doctor"></i></div>
+                            <div class="ind-details">
+                                <span class="ind-val" id="statPendingValidation">0</span>
+                                <span class="ind-lbl" data-translate="stat_pending">Pending Expert Verification</span>
+                            </div>
+                        </div>
+                        <div class="indicator-card glass">
+                            <div class="ind-icon bg-danger"><i class="fa-solid fa-fire"></i></div>
+                            <div class="ind-details">
+                                <span class="ind-val" id="statHighSeverity">0</span>
+                                <span class="ind-lbl" data-translate="stat_high">High Severity Outbreaks</span>
+                            </div>
+                        </div>
+                        <div class="indicator-card glass">
+                            <div class="ind-icon bg-teal"><i class="fa-solid fa-mosquito"></i></div>
+                            <div class="ind-details">
+                                <span class="ind-val" id="statPestAlerts">Normal</span>
+                                <span class="ind-lbl" data-translate="stat_pest">Pest-Trap Alert Level</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="grid-2col" style="margin-top: 1.5rem;">
+                        <div class="card glass">
+                            <div class="card-header">
+                                <h2 data-translate="chart_distribution_hdr"><i class="fa-solid fa-chart-pie"></i> Crop Distribution of Outbreaks</h2>
+                            </div>
+                            <div class="card-content chart-container">
+                                <canvas id="cropChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card glass">
+                            <div class="card-header">
+                                <h2 data-translate="chart_trend_hdr"><i class="fa-solid fa-chart-line"></i> Monthly Outbreak Timeline</h2>
+                            </div>
+                            <div class="card-content chart-container">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expert Validation Queue -->
+                    <div class="card glass" style="margin-top: 1.5rem;">
+                        <div class="card-header">
+                            <h2 data-translate="expert_queue_hdr"><i class="fa-solid fa-shield-halved"></i> Expert Validation Queue</h2>
+                            <span class="badge badge-warning" id="queueCountBadge">0 cases pending</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="expert-queue" id="expertQueueList">
+                                <!-- Dynamic queue items populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-circle-check toast-icon"></i>
+        <div class="toast-content">
+            <h4 id="toastTitle">Success</h4>
+            <p id="toastMessage">Reading logged successfully.</p>
+        </div>
+    </div>
+    
+    <!-- Custom JS App -->
+    <script src="js/app.js"></script>
+</body>
+</html>
