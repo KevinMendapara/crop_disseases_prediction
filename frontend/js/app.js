@@ -13,6 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
         sensorLogs: []
     };
 
+    // Helper function for quick network timeouts (Feature #3/#4 fallback speedup)
+    function fetchWithTimeout(resource, options = {}) {
+        const { timeout = 2500 } = options;
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        return fetch(resource, { ...options, signal: controller.signal })
+            .then(res => { clearTimeout(id); return res; })
+            .catch(err => { clearTimeout(id); throw err; });
+    }
+
     // Dictionary for Multilingual advisories & UI
     const dictionary = {
         en: {
@@ -448,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("longitude", lngInput.value);
         formData.append("farmer_notes", farmerNotes.value);
         
-        fetch("/api/predict", {
+        fetchWithTimeout("/api/predict", {
             method: "POST",
             body: formData
         })
@@ -822,7 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Weather-based Risk Forecasting ---
     function loadWeatherRisk() {
-        fetch("/api/weather-forecast")
+        fetchWithTimeout("/api/weather-forecast")
         .then(res => {
             if (!res.ok) throw new Error();
             return res.json();
@@ -1047,7 +1057,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Official Dashboard Analytics & expert queue ---
     function loadDashboardStats() {
-        fetch("/api/dashboard-stats")
+        fetchWithTimeout("/api/dashboard-stats")
         .then(res => {
             if (!res.ok) throw new Error();
             return res.json();
@@ -1290,7 +1300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Loading Backend Data ---
     function loadReports() {
-        fetch("/api/reports")
+        fetchWithTimeout("/api/reports")
         .then(res => {
             if (!res.ok) throw new Error();
             return res.json();
