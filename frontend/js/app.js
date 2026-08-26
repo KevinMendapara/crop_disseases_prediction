@@ -1826,17 +1826,33 @@ document.addEventListener("DOMContentLoaded", () => {
             const email = adminEmailInput.value.trim();
             const password = adminPasswordInput.value.trim();
             
-            if (email === "admin@agroshield.com" && password === "admin123") {
-                state.role = "admin";
-                localStorage.setItem("user_role", "admin");
-                updateRoleUI();
-                showToast("Officer Signed In", "Logged in as Extension Officer.", "fa-shield-halved");
-                
-                const officialNav = document.querySelector('[data-view=official]');
-                if (officialNav) officialNav.click();
-            } else {
-                showToast("Access Denied", "Invalid Admin credentials.", "fa-circle-xmark");
-            }
+            fetch("/api/admin/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Invalid credentials");
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    state.role = "admin";
+                    localStorage.setItem("user_role", "admin");
+                    updateRoleUI();
+                    showToast("Officer Signed In", "Logged in as Extension Officer.", "fa-shield-halved");
+                    
+                    const officialNav = document.querySelector('[data-view=official]');
+                    if (officialNav) officialNav.click();
+                } else {
+                    showToast("Access Denied", "Invalid Admin credentials.", "fa-circle-xmark");
+                }
+            })
+            .catch(err => {
+                showToast("Access Denied", "Invalid Admin credentials or connection error.", "fa-circle-xmark");
+            });
         });
     }
 

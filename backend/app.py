@@ -214,6 +214,21 @@ def get_weather_forecast():
         "projections": projections
     })
 
+@app.route("/api/admin/login", methods=["POST"])
+def admin_login():
+    data = request.json or {}
+    email = data.get("email")
+    password = data.get("password")
+    
+    # Read from environment variables or secure defaults
+    admin_email = os.environ.get("ADMIN_EMAIL", "officer@agroshield.com")
+    admin_password = os.environ.get("ADMIN_PASSWORD", "officer2026")
+    
+    if email == admin_email and password == admin_password:
+        return jsonify({"success": True, "role": "admin"})
+    else:
+        return jsonify({"success": False, "message": "Invalid email or password"}), 401
+
 @app.route("/api/dashboard-stats", methods=["GET"])
 def get_dashboard_stats():
     reports = data_store.get_all_reports()
