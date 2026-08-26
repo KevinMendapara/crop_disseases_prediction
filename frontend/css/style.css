@@ -98,6 +98,7 @@ body {
     font-size: 1.45rem;
     font-weight: 800;
     letter-spacing: -0.5px;
+    color: #ffffff;
 }
 
 .brand-name .highlight {
@@ -116,7 +117,7 @@ body {
     align-items: center;
     gap: 1rem;
     padding: 0.85rem 1rem;
-    color: var(--text-muted);
+    color: #a5d6a7; /* Light sage green for contrast */
     text-decoration: none;
     border-radius: 8px;
     font-weight: 500;
@@ -133,8 +134,8 @@ body {
 
 .nav-item:hover, .nav-item.active {
     color: #fff;
-    background-color: rgba(16, 185, 129, 0.08);
-    border-color: rgba(16, 185, 129, 0.2);
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .nav-item.active {
@@ -173,7 +174,7 @@ body {
 .lang-selector select {
     background: transparent;
     border: none;
-    color: var(--text-main);
+    color: #a5d6a7;
     width: 100%;
     outline: none;
     font-family: var(--font-family);
@@ -183,7 +184,7 @@ body {
 
 .lang-selector select option {
     background-color: var(--bg-sidebar);
-    color: var(--text-main);
+    color: #ffffff;
 }
 
 .system-status {
