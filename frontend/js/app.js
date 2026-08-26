@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Dictionary for Multilingual advisories & UI
     const dictionary = {
         en: {
+            nav_scan: "Check Crop Health",
+            nav_treatment: "Treatment Guide",
+            nav_alerts: "Weather & Alerts",
+            nav_admin_queue: "Validation Queue",
+            nav_admin_login: "Officer Panel",
+            nav_admin_logout: "Exit Admin Panel",
             nav_home_landing: "Home",
             nav_settings: "Database Settings",
             nav_login: "Farmer Login",
@@ -104,6 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "Listen to Advisory (Voice)"
         },
         hi: {
+            nav_scan: "फसल स्वास्थ्य जांच",
+            nav_treatment: "उपचार निर्देश",
+            nav_alerts: "मौसम और सूचनाएं",
+            nav_admin_queue: "सत्यापन सूची",
+            nav_admin_login: "अधिकारी पैनल",
+            nav_admin_logout: "अधिकारी पैनल से बाहर निकलें",
             nav_home_landing: "मुख्य पृष्ठ",
             nav_settings: "डेटाबेस सेटिंग्स",
             nav_login: "किसान लॉगिन",
@@ -180,6 +192,12 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "सलाह सुनें (आवाज)"
         },
         pa: {
+            nav_scan: "ਫਸਲ ਦੀ ਸਿਹਤ ਜਾਂਚ",
+            nav_treatment: "ਇਲਾਜ ਗਾਈਡ",
+            nav_alerts: "ਮੌਸਮ ਅਤੇ ਅਲਰਟ",
+            nav_admin_queue: "ਜਾਂਚ ਸੂਚੀ",
+            nav_admin_login: "ਅਧਿਕਾਰੀ ਪੈਨਲ",
+            nav_admin_logout: "ਅਧਿਕਾਰੀ ਪੈਨਲ ਤੋਂ ਬਾਹਰ ਜਾਓ",
             nav_home_landing: "ਮੁੱਢਲਾ ਪੰਨਾ",
             nav_settings: "ਡਾਟਾਬੇਸ ਸੈਟਿੰਗਜ਼",
             nav_login: "ਕਿਸਾਨ ਲੌਗਇਨ",
@@ -256,6 +274,12 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "ਇਲਾਜ ਸੁਣੋ (ਆਵਾਜ਼)"
         },
         ta: {
+            nav_scan: "பயிர் ஆரோக்கியத்தை சரிபார்",
+            nav_treatment: "சிகிச்சை முறை கையேடு",
+            nav_alerts: "வானிலை மற்றும் எச்சரிக்கைகள்",
+            nav_admin_queue: "சரிபார்ப்பு பட்டியல்",
+            nav_admin_login: "அதிகாரி குழு",
+            nav_admin_logout: "அதிகாரி குழுவிலிருந்து வெளியேறு",
             nav_home_landing: "முகப்பு",
             nav_settings: "தரவுத்தள அமைப்புகள்",
             nav_login: "விவசாயி உள்நுழைவு",
@@ -332,6 +356,12 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "அறிவுரையைக் கேளுங்கள் (ஆடியோ)"
         },
         te: {
+            nav_scan: "పంట ఆరోగ్యాన్ని తనిఖీ చేయండి",
+            nav_treatment: "చికిత్స సలహా పట్టిక",
+            nav_alerts: "వాతావరణం & హెచ్చరికలు",
+            nav_admin_queue: "పరిశీలన జాబితా",
+            nav_admin_login: "అధికారి లాగిన్",
+            nav_admin_logout: "అధికారి ప్యానెల్ నుండి నిష్క్రమించు",
             nav_home_landing: "హోమ్",
             nav_settings: "డేటాబేస్ సెట్టింగులు",
             nav_login: "రైతు లాగిన్",
@@ -408,6 +438,12 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "సలహా వినండి (ఆడియో)"
         },
         mr: {
+            nav_scan: "पिकाचे आरोग्य तपासा",
+            nav_treatment: "उपचार मार्गदर्शक",
+            nav_alerts: "हवामान व इशारे",
+            nav_admin_queue: "सत्यापन सूची",
+            nav_admin_login: "अधिकारी पॅनेल",
+            nav_admin_logout: "अधिकारी पॅनेल बाहेर पडा",
             nav_home_landing: "मुख्य पान",
             nav_settings: "डेटाबेस सेटिंग्ज",
             nav_login: "शेतकरी लॉगिन",
