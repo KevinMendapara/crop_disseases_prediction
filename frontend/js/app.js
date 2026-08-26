@@ -524,6 +524,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Supabase Client & Connection Setup ---
     let supabase = null;
 
+    function getApiUrl(endpoint) {
+        const config = (typeof AGROSHIELD_CONFIG !== "undefined" ? AGROSHIELD_CONFIG : null) || window.AGROSHIELD_CONFIG || {};
+        const base = config.API_BASE_URL || "";
+        return base + endpoint;
+    }
+
     function initSupabase() {
         const config = (typeof AGROSHIELD_CONFIG !== "undefined" ? AGROSHIELD_CONFIG : null) || window.AGROSHIELD_CONFIG || {};
         const url = config.SUPABASE_URL || localStorage.getItem("supabase_url") || "";
@@ -1257,7 +1263,7 @@ document.addEventListener("DOMContentLoaded", () => {
             notes: document.getElementById("sensorNotes").value
         };
         
-        fetch("/api/sensor-logs", {
+        fetch(getApiUrl("/api/sensor-logs"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -1744,7 +1750,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        fetch(`/api/reports/${reportId}/validate`, {
+        fetch(getApiUrl(`/api/reports/${reportId}/validate`), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -1863,7 +1869,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const email = adminEmailInput.value.trim();
             const password = adminPasswordInput.value.trim();
             
-            fetch("/api/admin/login", {
+            fetch(getApiUrl("/api/admin/login"), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
