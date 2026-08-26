@@ -1,32 +1,15 @@
-# Python / Flask
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.env
-.venv
-env/
-venv/
-*.log
+# Ignore prediction test uploads
+backend/data/uploaded_images/*
 
-# Large Datasets and Neural Net Model weights
-dataset/
-PlantVillage/
+# Ignore large binary models
+backend/crop_disease_model.keras
 *.keras
 *.h5
-backend/crop_disease_model.keras
 
-# Local system configurations
-.idea/
-.vscode/
-.system_generated/
-.gemini/
-*.tempmediaStorage/
-browser/
-scratch/
-task.md
-implementation_plan.md
-walkthrough.md
-*.png
-*.mp4
-*.webm
+# Ignore training dataset directory
+dataset/
+
+# Ignore python cache files
+__pycache__/
+*.pyc
+.pytest_cache/

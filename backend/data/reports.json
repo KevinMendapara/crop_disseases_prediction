@@ -1,1 +1,44 @@
-[]
+[
+    {
+        "id": "458c0c4a-b198-4be2-9fc8-62f1e462b6c9",
+        "timestamp": "2026-08-26T06:18:06.165803Z",
+        "crop": "Corn (maize)",
+        "disease": "Corn_(maize)___healthy",
+        "severity": "Low",
+        "status": "Rejected",
+        "latitude": 29.968,
+        "longitude": 76.818,
+        "image_url": "/api/uploaded-images/pred_f68f26c9.jpg",
+        "confidence": 89.96783494949341,
+        "farmer_notes": "Verification test leaf diagnostic",
+        "expert_notes": "Validated by Extension Officer"
+    },
+    {
+        "id": "1664ecd5-69db-4f99-9e96-bf37aac85be3",
+        "timestamp": "2026-08-26T07:08:07.937838Z",
+        "crop": "Blueberry",
+        "disease": "Blueberry___healthy",
+        "severity": "Low",
+        "status": "Unverified",
+        "latitude": 29.968,
+        "longitude": 76.818,
+        "image_url": "/api/uploaded-images/pred_2bb0f71d.jpg",
+        "confidence": 99.99957084655762,
+        "farmer_notes": "",
+        "expert_notes": ""
+    },
+    {
+        "id": "60b92777-cda8-481f-a877-43bdca1f198f",
+        "timestamp": "2026-08-26T07:09:45.657704Z",
+        "crop": "Blueberry",
+        "disease": "Blueberry___healthy",
+        "severity": "Low",
+        "status": "Unverified",
+        "latitude": 29.968,
+        "longitude": 76.818,
+        "image_url": "/api/uploaded-images/pred_65b91fbc.jpg",
+        "confidence": 99.99957084655762,
+        "farmer_notes": "",
+        "expert_notes": ""
+    }
+]
