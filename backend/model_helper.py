@@ -60,20 +60,25 @@ class ModelHelper:
                               "pepper", "chili", "mushroom", "fungus", "corn", "maize", "banana", 
                               "orange", "lemon", "pomegranate", "pineapple", "apple", "strawberry", 
                               "peach", "fig", "grape", "pot", "flowerpot", "greenhouse", "acorn", "buckeye",
-                              "sprout", "wood", "forest"}
+                              "sprout", "wood", "forest", "cardoon", "artichoke", "herb", "shrub", "daisy",
+                              "head_cabbage", "buckeye", "acorn_squash", "butternut_squash"}
             
-            # Rule 1: Check if any top 3 is a plant-related term
-            for class_id, label, prob in decoded[:3]:
+            # Check if any top 5 prediction matches plant keywords with at least 3% probability
+            is_plant = False
+            matched_label = ""
+            for class_id, label, prob in decoded:
                 label_lower = label.lower()
-                if any(kw in label_lower for kw in plant_keywords):
-                    return True, f"Matched plant keyword: {label}"
-                    
-            # Rule 2: If top prediction is a non-plant class and confidence >= 15%, reject
-            top_label, top_prob = decoded[0][1], decoded[0][2]
-            if top_prob >= 0.15:
-                return False, f"Not a leaf/plant image (Identified as {top_label.replace('_', ' ')} with high probability)"
-                
-            return True, "Passed validation"
+                if prob >= 0.03 and any(kw in label_lower for kw in plant_keywords):
+                    is_plant = True
+                    matched_label = label
+                    break
+            
+            if is_plant:
+                return True, f"Matched plant keyword: {matched_label}"
+            
+            # If not explicitly matched as a plant/leaf, reject it!
+            top_label = decoded[0][1].replace('_', ' ')
+            return False, f"Not a leaf/plant image (Identified as {top_label} with high probability)"
         except Exception as e:
             print(f"Error checking if image is leaf: {e}")
             return True, "Passed validation by default due to error"
