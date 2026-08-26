@@ -525,8 +525,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let supabase = null;
 
     function initSupabase() {
-        const url = (window.AGROSHIELD_CONFIG && window.AGROSHIELD_CONFIG.SUPABASE_URL) || localStorage.getItem("supabase_url") || "";
-        const key = (window.AGROSHIELD_CONFIG && window.AGROSHIELD_CONFIG.SUPABASE_KEY) || localStorage.getItem("supabase_key") || "";
+        const config = (typeof AGROSHIELD_CONFIG !== "undefined" ? AGROSHIELD_CONFIG : null) || window.AGROSHIELD_CONFIG || {};
+        const url = config.SUPABASE_URL || localStorage.getItem("supabase_url") || "";
+        const key = config.SUPABASE_KEY || localStorage.getItem("supabase_key") || "";
         if (url && key) {
             try {
                 // Initialize supabase using client library

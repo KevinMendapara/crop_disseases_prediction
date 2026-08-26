@@ -1,6 +1,6 @@
 // AgroShield Supabase Database Configuration
 // Open this file and paste your Supabase credentials between the quotes below.
-const AGROSHIELD_CONFIG = {
+window.AGROSHIELD_CONFIG = {
     // Your Supabase Project URL (e.g., "https://your-project-id.supabase.co")
     SUPABASE_URL: "https://xuvhskvjnuixejshxuru.supabase.co",
 
