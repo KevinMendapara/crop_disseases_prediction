@@ -110,6 +110,33 @@ def run_tests():
         print(f"FAIL: {e}")
         return False
 
+    # 6. Test /api/predict with non-leaf image (Non-leaf rejection)
+    print("\n[Test 6] POST /api/predict (Non-leaf rejection)")
+    try:
+        # Create a dummy solid red image which triggers ImageNet 'envelope' classification
+        img = Image.new("RGB", (224, 224), color="red")
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format='JPEG')
+        img_byte_arr.seek(0)
+        
+        files = {
+            "image": ("test_non_leaf.jpg", img_byte_arr, "image/jpeg")
+        }
+        data = {
+            "latitude": "29.9680",
+            "longitude": "76.8180",
+            "farmer_notes": "Verification test non-leaf diagnostic"
+        }
+        r = requests.post(f"{base_url}/api/predict", files=files, data=data)
+        print(f"Status: {r.status_code}")
+        assert r.status_code == 400
+        res = r.json()
+        print(f"Rejection Message: {res['error']}")
+        assert "Not a leaf" in res['error']
+    except Exception as e:
+        print(f"FAIL: {e}")
+        return False
+
     print("\nALL BACKEND VERIFICATION TESTS PASSED SUCCESSFULLY!")
     return True
 

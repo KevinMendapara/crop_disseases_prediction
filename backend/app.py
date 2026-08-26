@@ -42,6 +42,14 @@ def predict():
     longitude = request.form.get("longitude", 76.5)
     farmer_notes = request.form.get("farmer_notes", "")
     
+    # Check if the uploaded image is a leaf/plant
+    try:
+        is_leaf, leaf_msg = model_helper.check_is_leaf(file)
+        if not is_leaf:
+            return jsonify({"error": leaf_msg}), 400
+    except Exception as e:
+        print(f"Leaf check error: {e}")
+        
     # Save file temporarily or predict directly
     try:
         predicted_class, confidence = model_helper.predict_image(file)

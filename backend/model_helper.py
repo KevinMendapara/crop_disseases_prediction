@@ -37,6 +37,47 @@ class ModelHelper:
         else:
             print("Model file not found. Inference will not work until training completes.")
 
+    def check_is_leaf(self, file_stream):
+        if not hasattr(self, "imagenet_model") or self.imagenet_model is None:
+            # Lazy load MobileNetV2 with ImageNet weights
+            self.imagenet_model = tf.keras.applications.MobileNetV2(weights="imagenet")
+            
+        try:
+            file_stream.seek(0)
+            img = Image.open(file_stream)
+            img = img.convert("RGB")
+            img = img.resize((224, 224))
+            
+            arr = np.array(img, dtype=np.float32)
+            arr = preprocess_input(arr)
+            batch = np.expand_dims(arr, axis=0)
+            
+            preds = self.imagenet_model.predict(batch, verbose=0)
+            decoded = tf.keras.applications.mobilenet_v2.decode_predictions(preds, top=5)[0]
+            
+            plant_keywords = {"leaf", "foliage", "plant", "tree", "flower", "vegetable", "fruit", 
+                              "cabbage", "broccoli", "cauliflower", "zucchini", "squash", "cucumber", 
+                              "pepper", "chili", "mushroom", "fungus", "corn", "maize", "banana", 
+                              "orange", "lemon", "pomegranate", "pineapple", "apple", "strawberry", 
+                              "peach", "fig", "grape", "pot", "flowerpot", "greenhouse", "acorn", "buckeye",
+                              "sprout", "wood", "forest"}
+            
+            # Rule 1: Check if any top 3 is a plant-related term
+            for class_id, label, prob in decoded[:3]:
+                label_lower = label.lower()
+                if any(kw in label_lower for kw in plant_keywords):
+                    return True, f"Matched plant keyword: {label}"
+                    
+            # Rule 2: If top prediction is a non-plant class and confidence >= 15%, reject
+            top_label, top_prob = decoded[0][1], decoded[0][2]
+            if top_prob >= 0.15:
+                return False, f"Not a leaf/plant image (Identified as {top_label.replace('_', ' ')} with high probability)"
+                
+            return True, "Passed validation"
+        except Exception as e:
+            print(f"Error checking if image is leaf: {e}")
+            return True, "Passed validation by default due to error"
+
     def predict_image(self, file_stream):
         if not self.model or not self.class_names:
             # Reload in case it was created in the meantime
@@ -46,6 +87,7 @@ class ModelHelper:
         
         try:
             # Load and preprocess image
+            file_stream.seek(0)
             img = Image.open(file_stream)
             img = img.convert('RGB')
             img = img.resize((128, 128))
@@ -64,3 +106,4 @@ class ModelHelper:
         except Exception as e:
             print(f"Error in prediction: {e}")
             return "Unknown", 0.0
+
