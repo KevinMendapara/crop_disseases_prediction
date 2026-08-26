@@ -889,17 +889,18 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("longitude", lngInput.value);
         formData.append("farmer_notes", farmerNotes.value);
         
-        fetchWithTimeout("/api/predict", {
+        fetchWithTimeout(getApiUrl("/api/predict"), {
             method: "POST",
             body: formData
         })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                return response.json().then(errData => {
-                    throw new Error(errData.error || "AI Prediction engine returned an error");
-                }).catch(() => {
-                    throw new Error("AI Prediction engine failed");
-                });
+                let errMsg = "AI Prediction engine returned an error";
+                try {
+                    const errData = await response.json();
+                    errMsg = errData.error || errMsg;
+                } catch(e) {}
+                throw new Error(errMsg);
             }
             return response.json();
         })
