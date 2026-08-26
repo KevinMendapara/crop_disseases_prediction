@@ -33,7 +33,8 @@ def run_tests():
         print(f"Status: {r.status_code}")
         assert r.status_code == 200
         reports = r.json()
-        print(f"Loaded {len(reports)} reports. First report crop: {reports[0]['crop']}")
+        crop_text = reports[0]['crop'] if reports else "None (empty queue)"
+        print(f"Loaded {len(reports)} reports. First report crop: {crop_text}")
     except Exception as e:
         print(f"FAIL: {e}")
         return False
