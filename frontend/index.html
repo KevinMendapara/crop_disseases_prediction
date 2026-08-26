@@ -18,6 +18,9 @@
     <!-- Chart.js (Analytics) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <!-- Custom Style -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -31,21 +34,72 @@
             </div>
             
             <nav class="nav-menu">
-                <a href="#" class="nav-item active" data-view="farmer">
-                    <i class="fa-solid fa-house-chimney-crack"></i>
-                    <span data-translate="nav_home">Farmer Portal</span>
+                <!-- Farmer User Panel Links -->
+                <a href="#" class="nav-item active" data-view="home">
+                    <i class="fa-solid fa-house"></i>
+                    <span data-translate="nav_home_landing">Home</span>
+                </a>
+                <a href="#" class="nav-item" data-view="scan">
+                    <i class="fa-solid fa-camera-retro"></i>
+                    <span data-translate="nav_scan">Check Crop Health</span>
+                </a>
+                <a href="#" class="nav-item" data-view="treatment" id="navTreatmentBtn">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                    <span data-translate="nav_treatment">Treatment Guide</span>
+                </a>
+                <a href="#" class="nav-item" data-view="alerts">
+                    <i class="fa-solid fa-cloud-bolt"></i>
+                    <span data-translate="nav_alerts">Weather & Alerts</span>
                 </a>
                 <a href="#" class="nav-item" data-view="map">
                     <i class="fa-solid fa-map-location-dot"></i>
-                    <span data-translate="nav_map">Surveillance Map</span>
+                    <span data-translate="nav_map">Disease Map</span>
                 </a>
-                <a href="#" class="nav-item" data-view="official">
+
+                <!-- Extension Officer Admin Panel Links -->
+                <a href="#" class="nav-item admin-only" data-view="official" style="display: none;">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span data-translate="nav_dashboard">Official Analytics</span>
+                    <span data-translate="nav_dashboard">Analytics Dashboard</span>
+                </a>
+                <a href="#" class="nav-item admin-only" data-view="admin-queue" style="display: none;">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span data-translate="nav_admin_queue">Validation Queue</span>
                 </a>
             </nav>
             
             <div class="sidebar-footer">
+                <!-- User Profile Display -->
+                <div id="userProfileBadge" class="user-profile-badge" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">F</div>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Farmer Friend</span>
+                        <span class="user-village" id="userVillage">Village</span>
+                    </div>
+                </div>
+                
+                <!-- Auth Actions in Sidebar -->
+                <div id="authNavActions" style="margin-bottom: 0.5rem; width: 100%; display: flex; flex-direction: column; gap: 0.25rem;">
+                    <!-- Farmer Logins -->
+                    <a href="#" class="nav-item" data-view="auth" id="loginNavBtn" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span data-translate="nav_login">Farmer Sign In</span>
+                    </a>
+                    <a href="#" class="nav-item" id="logoutBtn" style="padding: 0.5rem 0.75rem; font-size: 0.85rem; display: none;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span data-translate="nav_logout">Log Out</span>
+                    </a>
+                    
+                    <!-- Admin Logins -->
+                    <a href="#" class="nav-item" data-view="admin-auth" id="adminLoginNavBtn" style="padding: 0.5rem 0.75rem; font-size: 0.85rem; border: 1px dashed rgba(255, 255, 255, 0.15);">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span data-translate="nav_admin_login">Officer Panel</span>
+                    </a>
+                    <a href="#" class="nav-item" id="adminLogoutBtn" style="padding: 0.5rem 0.75rem; font-size: 0.85rem; display: none; background-color: rgba(198, 40, 40, 0.15); border-color: rgba(198, 40, 40, 0.3);">
+                        <i class="fa-solid fa-door-open"></i>
+                        <span data-translate="nav_admin_logout">Exit Admin Panel</span>
+                    </a>
+                </div>
+
                 <!-- Language Selector -->
                 <div class="lang-selector">
                     <i class="fa-solid fa-globe"></i>
@@ -94,154 +148,208 @@
 
             <!-- Views Container -->
             <div class="content-body">
-                
-                <!-- View 1: Farmer & Field Log -->
-                <section id="view-farmer" class="view-section active">
-                    <div class="grid-2col">
-                        <!-- Diagnostic Card -->
-                        <div class="card glass">
-                            <div class="card-header">
-                                <h2 data-translate="diagnostic_lab"><i class="fa-solid fa-microscope"></i> AI Diagnostic Lab</h2>
-                                <span class="badge badge-emerald" data-translate="image_based">Image Diagnostic</span>
-                            </div>
-                            
-                            <div class="card-content">
-                                <div class="upload-zone" id="dropZone">
-                                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
-                                    <div class="upload-prompt">
-                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
-                                        <h3 data-translate="upload_prompt_title">Drag & drop diseased leaf photo</h3>
-                                        <p data-translate="upload_prompt_desc">Supports Tomato, Potato, Pepper, Corn, Apple, Grape, Peach, Squash, Strawberry</p>
-                                        <button class="btn btn-primary" id="browseBtn" data-translate="browse_btn">Browse Leaf Photo</button>
-                                    </div>
-                                    <div class="upload-preview" id="uploadPreview" style="display: none;">
-                                        <img src="" alt="Selected leaf" id="previewImg">
-                                        <div class="preview-overlay">
-                                            <button class="btn btn-danger btn-sm" id="removeImgBtn"><i class="fa-solid fa-trash"></i> Remove</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group" style="margin-top: 1.5rem;">
-                                    <label for="farmerNotes" data-translate="field_notes"><i class="fa-solid fa-pen"></i> Add Field Notes (Optional)</label>
-                                    <textarea id="farmerNotes" placeholder="e.g., Symptoms spreading on lower leaves since last week's rain..."></textarea>
-                                </div>
+                <!-- View 0: Home Landing Portal -->
+                <section id="view-home" class="view-section active">
+                    <div class="hero-section">
+                        <h2 class="hero-title" data-translate="welcome_title">Welcome to AgroShield Portal</h2>
+                        <p class="hero-subtitle" data-translate="welcome_desc">Your digital crop doctor. Get instant leaf diagnostics and regional disease risk metrics in your language.</p>
+                    </div>
 
-                                <div class="form-row" style="margin-top: 1rem;">
-                                    <div class="form-group">
-                                        <label for="latInput"><i class="fa-solid fa-location-dot"></i> Latitude</label>
-                                        <input type="number" id="latInput" step="0.0001" value="29.9680">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="lngInput"><i class="fa-solid fa-location-dot"></i> Longitude</label>
-                                        <input type="number" id="lngInput" step="0.0001" value="76.8180">
-                                    </div>
-                                    <div class="form-group align-bottom">
-                                        <button class="btn btn-secondary btn-icon" id="geolocateBtn"><i class="fa-solid fa-crosshairs"></i> Get GPS</button>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-success btn-large" id="diagnoseBtn" style="margin-top: 1.5rem; width: 100%;" disabled>
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-translate="analyze_btn">Analyze Leaf Health</span>
-                                </button>
+                    <div class="home-grid">
+                        <div class="home-card" id="homeDiagCard">
+                            <div class="home-card-icon"><i class="fa-solid fa-microscope"></i></div>
+                            <h3 class="home-card-title" data-translate="card_diag_title">Leaf Diagnostics</h3>
+                            <p class="home-card-desc" data-translate="card_diag_desc">Take a photo of your diseased leaf and get a custom organic and chemical treatment recommendation instantly.</p>
+                        </div>
+                        <div class="home-card" id="homeMapCard">
+                            <div class="home-card-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <h3 class="home-card-title" data-translate="card_map_title">Disease Map</h3>
+                            <p class="home-card-desc" data-translate="card_map_desc">Inspect regional disease outbreaks, hot zones, and surveillance logs in nearby villages.</p>
+                        </div>
+                        <div class="home-card" id="homeOfficialCard">
+                            <div class="home-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            <h3 class="home-card-title" data-translate="card_dash_title">Official Analytics</h3>
+                            <p class="home-card-desc" data-translate="card_dash_desc">View aggregated village crop reports, microclimate metrics, and specialist queues.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step-by-Step Instructions -->
+                    <div class="guide-section">
+                        <h3 class="guide-title"><i class="fa-solid fa-circle-info"></i> <span data-translate="guide_header">How to Use AgroShield</span></h3>
+                        <div class="guide-steps">
+                            <div class="guide-step">
+                                <div class="step-num">1</div>
+                                <span class="step-title" data-translate="step1_title">Snap Leaf Photo</span>
+                                <p class="step-desc" data-translate="step1_desc">Take a clear picture of the infected plant leaf in daylight.</p>
+                            </div>
+                            <div class="guide-step">
+                                <div class="step-num">2</div>
+                                <span class="step-title" data-translate="step2_title">Upload Leaf</span>
+                                <p class="step-desc" data-translate="step2_desc">Upload the photo to the diagnostics portal and click 'Find Disease'.</p>
+                            </div>
+                            <div class="guide-step">
+                                <div class="step-num">3</div>
+                                <span class="step-title" data-translate="step3_title">Get Advisory</span>
+                                <p class="step-desc" data-translate="step3_desc">See the diagnosis results, symptoms causes, and mixing instructions.</p>
+                            </div>
+                            <div class="guide-step">
+                                <div class="step-num">4</div>
+                                <span class="step-title" data-translate="step4_title">Listen to Audio</span>
+                                <p class="step-desc" data-translate="step4_desc">Click the audio button to hear the treatment recommendations read aloud.</p>
                             </div>
                         </div>
-
-                        <!-- Results & Advisory Card -->
-                        <div class="card glass scroll-y" id="advisoryCard">
-                            <div class="card-header">
-                                <h2 data-translate="treatment_protocol"><i class="fa-solid fa-notes-medical"></i> Diagnostic Report</h2>
-                                <span class="badge" id="severityBadge">Pending</span>
+                    </div>
+                </section>
+                
+                <!-- View 1: Check Crop Health (Leaf Scan Upload) -->
+                <section id="view-scan" class="view-section">
+                    <div class="card glass">
+                        <div class="card-header">
+                            <h2 data-translate="diagnostic_lab"><i class="fa-solid fa-microscope"></i> AI Leaf Doctor</h2>
+                            <span class="badge badge-emerald" data-translate="image_based">Scan Your Leaf</span>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="upload-zone" id="dropZone">
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                                <div class="upload-prompt">
+                                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                    <h3 data-translate="upload_prompt_title">Upload or drop photo of sick leaf</h3>
+                                    <p data-translate="upload_prompt_desc">Supports Tomato, Potato, Pepper, Corn, Apple, Grape, Peach, Squash, Strawberry</p>
+                                    <button class="btn btn-primary" id="browseBtn" data-translate="browse_btn">Choose Photo</button>
+                                </div>
+                                <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                    <img src="" alt="Selected leaf" id="previewImg">
+                                    <div class="preview-overlay">
+                                        <button class="btn btn-danger btn-sm" id="removeImgBtn"><i class="fa-solid fa-trash"></i> Remove</button>
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div class="card-content">
-                                <!-- Initial State -->
-                                <div class="empty-state" id="advisoryEmpty">
-                                    <i class="fa-solid fa-hourglass-start animate-pulse"></i>
-                                    <h3 data-translate="awaiting_input">Awaiting Leaf Diagnosis</h3>
-                                    <p data-translate="awaiting_input_desc">Upload a crop photo and click "Analyze" to generate a tailored biological and chemical treatment plan.</p>
-                                </div>
+                            <div class="form-group" style="margin-top: 1.5rem;">
+                                <label for="farmerNotes" data-translate="field_notes"><i class="fa-solid fa-pen"></i> Write any observations / notes (optional)</label>
+                                <textarea id="farmerNotes" placeholder="e.g., Spots appearing on lower leaves after rain..."></textarea>
+                            </div>
 
-                                <!-- Loading State -->
-                                <div class="empty-state" id="advisoryLoading" style="display: none;">
-                                    <i class="fa-solid fa-circle-notch fa-spin spinner"></i>
-                                    <h3 data-translate="analyzing_foliage">Analyzing Foliage Pattern...</h3>
-                                    <p data-translate="matching_features">Matching diagnostic features against PlantVillage neural database...</p>
+                            <div class="form-row" style="margin-top: 1rem;">
+                                <div class="form-group">
+                                    <label for="latInput"><i class="fa-solid fa-location-dot"></i> Latitude</label>
+                                    <input type="number" id="latInput" step="0.0001" value="29.9680">
                                 </div>
+                                <div class="form-group">
+                                    <label for="lngInput"><i class="fa-solid fa-location-dot"></i> Longitude</label>
+                                    <input type="number" id="lngInput" step="0.0001" value="76.8180">
+                                </div>
+                                <div class="form-group align-bottom">
+                                    <button class="btn btn-secondary btn-icon" id="geolocateBtn"><i class="fa-solid fa-crosshairs"></i> Get GPS</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-success btn-large" id="diagnoseBtn" style="margin-top: 1.5rem; width: 100%;" disabled>
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-translate="analyze_btn">Find Disease Now</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
 
-                                <!-- Results State -->
-                                <div id="advisoryContent" style="display: none;">
-                                    <div class="result-header">
-                                        <div class="result-details">
-                                            <h3 id="resDisease">Early Blight</h3>
-                                            <p class="scientific" id="resScientific">Alternaria solani</p>
-                                            <div class="meta-row">
-                                                <span class="meta-item"><strong data-translate="crop_lbl">Crop:</strong> <span id="resCrop">Tomato</span></span>
-                                                <span class="meta-item"><strong data-translate="confidence_lbl">Confidence:</strong> <span id="resConfidence">92%</span></span>
-                                            </div>
+                <!-- View 1.5: Simple Treatment Guide -->
+                <section id="view-treatment" class="view-section">
+                    <div class="card glass scroll-y" id="advisoryCard">
+                        <div class="card-header">
+                            <h2 data-translate="treatment_protocol"><i class="fa-solid fa-prescription-bottle-medical"></i> Simple Treatment Guide</h2>
+                            <span class="badge" id="severityBadge">Pending</span>
+                        </div>
+                        
+                        <div class="card-content">
+                            <!-- Initial Awaiting State -->
+                            <div class="empty-state" id="advisoryEmpty">
+                                <i class="fa-solid fa-hourglass-start animate-pulse"></i>
+                                <h3 data-translate="awaiting_input">Waiting for leaf photo</h3>
+                                <p data-translate="awaiting_input_desc">Upload a photo of the sick leaf and click the button to see the disease and the treatment.</p>
+                                <button class="btn btn-primary" onclick="document.querySelector('[data-view=scan]').click()"><i class="fa-solid fa-camera-retro"></i> Go to Leaf Scanner</button>
+                            </div>
+
+                            <!-- Loading State -->
+                            <div class="empty-state" id="advisoryLoading" style="display: none;">
+                                <i class="fa-solid fa-circle-notch fa-spin spinner"></i>
+                                <h3 data-translate="analyzing_foliage">Analyzing leaf pattern...</h3>
+                                <p data-translate="matching_features">Checking patterns with our plant database...</p>
+                            </div>
+
+                            <!-- Results State -->
+                            <div id="advisoryContent" style="display: none;">
+                                <div class="result-header">
+                                    <div class="result-details">
+                                        <h3 id="resDisease">Early Blight</h3>
+                                        <p class="scientific" id="resScientific">Alternaria solani</p>
+                                        <div class="meta-row">
+                                            <span class="meta-item"><strong data-translate="crop_lbl">Plant Name:</strong> <span id="resCrop">Tomato</span></span>
+                                            <span class="meta-item"><strong data-translate="confidence_lbl">Match Confidence:</strong> <span id="resConfidence">92%</span></span>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="advisory-sections">
-                                        <!-- Description -->
-                                        <div class="adv-section">
-                                            <h4><i class="fa-solid fa-circle-info"></i> <span data-translate="desc_hdr">Disease Description</span></h4>
-                                            <p id="advDesc">A fungal pathogen causing target-like brown spots on mature leaves...</p>
-                                        </div>
-                                        
-                                        <!-- Symptoms -->
-                                        <div class="adv-section">
-                                            <h4><i class="fa-solid fa-eye"></i> <span data-translate="symptoms_hdr">Symptoms & Causes</span></h4>
-                                            <p id="advSymptoms">Concentric target board pattern starting on lower foliage.</p>
-                                        </div>
-
-                                        <!-- Cultural Prevention -->
-                                        <div class="adv-section">
-                                            <h4><i class="fa-solid fa-arrows-spin"></i> <span data-translate="cultural_hdr">Cultural / Non-Chemical Prevention</span></h4>
-                                            <p id="advPrevention">Rotate crops out of Solanaceae family for 3 years. Stake plants.</p>
-                                        </div>
-
-                                        <!-- Biological Control -->
-                                        <div class="adv-section">
-                                            <h4><i class="fa-solid fa-bug"></i> <span data-translate="biological_hdr">Biological Control</span></h4>
-                                            <p id="advBiological">Apply bio-agents like Bacillus subtilis.</p>
-                                        </div>
-
-                                        <!-- Chemical Control -->
-                                        <div class="adv-section">
-                                            <h4><i class="fa-solid fa-flask-vial"></i> <span data-translate="chemical_hdr">Chemical Control (Safe Pesticide Usage)</span></h4>
-                                            <div class="chemical-box">
-                                                <p id="advChemical">Spray Mancozeb or Chlorothalonil.</p>
-                                                <div class="dosage-tag">
-                                                    <strong data-translate="safe_dosage_lbl">Safe Dosage:</strong> <span id="advDosage">2g per liter of water</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Follow-up Monitoring -->
-                                        <div class="adv-section highlight-border">
-                                            <h4><i class="fa-solid fa-calendar-check"></i> <span data-translate="monitoring_hdr">Follow-up Monitoring & Alert Timeline</span></h4>
-                                            <p><span data-translate="recheck_lbl">Re-check frequency:</span> <strong id="advMonitoring">Every 7 days</strong></p>
-                                        </div>
+                                <div class="advisory-sections">
+                                    <!-- Description -->
+                                    <div class="adv-section">
+                                        <h4><i class="fa-solid fa-circle-info"></i> <span data-translate="desc_hdr">About this Disease</span></h4>
+                                        <p id="advDesc">A fungal pathogen causing target-like brown spots on mature leaves...</p>
                                     </div>
                                     
-                                    <div class="advisory-actions">
-                                        <button class="btn btn-secondary" id="downloadPDFBtn"><i class="fa-solid fa-file-pdf"></i> Download Advisory</button>
-                                        <button class="btn btn-secondary" id="speakAdvisoryBtn"><i class="fa-solid fa-volume-high"></i> <span data-translate="speak_advisory">Listen to Advisory</span></button>
-                                        <button class="btn btn-warning" id="flagExpertBtn"><i class="fa-solid fa-circle-exclamation"></i> Flag for Expert Review</button>
+                                    <!-- Symptoms -->
+                                    <div class="adv-section">
+                                        <h4><i class="fa-solid fa-eye"></i> <span data-translate="symptoms_hdr">How to Identify & Why it Happens</span></h4>
+                                        <p id="advSymptoms">Concentric target board pattern starting on lower foliage.</p>
                                     </div>
+
+                                    <!-- Natural / Organic Prevention Tips -->
+                                    <div class="adv-section">
+                                        <h4><i class="fa-solid fa-arrows-spin"></i> <span data-translate="cultural_hdr">Natural / Organic Prevention Tips</span></h4>
+                                        <p id="advPrevention">Rotate crops out of Solanaceae family for 3 years. Stake plants.</p>
+                                    </div>
+
+                                    <!-- Biological Control / Organic Remedies -->
+                                    <div class="adv-section">
+                                        <h4><i class="fa-solid fa-leaf"></i> <span data-translate="biological_hdr">Biological Treatment (Natural Remedies)</span></h4>
+                                        <p id="advBiological">Apply bio-agents like Bacillus subtilis.</p>
+                                    </div>
+
+                                    <!-- Chemical Control -->
+                                    <div class="adv-section">
+                                        <h4><i class="fa-solid fa-flask-vial"></i> <span data-translate="chemical_hdr">Chemical Treatment (Pesticides, if needed)</span></h4>
+                                        <div class="chemical-box">
+                                            <p id="advChemical">Spray Mancozeb or Chlorothalonil.</p>
+                                            <div class="dosage-tag">
+                                                <strong data-translate="safe_dosage_lbl">Correct Mixing / Dosage:</strong> <span id="advDosage">2g per liter of water</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Follow-up Monitoring -->
+                                    <div class="adv-section highlight-border">
+                                        <h4><i class="fa-solid fa-calendar-check"></i> <span data-translate="monitoring_hdr">Regular Inspection & Watch Checklist</span></h4>
+                                        <p><span data-translate="recheck_lbl">Check again after:</span> <strong id="advMonitoring">Every 7 days</strong></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="advisory-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                                    <button class="btn btn-secondary" id="speakAdvisoryBtn" style="flex: 1;"><i class="fa-solid fa-volume-high"></i> <span data-translate="speak_advisory">Listen to Advisory (Voice)</span></button>
+                                    <button class="btn btn-warning" id="flagExpertBtn" style="flex: 1;"><i class="fa-solid fa-circle-exclamation"></i> Flag for Expert Review</button>
+                                    <button class="btn btn-secondary" id="downloadPDFBtn" style="display: none;"><i class="fa-solid fa-file-pdf"></i> Download</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Weather Risk Forecast and Sensor Inputs -->
-                    <div class="grid-2col" style="margin-top: 2rem;">
+                <!-- View 1.8: Weather Risk Forecast & Sensors -->
+                <section id="view-alerts" class="view-section">
+                    <div class="grid-2col">
                         <!-- Sensor Input Card -->
                         <div class="card glass">
                             <div class="card-header">
-                                <h2 data-translate="field_sensors"><i class="fa-solid fa-satellite-dish"></i> Pest-Trap & Field Sensors</h2>
-                                <span class="badge badge-teal" data-translate="realtime">Field Inputs</span>
+                                <h2 data-translate="field_sensors"><i class="fa-solid fa-satellite-dish"></i> Insect Traps & Field Sensors</h2>
+                                <span class="badge badge-teal" data-translate="realtime">Field Observations</span>
                             </div>
                             <div class="card-content">
                                 <form id="sensorForm">
@@ -279,8 +387,8 @@
                         <!-- Risk Forecasting Card -->
                         <div class="card glass">
                             <div class="card-header">
-                                <h2 data-translate="weather_risk_hdr"><i class="fa-solid fa-cloud-bolt"></i> Weather-based Risk Forecasting</h2>
-                                <span class="badge badge-danger" id="riskLevelBadge">Microclimate Risk</span>
+                                <h2 data-translate="weather_risk_hdr"><i class="fa-solid fa-cloud-bolt"></i> Weather Alert & Disease Risk Guide</h2>
+                                <span class="badge badge-danger" id="riskLevelBadge">Weather Alert</span>
                             </div>
                             <div class="card-content">
                                 <div class="risk-summary">
@@ -291,7 +399,7 @@
                                         <div class="risk-value" id="riskValueText">High Risk</div>
                                     </div>
                                     <div class="risk-info">
-                                        <p class="forecast-text"><strong data-translate="forecast_lbl">Forecast:</strong> <span id="weatherForecastDesc">Cloudy with light showers expected. Leaf moisture remains persistent.</span></p>
+                                        <p class="forecast-text"><strong data-translate="forecast_lbl">Weather Alert:</strong> <span id="weatherForecastDesc">Cloudy with light showers expected. Leaf moisture remains persistent.</span></p>
                                     </div>
                                 </div>
                                 <div class="risk-list" id="riskList">
@@ -395,10 +503,90 @@
                         </div>
                     </div>
 
-                    <!-- Expert Validation Queue -->
-                    <div class="card glass" style="margin-top: 1.5rem;">
+                </section>
+
+                <!-- View 4: Authentication (Farmer Login / Register) -->
+                <section id="view-auth" class="view-section">
+                    <div class="auth-container">
+                        <div class="auth-card">
+                            <div class="auth-header">
+                                <i class="fa-solid fa-user-gear auth-logo"></i>
+                                <h2 class="auth-title" id="authFormTitle" data-translate="auth_login_title">Farmer Login</h2>
+                                <p class="auth-subtitle" id="authFormSubtitle" data-translate="auth_login_desc">Enter credentials to connect with village database.</p>
+                            </div>
+                            
+                            <form id="authForm" onsubmit="return false;">
+                                <div class="form-group" id="authNameGroup" style="display: none;">
+                                    <label for="authName"><i class="fa-solid fa-user"></i> Full Name</label>
+                                    <input type="text" id="authName" placeholder="e.g. Ram Singh">
+                                </div>
+                                <div class="form-group">
+                                    <label for="authEmail"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                                    <input type="email" id="authEmail" placeholder="e.g. ram@farmer.com">
+                                </div>
+                                <div class="form-group" id="authLocationRow" style="display: none;">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="authVillage"><i class="fa-solid fa-house-user"></i> Village</label>
+                                            <input type="text" id="authVillage" placeholder="e.g. Kila Zafargarh">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="authDistrict"><i class="fa-solid fa-map-pin"></i> District</label>
+                                            <input type="text" id="authDistrict" placeholder="e.g. Jind">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="authPassword"><i class="fa-solid fa-lock"></i> Password</label>
+                                    <input type="password" id="authPassword" placeholder="••••••••">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-accent btn-large" id="authSubmitBtn" style="width: 100%; margin-top: 1rem;">
+                                    <i class="fa-solid fa-right-to-bracket"></i> <span data-translate="auth_login_btn">Login</span>
+                                </button>
+                            </form>
+                            
+                            <div class="auth-toggle">
+                                <span id="authToggleText">New Farmer?</span> 
+                                <a href="#" id="authToggleLink">Register here</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View 5: Extension Officer Admin Login -->
+                <section id="view-admin-auth" class="view-section">
+                    <div class="auth-container">
+                        <div class="auth-card">
+                            <div class="auth-header">
+                                <i class="fa-solid fa-shield-halved auth-logo" style="color: var(--accent);"></i>
+                                <h2 class="auth-title">Officer Login</h2>
+                                <p class="auth-subtitle">Sign in to validate farmer records and check statistics.</p>
+                            </div>
+                            
+                            <form id="adminLoginForm" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label for="adminEmail"><i class="fa-solid fa-envelope"></i> Officer Email</label>
+                                    <input type="email" id="adminEmail" required placeholder="admin@agroshield.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminPassword"><i class="fa-solid fa-lock"></i> Password</label>
+                                    <input type="password" id="adminPassword" required placeholder="admin123">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-accent btn-large" style="width: 100%; margin-top: 1rem;">
+                                    <i class="fa-solid fa-right-to-bracket"></i> Login as Admin
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View 6: Validation Queue (Expert Verification) -->
+                <section id="view-admin-queue" class="view-section">
+                    <div class="card glass">
                         <div class="card-header">
-                            <h2 data-translate="expert_queue_hdr"><i class="fa-solid fa-shield-halved"></i> Expert Validation Queue</h2>
+                            <h2 data-translate="expert_queue_hdr"><i class="fa-solid fa-list-check"></i> Validation Queue</h2>
                             <span class="badge badge-warning" id="queueCountBadge">0 cases pending</span>
                         </div>
                         <div class="card-content">

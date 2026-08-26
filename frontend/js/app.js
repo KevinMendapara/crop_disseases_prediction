@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Current application state
     const state = {
         lang: "en",
-        currentView: "farmer",
+        currentView: "home",
+        role: "farmer",
         uploadedFile: null,
         activeReportId: null,
         map: null,
@@ -26,6 +27,32 @@ document.addEventListener("DOMContentLoaded", () => {
     // Dictionary for Multilingual advisories & UI
     const dictionary = {
         en: {
+            nav_home_landing: "Home",
+            nav_settings: "Database Settings",
+            nav_login: "Farmer Login",
+            nav_logout: "Log Out",
+            welcome_title: "Welcome to AgroShield Portal",
+            welcome_desc: "Your digital crop doctor. Get instant leaf diagnostics and regional disease risk metrics in your language.",
+            card_diag_title: "Leaf Diagnostics",
+            card_diag_desc: "Take a photo of your diseased leaf and get a custom organic and chemical treatment recommendation instantly.",
+            card_map_title: "Disease Map",
+            card_map_desc: "Inspect regional disease outbreaks, hot zones, and surveillance logs in nearby villages.",
+            card_dash_title: "Official Analytics",
+            card_dash_desc: "View aggregated village crop reports, microclimate metrics, and specialist queues.",
+            guide_header: "How to Use AgroShield",
+            step1_title: "Snap Leaf Photo",
+            step1_desc: "Take a clear picture of the infected plant leaf in daylight.",
+            step2_title: "Upload Leaf",
+            step2_desc: "Upload the photo to the diagnostics portal and click 'Find Disease'.",
+            step3_title: "Get Advisory",
+            step3_desc: "See the diagnosis results, symptoms causes, and mixing instructions.",
+            step4_title: "Listen to Audio",
+            step4_desc: "Click the audio button to hear the treatment recommendations read aloud.",
+            auth_login_title: "Farmer Login",
+            auth_login_desc: "Enter credentials to connect with village database.",
+            auth_login_btn: "Login",
+            
+            nav_home: "Farmer Portal",
             nav_home: "Farmer Portal",
             nav_map: "Disease Map",
             nav_dashboard: "Official Analytics",
@@ -77,6 +104,31 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "Listen to Advisory (Voice)"
         },
         hi: {
+            nav_home_landing: "मुख्य पृष्ठ",
+            nav_settings: "डेटाबेस सेटिंग्स",
+            nav_login: "किसान लॉगिन",
+            nav_logout: "लॉग आउट",
+            welcome_title: "एग्रोशील्ड पोर्टल पर आपका स्वागत है",
+            welcome_desc: "आपका डिजिटल फसल डॉक्टर। अपनी भाषा में तुरंत पत्ती निदान और क्षेत्रीय बीमारी के खतरे के आंकड़े प्राप्त करें।",
+            card_diag_title: "पत्ती रोग जांच",
+            card_diag_desc: "अपनी बीमार पत्ती का फोटो लें और तुरंत जैविक व रासायनिक उपचार योजना प्राप्त करें।",
+            card_map_title: "बीमारी का नक्शा",
+            card_map_desc: "आस-पास के गांवों में बीमारी के प्रकोप, हॉटस्पॉट और निगरानी रिकॉर्ड की जांच करें।",
+            card_dash_title: "गांव के आंकड़े",
+            card_dash_desc: "समग्र फसल रिपोर्ट, मौसम के आंकड़े और विशेषज्ञों की सत्यापन सूची देखें।",
+            guide_header: "एग्रोशील्ड का उपयोग कैसे करें",
+            step1_title: "पत्ती का फोटो लें",
+            step1_desc: "दिन के उजाले में संक्रमित पौधे की पत्ती की एक साफ तस्वीर लें।",
+            step2_title: "अपलोड करें",
+            step2_desc: "तस्वीर को डायग्नोस्टिक्स पोर्टल पर अपलोड करें और 'बीमारी का पता लगाएं' पर क्लिक करें।",
+            step3_title: "सलाह प्राप्त करें",
+            step3_desc: "निदान परिणाम, लक्षणों के कारण और दवा मिलाने के निर्देश देखें।",
+            step4_title: "ऑडियो सुनें",
+            step4_desc: "उपचार की सिफारिशों को जोर से सुनने के लिए ऑडियो बटन पर क्लिक करें।",
+            auth_login_title: "किसान लॉगिन",
+            auth_login_desc: "गांव के डेटाबेस से जुड़ने के लिए लॉगिन विवरण दर्ज करें।",
+            auth_login_btn: "लॉगिन",
+            
             nav_home: "किसान पोर्टल",
             nav_map: "बीमारी का नक्शा",
             nav_dashboard: "गांव के आंकड़े",
@@ -128,6 +180,31 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "सलाह सुनें (आवाज)"
         },
         pa: {
+            nav_home_landing: "ਮੁੱਢਲਾ ਪੰਨਾ",
+            nav_settings: "ਡਾਟਾਬੇਸ ਸੈਟਿੰਗਜ਼",
+            nav_login: "ਕਿਸਾਨ ਲੌਗਇਨ",
+            nav_logout: "ਲੌਗ ਆਉਟ",
+            welcome_title: "ਐਗਰੋਸ਼ੀਲਡ ਪੋਰਟਲ 'ਤੇ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ",
+            welcome_desc: "ਤੁਹਾਡਾ ਡਿਜੀਟਲ ਫਸਲ ਡਾਕਟਰ। ਆਪਣੀ ਭਾਸ਼ਾ ਵਿੱਚ ਪੱਤੇ ਦੀ ਜਾਂਚ ਅਤੇ ਬੀਮਾਰੀ ਦੇ ਖਤਰੇ ਦੇ ਅੰਕੜੇ ਦੇਖੋ।",
+            card_diag_title: "ਪੱਤੇ ਦੀ ਬੀਮਾਰੀ ਦੀ ਜਾਂਚ",
+            card_diag_desc: "ਆਪਣੇ ਬੀਮਾਰ ਪੱਤੇ ਦੀ ਫੋਟੋ ਲਓ ਅਤੇ ਤੁਰੰਤ ਦੇਸੀ ਅਤੇ ਰਸਾਇਣਕ ਇਲਾਜ ਦੇਖੋ।",
+            card_map_title: "ਬੀਮਾਰੀ ਦਾ ਨਕਸ਼ਾ",
+            card_map_desc: "ਨੇੜਲੇ ਪਿੰਡਾਂ ਵਿੱਚ ਫੈਲੀਆਂ ਬੀਮਾਰੀਆਂ, ਖਤਰਨਾਕ ਇਲਾਕੇ ਅਤੇ ਸਰਵੇਖਣ ਰਿਪੋਰਟਾਂ ਦੇਖੋ।",
+            card_dash_title: "ਪਿੰਡ ਦੇ ਅੰਕੜੇ",
+            card_dash_desc: "ਫਸਲਾਂ ਦੀਆਂ ਸਾਂਝੀਆਂ ਰਿਪੋਰਟਾਂ, ਮੌਸਮ ਦੇ ਅੰਕੜੇ ਅਤੇ ਮਾਹਰਾਂ ਦੀ ਜਾਂਚ ਸੂਚੀ ਦੇਖੋ।",
+            guide_header: "ਐਗਰੋਸ਼ੀਲਡ ਦੀ ਵਰਤੋਂ ਕਿਵੇਂ ਕਰੀਏ",
+            step1_title: "ਪੱਤੇ ਦੀ ਫੋਟੋ ਲਓ",
+            step1_desc: "ਦਿਨ ਦੇ ਚਾਨਣ ਵਿੱਚ ਬੀਮਾਰ ਪੱਤੇ ਦੀ ਸਾਫ਼ ਫੋਟੋ ਖਿੱਚੋ।",
+            step2_title: "ਅਪਲੋਡ ਕਰੋ",
+            step2_desc: "ਫੋਟੋ ਨੂੰ ਪੋਰਟਲ 'ਤੇ ਅਪਲੋਡ ਕਰੋ ਅਤੇ 'ਬੀਮਾਰੀ ਦਾ ਪਤਾ ਲਗਾਓ' 'ਤੇ ਕਲਿੱक ਕਰੋ।",
+            step3_title: "ਇਲਾਜ ਦੇਖੋ",
+            step3_desc: "ਜਾਂਚ ਦੇ ਨਤੀਜੇ, ਲੱਛਣਾਂ ਦੇ ਕਾਰਨ ਅਤੇ ਦਵਾਈ ਦੀ ਸਹੀ ਮਾਤਰਾ ਦੇਖੋ।",
+            step4_title: "ਆਵਾਜ਼ ਸੁਣੋ",
+            step4_desc: "ਇਲਾਜ ਦੇ ਤਰੀਕੇ ਸੁਣਨ ਲਈ ਆਡੀਓ ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+            auth_login_title: "ਕਿਸਾਨ ਲੌਗਇਨ",
+            auth_login_desc: "ਪਿੰਡ ਦੇ ਡੇਟਾਬੇਸ ਨਾਲ ਜੁੜਨ ਲਈ ਲੌਗਇਨ ਕਰੋ।",
+            auth_login_btn: "ਲੌਗਇਨ",
+            
             nav_home: "ਕਿਸਾਨ ਪੋਰਟਲ",
             nav_map: "ਬੀਮਾਰੀ ਦਾ ਨਕਸ਼ਾ",
             nav_dashboard: "ਪਿੰਡ ਦੇ ਅੰਕੜੇ",
@@ -179,6 +256,31 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "ਇਲਾਜ ਸੁਣੋ (ਆਵਾਜ਼)"
         },
         ta: {
+            nav_home_landing: "முகப்பு",
+            nav_settings: "தரவுத்தள அமைப்புகள்",
+            nav_login: "விவசாயி உள்நுழைவு",
+            nav_logout: "வெளியேறு",
+            welcome_title: "அக்ரோஷீல்ட் போர்ட்டலுக்கு உங்களை வரவேற்கிறோம்",
+            welcome_desc: "உங்கள் டிஜிட்டல் பயிர் மருத்துவர். உங்கள் மொழியிலேயே உடனடி இலை கண்டறிதல் மற்றும் நோய் அபாய எச்சரிக்கைகளைப் பெறுங்கள்.",
+            card_diag_title: "இலை நோய் கண்டறிதல்",
+            card_diag_desc: "பாதிக்கப்பட்ட இலையின் புகைப்படத்தை எடுத்து உடனடியாக இயற்கை மற்றும் ரசாயன சிகிச்சை முறைகளைத் தெரிந்துகொள்ளுங்கள்.",
+            card_map_title: "நோய் வரைபடம்",
+            card_map_desc: "அருகிலுள்ள கிராமங்களில் நோய் பரவல் மற்றும் பூச்சிகளின் தாக்குதல் குறித்த விபரங்களை அறியுங்கள்.",
+            card_dash_title: "கிராம புள்ளிவிவரங்கள்",
+            card_dash_desc: "ஒட்டுமொ体 பயிர் அறிக்கைகள், வானிலை காரணிகள் மற்றும் வல்லுநர்களின் சரிபார்ப்பு விபரங்களைக் காணுங்கள்.",
+            guide_header: "அக்ரோஷீல்ட் எவ்வாறு பயன்படுத்துவது",
+            step1_title: "இலையை படம் பிடி",
+            step1_desc: "பகலில் பாதிக்கப்பட்ட தாவர இலையின் தெளிவான புகைப்படத்தை எடுக்கவும்.",
+            step2_title: "பதிவேற்று",
+            step2_desc: "போர்ட்டலில் புகைப்படத்தைப் பதிவேற்றி 'நோயைக் கண்டுபிடி' என்பதை அழுத்தவும்.",
+            step3_title: "பரிந்துரையைப் பெறு",
+            step3_desc: "நோய் கண்டறிதல் முடிவுகள், அறிகுறிகள் மற்றும் மருந்து கலக்கும் விபரங்களைக் காண்.",
+            step4_title: "ஆடியோவைக் கேள்",
+            step4_desc: "பரிந்துரைக்கப்பட்ட சிகிச்சைகளைக் கேட்க ஆடியோ பொத்தானை அழுத்தவும்.",
+            auth_login_title: "விவசாயி உள்நுழைவு",
+            auth_login_desc: "கிராம தரவுத்தளத்துடன் இணைய விபரங்களை உள்ளிடவும்.",
+            auth_login_btn: "உள்நுழை",
+            
             nav_home: "விவசாயி போர்டல்",
             nav_map: "நோய் வரைபடம்",
             nav_dashboard: "கிராம புள்ளிவிவரங்கள்",
@@ -230,6 +332,31 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "அறிவுரையைக் கேளுங்கள் (ஆடியோ)"
         },
         te: {
+            nav_home_landing: "హోమ్",
+            nav_settings: "డేటాబేస్ సెట్టింగులు",
+            nav_login: "రైతు లాగిన్",
+            nav_logout: "లాగ్ అవుట్",
+            welcome_title: "అగ్రోషీల్డ్ పోర్టల్‌కు స్వాగతం",
+            welcome_desc: "మీ డిజిటల్ పంట డాక్టర్. మీ స్వంత భాషలోనే తెగుళ్ల గుర్తింపు మరియు వ్యాధి ప్రమాద నివేదికలను పొందండి.",
+            card_diag_title: "ఆకు తెగుళ్ల గుర్తింపు",
+            card_diag_desc: "తెగులు సోకిన ఆకు ఫోటోను తీసి తక్షణమే సహజ మరియు రసాయన చికిత్స సలహాలను పొందండి.",
+            card_map_title: "పంట తెగుళ్ల మ్యాప్",
+            card_map_desc: "సమీప గ్రామాలలో తెగుళ్ల ఉధృతి, హాట్‌స్పాట్‌లు మరియు పంట రక్షణ రికార్డులను పరిశీలించండి.",
+            card_dash_title: "గ్రామ గణాంకాలు",
+            card_dash_desc: "మొత్తం పంట నివేదికలు, వాతావరణ హెచ్చరికలు మరియు నిపుణుల పరిశీలన జాబితాలను చూడండి.",
+            guide_header: "అగ్రోషీల్డ్ ఎలా ఉపయోగించాలి",
+            step1_title: "ఆకు ఫోటో తీయండి",
+            step1_desc: "పగటి వెలుతురులో తెగులు సోకిన ఆకు యొక్క స్పష్టమైన ఫోటోను తీయండి.",
+            step2_title: "అప్‌లోడ్ చేయండి",
+            step2_desc: "ఫోటోను పోర్టల్‌లో అప్‌లోడ్ చేసి 'వ్యాధిని కనుగొనండి' క్లిక్ చేయండి.",
+            step3_title: "సలహా పొందండి",
+            step3_desc: "వ్యాధి వివరాలు, లక్షణాలు మరియు మందుల మోతాదు వివరాలు చూడండి.",
+            step4_title: "ఆడియో వినండి",
+            step4_desc: "చికిత్స సలహాలను వినడానికి ఆడియో బటన్‌ను క్లిక్ చేయండి.",
+            auth_login_title: "రైతు లాగిన్",
+            auth_login_desc: "గ్రామ డేటాబేస్కు కనెక్ట్ కావడానికి వివరాలను నమోదు చేయండి.",
+            auth_login_btn: "లాగిన్",
+            
             nav_home: "రైతు పోర్టల్",
             nav_map: "పంట తెగుళ్ల మ్యాప్",
             nav_dashboard: "గ్రామ గణాంకాలు",
@@ -281,6 +408,31 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "సలహా వినండి (ఆడియో)"
         },
         mr: {
+            nav_home_landing: "मुख्य पान",
+            nav_settings: "डेटाबेस सेटिंग्ज",
+            nav_login: "शेतकरी लॉगिन",
+            nav_logout: "लॉग आउट",
+            welcome_title: "अँग्रोशील्ड पोर्टलवर आपले स्वागत आहे",
+            welcome_desc: "तुमचा डिजिटल पीक डॉक्टर. आपल्या भाषेत लगेच पानावरील रोगांची तपासणी आणि हवामान इशारे मिळवा.",
+            card_diag_title: "पानावरील रोगांची तपासणी",
+            card_diag_desc: "तुमच्या आजारी पानाचा फोटो घ्या आणि लगेच नैसर्गिक व रासायनिक उपाय मिळवा.",
+            card_map_title: "रोगांचा नकाशा",
+            card_map_desc: "जवळपासच्या गावांमध्ये पसरलेले रोग, धोके आणि पिकांच्या नोंदी तपासा.",
+            card_dash_title: "गावाचे आकडेवारी",
+            card_dash_desc: "एकत्रित पिकांचे अहवाल, हवामान इशारे आणि तज्ञांची मंजुरी सूची तपासा.",
+            guide_header: "अँग्रोशील्ड कसे वापरावे",
+            step1_title: "पानाचा फोटो घ्या",
+            step1_desc: "दिवसाच्या उजेडात आजारी पानावरील स्पष्ट फोटो काढा.",
+            step2_title: "अपलोड करा",
+            step2_desc: "फोटो पोर्टलवर अपलोड करा आणि 'रोग शोधा' बटण दाबा.",
+            step3_title: "उपाय मिळवा",
+            step3_desc: "तपासणी अहवाल, लक्षणे आणि औषधाचे प्रमाण तपासा.",
+            step4_title: "ऑडिओ ऐका",
+            step4_desc: "उपाय ऐकण्यासाठी ऑडिओ बटणावर क्लिक करा.",
+            auth_login_title: "शेतकरी लॉगिन",
+            auth_login_desc: "गावाच्या डेटाबेसशी जोडण्यासाठी लॉग इन तपशील भरा.",
+            auth_login_btn: "लॉगिन",
+            
             nav_home: "शेतकरी पोर्टल",
             nav_map: "रोगांचा नकाशा",
             nav_dashboard: "गावाचे आकडेवारी",
@@ -332,6 +484,114 @@ document.addEventListener("DOMContentLoaded", () => {
             speak_advisory: "उपाय ऐका (ऑडिओ)"
         }
     };
+
+    // --- Supabase Client & Connection Setup ---
+    let supabase = null;
+
+    function initSupabase() {
+        const url = localStorage.getItem("supabase_url") || "";
+        const key = localStorage.getItem("supabase_key") || "";
+        if (url && key) {
+            try {
+                // Initialize supabase using client library
+                supabase = window.supabase.createClient(url, key);
+                console.log("Supabase Client initialized successfully.");
+                updateDbStatusUI(true);
+            } catch (e) {
+                console.error("Failed to initialize Supabase:", e);
+                updateDbStatusUI(false);
+            }
+        } else {
+            supabase = null;
+            updateDbStatusUI(false);
+        }
+    }
+
+    function updateDbStatusUI(connected) {
+        const badge = document.getElementById("dbStatusBadge");
+        const text = document.getElementById("dbStatusText");
+        if (!badge || !text) return;
+        
+        if (connected) {
+            badge.className = "connection-status status-connected";
+            badge.innerHTML = '<i class="fa-solid fa-cloud-bolt"></i> <span>Supabase Connected (Cloud Sync Active)</span>';
+        } else {
+            badge.className = "connection-status status-disconnected";
+            badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Offline Mode (Local Storage Only)</span>';
+        }
+    }
+
+    // --- User Session & Auth Controllers ---
+    function updateRoleUI() {
+        const adminLinks = document.querySelectorAll(".admin-only");
+        const adminLoginBtn = document.getElementById("adminLoginNavBtn");
+        const adminLogoutBtn = document.getElementById("adminLogoutBtn");
+        
+        if (state.role === "admin") {
+            adminLinks.forEach(lnk => lnk.style.display = "flex");
+            if (adminLoginBtn) adminLoginBtn.style.display = "none";
+            if (adminLogoutBtn) adminLogoutBtn.style.display = "flex";
+            
+            // Hide farmer profiles in admin mode to prevent clutter
+            document.getElementById("loginNavBtn").style.display = "none";
+            document.getElementById("userProfileBadge").style.display = "none";
+            document.getElementById("logoutBtn").style.display = "none";
+        } else {
+            adminLinks.forEach(lnk => lnk.style.display = "none");
+            if (adminLoginBtn) adminLoginBtn.style.display = "flex";
+            if (adminLogoutBtn) adminLogoutBtn.style.display = "none";
+            
+            if (state.user) {
+                document.getElementById("userProfileBadge").style.display = "flex";
+                document.getElementById("loginNavBtn").style.display = "none";
+                document.getElementById("logoutBtn").style.display = "flex";
+            } else {
+                document.getElementById("userProfileBadge").style.display = "none";
+                document.getElementById("loginNavBtn").style.display = "flex";
+                document.getElementById("logoutBtn").style.display = "none";
+            }
+        }
+    }
+
+    function setSessionUser(user) {
+        state.user = user;
+        localStorage.setItem("session_user", JSON.stringify(user));
+        
+        const badge = document.getElementById("userProfileBadge");
+        const loginBtn = document.getElementById("loginNavBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const avatar = document.getElementById("userAvatar");
+        const nameText = document.getElementById("userName");
+        const villageText = document.getElementById("userVillage");
+        
+        if (badge && loginBtn && logoutBtn && avatar && nameText && villageText) {
+            badge.style.display = "flex";
+            loginBtn.style.display = "none";
+            logoutBtn.style.display = "flex";
+            
+            avatar.innerText = user.full_name ? user.full_name.charAt(0).toUpperCase() : "F";
+            nameText.innerText = user.full_name || "Farmer Friend";
+            villageText.innerText = user.village ? (user.village + (user.district ? ", " + user.district : "")) : "Local Farm";
+        }
+        
+        const homeNav = document.querySelector('[data-view=home]');
+        if (homeNav) homeNav.click();
+    }
+
+    function checkSession() {
+        const storedRole = localStorage.getItem("user_role") || "farmer";
+        state.role = storedRole;
+        updateRoleUI();
+        
+        const storedUser = localStorage.getItem("session_user");
+        if (storedUser && state.role !== "admin") {
+            try {
+                setSessionUser(JSON.parse(storedUser));
+            } catch (e) {
+                console.error("Session parse error:", e);
+            }
+        }
+    }
 
     // --- DOM Elements ---
     const navItems = document.querySelectorAll(".nav-item");
@@ -419,15 +679,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateHeaderTitles() {
         const lang = state.lang;
-        if (state.currentView === "farmer") {
-            viewTitle.innerText = dictionary[lang]["farmer_title"];
-            viewSubtitle.innerText = dictionary[lang]["farmer_subtitle"];
+        if (!dictionary[lang]) return;
+        
+        if (state.currentView === "home") {
+            viewTitle.innerText = dictionary[lang]["welcome_title"] || "Home Portal";
+            viewSubtitle.innerText = dictionary[lang]["welcome_desc"] || "Welcome back.";
+        } else if (state.currentView === "scan") {
+            viewTitle.innerText = "Check Crop Health";
+            viewSubtitle.innerText = "Scan or upload a picture of a diseased leaf.";
+        } else if (state.currentView === "treatment") {
+            viewTitle.innerText = "Treatment Guide";
+            viewSubtitle.innerText = "Simplified remedial recommendations for your crop.";
+        } else if (state.currentView === "alerts") {
+            viewTitle.innerText = "Weather & Alerts";
+            viewSubtitle.innerText = "Microclimate risk levels and trap metrics.";
         } else if (state.currentView === "map") {
-            viewTitle.innerText = dictionary[lang]["map_title"];
-            viewSubtitle.innerText = dictionary[lang]["map_subtitle"];
+            viewTitle.innerText = dictionary[lang]["map_title"] || "Disease Map";
+            viewSubtitle.innerText = dictionary[lang]["map_subtitle"] || "";
         } else if (state.currentView === "official") {
-            viewTitle.innerText = dictionary[lang]["official_title"];
-            viewSubtitle.innerText = dictionary[lang]["official_subtitle"];
+            viewTitle.innerText = "Analytics Dashboard";
+            viewSubtitle.innerText = "Officer Outbreak surveillance statistics.";
+        } else if (state.currentView === "admin-queue") {
+            viewTitle.innerText = "Validation Queue";
+            viewSubtitle.innerText = "Check pending crop reports and send advice.";
+        } else if (state.currentView === "auth") {
+            viewTitle.innerText = "Farmer Sign In";
+            viewSubtitle.innerText = "Sign in to save records.";
+        } else if (state.currentView === "admin-auth") {
+            viewTitle.innerText = "Officer Admin Login";
+            viewSubtitle.innerText = "Login to the agricultural monitoring center.";
         }
     }
 
@@ -459,6 +739,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Invalidate size to load leaflet correctly inside container
                 setTimeout(() => {
                     state.map.invalidateSize();
+                }, 100);
+            }
+            if (clickedView === "alerts") {
+                // Re-run weather risk to draw the chart on the visible canvas
+                setTimeout(() => {
+                    loadWeatherRisk();
                 }, 100);
             }
         });
@@ -714,19 +1000,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    function displayAdvisoryData(data) {
+    async function displayAdvisoryData(data) {
         advisoryLoading.style.display = "none";
         advisoryContent.style.display = "block";
         diagnoseBtn.disabled = false;
         
-        // Populate results
         resCrop.innerText = data.crop;
         resDisease.innerText = data.disease_label;
         resScientific.innerText = data.advisory.scientific_name;
         resConfidence.innerText = `${data.confidence.toFixed(1)}%`;
         state.activeReportId = data.report_id;
         
-        // Severity badge
         severityBadge.className = "badge";
         if (data.severity === "High") {
             severityBadge.classList.add("badge-danger");
@@ -739,7 +1023,6 @@ document.addEventListener("DOMContentLoaded", () => {
             severityBadge.innerText = "Healthy / Low";
         }
         
-        // Populate details
         advDesc.innerText = data.advisory.description;
         advSymptoms.innerText = data.advisory.symptoms;
         advPrevention.innerText = data.advisory.prevention;
@@ -748,9 +1031,51 @@ document.addEventListener("DOMContentLoaded", () => {
         advDosage.innerText = data.advisory.dosage;
         advMonitoring.innerText = data.advisory.monitoring_interval;
         
-        // Reload logs and indicators
+        if (supabase) {
+            try {
+                let userId = null;
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (user) userId = user.id;
+                } catch(e) {}
+                
+                const reportToInsert = {
+                    user_id: userId,
+                    crop: data.crop,
+                    disease: data.prediction,
+                    severity: data.severity,
+                    status: "Unverified",
+                    latitude: parseFloat(latInput.value),
+                    longitude: parseFloat(lngInput.value),
+                    image_url: data.image_url || "",
+                    confidence: data.confidence,
+                    farmer_notes: farmerNotes.value.trim()
+                };
+                
+                const { data: inserted, error } = await supabase
+                    .from("reports")
+                    .insert(reportToInsert)
+                    .select()
+                    .single();
+                
+                if (!error && inserted) {
+                    state.activeReportId = inserted.id;
+                    console.log("Report uploaded and saved to Supabase:", inserted.id);
+                } else if (error) {
+                    throw error;
+                }
+            } catch (e) {
+                console.error("Failed to sync report to Supabase, running locally:", e);
+            }
+        }
+        
         loadReports();
         loadDashboardStats();
+        
+        const treatmentNav = document.querySelector('[data-view=treatment]');
+        if (treatmentNav) {
+            treatmentNav.click();
+        }
     }
 
     // --- Flag for Expert Review ---
@@ -1360,7 +1685,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function submitValidation(reportId, status, notes) {
+    async function submitValidation(reportId, status, notes) {
+        if (supabase) {
+            try {
+                const { error } = await supabase
+                    .from("reports")
+                    .update({
+                        status: status,
+                        expert_notes: notes || "Validated by Extension Officer"
+                    })
+                    .eq("id", reportId);
+                
+                if (error) throw error;
+                
+                showToast("Validation Logged", `Case #${reportId.substring(0,8)} marked as ${status}.`, "fa-shield-halved");
+                loadReports();
+                loadDashboardStats();
+                return;
+            } catch (e) {
+                console.error("Supabase validation update failed, falling back:", e);
+            }
+        }
+
         fetch(`/api/reports/${reportId}/validate`, {
             method: "POST",
             headers: {
@@ -1416,7 +1762,39 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // --- Loading Backend Data ---
-    function loadReports() {
+    async function loadReports() {
+        if (supabase) {
+            try {
+                const { data, error } = await supabase
+                    .from("reports")
+                    .select("*")
+                    .order("timestamp", { ascending: false });
+                
+                if (error) throw error;
+                
+                state.reports = data.map(r => ({
+                    id: r.id,
+                    crop: r.crop,
+                    disease: r.disease,
+                    severity: r.severity,
+                    status: r.status,
+                    latitude: r.latitude,
+                    longitude: r.longitude,
+                    timestamp: r.timestamp,
+                    farmer_notes: r.farmer_notes,
+                    expert_notes: r.expert_notes,
+                    confidence: r.confidence || 90.0,
+                    image_url: r.image_url
+                }));
+                
+                renderMapMarkers();
+                renderExpertQueue();
+                return;
+            } catch (e) {
+                console.error("Supabase loadReports error, falling back:", e);
+            }
+        }
+
         fetchWithTimeout("/api/reports")
         .then(res => {
             if (!res.ok) throw new Error();
@@ -1430,7 +1808,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => {
             console.log("Using local mock reports database.");
             if (!state.reports || state.reports.length === 0) {
-                // Prepopulate state.reports with a beautiful set of 8 mock local cases in Punjab
                 state.reports = [
                     {
                         id: "mock-1",
@@ -1485,8 +1862,276 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // --- Extension Officer Admin Login Form ---
+    const adminLoginForm = document.getElementById("adminLoginForm");
+    const adminEmailInput = document.getElementById("adminEmail");
+    const adminPasswordInput = document.getElementById("adminPassword");
+    
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = adminEmailInput.value.trim();
+            const password = adminPasswordInput.value.trim();
+            
+            if (email === "admin@agroshield.com" && password === "admin123") {
+                state.role = "admin";
+                localStorage.setItem("user_role", "admin");
+                updateRoleUI();
+                showToast("Officer Signed In", "Logged in as Extension Officer.", "fa-shield-halved");
+                
+                const officialNav = document.querySelector('[data-view=official]');
+                if (officialNav) officialNav.click();
+            } else {
+                showToast("Access Denied", "Invalid Admin credentials.", "fa-circle-xmark");
+            }
+        });
+    }
+
+    const adminLogoutBtn = document.getElementById("adminLogoutBtn");
+    if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            state.role = "farmer";
+            localStorage.setItem("user_role", "farmer");
+            updateRoleUI();
+            showToast("Admin Signed Out", "Returned to normal Farmer view.", "fa-circle-info");
+            
+            const homeNav = document.querySelector('[data-view=home]');
+            if (homeNav) homeNav.click();
+        });
+    }
+
+    // --- Database Settings Event Handlers ---
+    const dbSettingsForm = document.getElementById("dbSettingsForm");
+    const supabaseUrlInput = document.getElementById("supabaseUrl");
+    const supabaseKeyInput = document.getElementById("supabaseKey");
+    const saveDbBtn = document.getElementById("saveDbBtn");
+    const clearDbBtn = document.getElementById("clearDbBtn");
+
+    if (supabaseUrlInput && supabaseKeyInput) {
+        supabaseUrlInput.value = localStorage.getItem("supabase_url") || "";
+        supabaseKeyInput.value = localStorage.getItem("supabase_key") || "";
+    }
+
+    if (saveDbBtn) {
+        saveDbBtn.addEventListener("click", () => {
+            const url = supabaseUrlInput.value.trim();
+            const key = supabaseKeyInput.value.trim();
+            if (!url || !key) {
+                showToast("Missing Fields", "Please enter both URL and Anon Key", "fa-triangle-exclamation");
+                return;
+            }
+            localStorage.setItem("supabase_url", url);
+            localStorage.setItem("supabase_key", key);
+            initSupabase();
+            showToast("Database Connected", "Successfully linked to Supabase cloud storage!", "fa-cloud-bolt");
+            loadReports();
+            loadDashboardStats();
+        });
+    }
+
+    if (clearDbBtn) {
+        clearDbBtn.addEventListener("click", () => {
+            localStorage.removeItem("supabase_url");
+            localStorage.removeItem("supabase_key");
+            if (supabaseUrlInput) supabaseUrlInput.value = "";
+            if (supabaseKeyInput) supabaseKeyInput.value = "";
+            initSupabase();
+            showToast("Database Disconnected", "Switched back to local offline mode.", "fa-circle-info");
+            loadReports();
+            loadDashboardStats();
+        });
+    }
+
+    // --- Farmer Auth Form Event Handlers ---
+    const authForm = document.getElementById("authForm");
+    const authToggleLink = document.getElementById("authToggleLink");
+    const authFormTitle = document.getElementById("authFormTitle");
+    const authFormSubtitle = document.getElementById("authFormSubtitle");
+    const authNameGroup = document.getElementById("authNameGroup");
+    const authLocationRow = document.getElementById("authLocationRow");
+    const authSubmitBtn = document.getElementById("authSubmitBtn");
+    const authEmail = document.getElementById("authEmail");
+    const authPassword = document.getElementById("authPassword");
+    const authName = document.getElementById("authName");
+    const authVillage = document.getElementById("authVillage");
+    const authDistrict = document.getElementById("authDistrict");
+    const authToggleText = document.getElementById("authToggleText");
+
+    let authMode = "login";
+
+    if (authToggleLink) {
+        authToggleLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (authMode === "login") {
+                authMode = "register";
+                authFormTitle.innerText = "Farmer Registration";
+                authFormSubtitle.innerText = "Register your farm profile to join the village database.";
+                authNameGroup.style.display = "flex";
+                authLocationRow.style.display = "flex";
+                authSubmitBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Register';
+                authToggleText.innerText = "Already Registered?";
+                authToggleLink.innerText = "Login here";
+            } else {
+                authMode = "login";
+                authFormTitle.innerText = "Farmer Login";
+                authFormSubtitle.innerText = "Enter credentials to connect with village database.";
+                authNameGroup.style.display = "none";
+                authLocationRow.style.display = "none";
+                authSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login';
+                authToggleText.innerText = "New Farmer?";
+                authToggleLink.innerText = "Register here";
+            }
+        });
+    }
+
+    if (authForm) {
+        authForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = authEmail.value.trim();
+            const password = authPassword.value.trim();
+            const name = authName.value.trim();
+            const village = authVillage.value.trim();
+            const district = authDistrict.value.trim();
+
+            if (authMode === "register") {
+                if (supabase) {
+                    const { data, error } = await supabase.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                full_name: name,
+                                village,
+                                district
+                            }
+                        }
+                    });
+
+                    if (error) {
+                        showToast("Registration Failed", error.message, "fa-circle-xmark");
+                        return;
+                    }
+
+                    if (data.user) {
+                        const { error: profileErr } = await supabase.from("profiles").insert({
+                            id: data.user.id,
+                            full_name: name,
+                            village,
+                            district,
+                            language: state.lang
+                        });
+                        if (profileErr) console.error("Error creating profile:", profileErr);
+                    }
+
+                    showToast("Registration Success", "Account created successfully!", "fa-circle-check");
+                    setSessionUser({ email, full_name: name, village, district });
+                } else {
+                    const localUser = { email, full_name: name, village, district };
+                    localStorage.setItem("local_user", JSON.stringify(localUser));
+                    showToast("Registration Success", "Account registered locally (Offline Mode).", "fa-circle-check");
+                    setSessionUser(localUser);
+                }
+            } else {
+                if (supabase) {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) {
+                        showToast("Login Failed", error.message, "fa-circle-xmark");
+                        return;
+                    }
+
+                    let fullName = "Farmer Friend";
+                    let userVillage = "Local Village";
+                    let userDistrict = "Local District";
+                    
+                    if (data.user) {
+                        const { data: profile, error: profileErr } = await supabase
+                            .from("profiles")
+                            .select("*")
+                            .eq("id", data.user.id)
+                            .single();
+                            
+                        if (!profileErr && profile) {
+                            fullName = profile.full_name;
+                            userVillage = profile.village;
+                            userDistrict = profile.district;
+                        }
+                    }
+
+                    showToast("Welcome Back!", `Logged in as ${fullName}`, "fa-circle-check");
+                    setSessionUser({ email, full_name: fullName, village: userVillage, district: userDistrict });
+                } else {
+                    const localUserStr = localStorage.getItem("local_user");
+                    if (localUserStr) {
+                        const localUser = JSON.parse(localUserStr);
+                        if (localUser.email === email) {
+                            showToast("Welcome Back!", `Logged in locally as ${localUser.full_name}`, "fa-circle-check");
+                            setSessionUser(localUser);
+                        } else {
+                            showToast("Login Failed", "Email does not match local registered farmer.", "fa-circle-xmark");
+                        }
+                    } else {
+                        const dummyUser = { email, full_name: email.split("@")[0], village: "Local Village", district: "Local District" };
+                        showToast("Session Started", "Logged in in Offline Mode.", "fa-circle-check");
+                        setSessionUser(dummyUser);
+                    }
+                }
+            }
+        });
+    }
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            if (supabase) {
+                await supabase.auth.signOut();
+            }
+            state.user = null;
+            localStorage.removeItem("session_user");
+            
+            document.getElementById("userProfileBadge").style.display = "none";
+            document.getElementById("loginNavBtn").style.display = "flex";
+            logoutBtn.style.display = "none";
+            
+            showToast("Logged Out", "Successfully signed out.", "fa-circle-info");
+            const homeNav = document.querySelector('[data-view=home]');
+            if (homeNav) homeNav.click();
+        });
+    }
+
+    // --- Home View Navigation Cards Redirect ---
+    const homeDiagCard = document.getElementById("homeDiagCard");
+    const homeMapCard = document.getElementById("homeMapCard");
+    const homeOfficialCard = document.getElementById("homeOfficialCard");
+
+    if (homeDiagCard) {
+        homeDiagCard.addEventListener("click", () => {
+            const nav = document.querySelector('[data-view=scan]');
+            if (nav) nav.click();
+        });
+    }
+    if (homeMapCard) {
+        homeMapCard.addEventListener("click", () => {
+            const nav = document.querySelector('[data-view=map]');
+            if (nav) nav.click();
+        });
+    }
+    if (homeOfficialCard) {
+        homeOfficialCard.addEventListener("click", () => {
+            const nav = document.querySelector('[data-view=official]');
+            if (nav) nav.click();
+        });
+    }
+
     // --- Initialization Execution ---
     function init() {
+        initSupabase();
+        checkSession();
         translateUI();
         initMap();
         loadReports();
