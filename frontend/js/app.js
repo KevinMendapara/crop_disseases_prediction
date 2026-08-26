@@ -1806,56 +1806,9 @@ document.addEventListener("DOMContentLoaded", () => {
             renderExpertQueue();
         })
         .catch(err => {
-            console.log("Using local mock reports database.");
-            if (!state.reports || state.reports.length === 0) {
-                state.reports = [
-                    {
-                        id: "mock-1",
-                        crop: "Tomato",
-                        disease: "Tomato___Late_blight",
-                        severity: "High",
-                        status: "Unverified",
-                        latitude: 30.3,
-                        longitude: 76.5,
-                        timestamp: new Date(Date.now() - 3600000 * 24).toISOString(),
-                        farmer_notes: "Leaves turning black after heavy rain.",
-                        image_url: "/api/static-images/potato_late_blight.jpg"
-                    },
-                    {
-                        id: "mock-2",
-                        crop: "Apple",
-                        disease: "Apple___Apple_scab",
-                        severity: "Medium",
-                        status: "Expert Verified",
-                        latitude: 30.15,
-                        longitude: 76.9,
-                        timestamp: new Date(Date.now() - 3600000 * 48).toISOString(),
-                        farmer_notes: "Spots observed on multiple apple leaves.",
-                        image_url: "/api/static-images/apple_scab.jpg"
-                    },
-                    {
-                        id: "mock-3",
-                        crop: "Corn (maize)",
-                        disease: "Corn_(maize)___healthy",
-                        severity: "Low",
-                        status: "Expert Verified",
-                        latitude: 30.05,
-                        longitude: 76.7,
-                        timestamp: new Date(Date.now() - 3600000 * 12).toISOString(),
-                        farmer_notes: "Crop looking very green and healthy."
-                    },
-                    {
-                        id: "mock-4",
-                        crop: "Potato",
-                        disease: "Potato___Late_blight",
-                        severity: "High",
-                        status: "Unverified",
-                        latitude: 30.4,
-                        longitude: 76.35,
-                        timestamp: new Date(Date.now() - 3600000 * 4).toISOString(),
-                        farmer_notes: "Late blight spreading on early potato variety."
-                    }
-                ];
+            console.log("Failed to fetch reports from backend.");
+            if (!state.reports) {
+                state.reports = [];
             }
             renderMapMarkers();
             renderExpertQueue();
