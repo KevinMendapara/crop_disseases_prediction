@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://wholesome-hope-production-86eb.up.railway.app/api/:path*"
+      "destination": "https://cropdiseasesprediction-production-b57e.up.railway.app/api/:path*"
     }
   ]
 }
