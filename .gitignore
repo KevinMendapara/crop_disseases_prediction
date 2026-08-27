@@ -2,8 +2,8 @@
 backend/data/uploaded_images/*
 
 # Ignore large binary models
-backend/crop_disease_model.keras
-*.keras
+# backend/crop_disease_model.keras
+# *.keras
 *.h5
 
 # Ignore training dataset directory
