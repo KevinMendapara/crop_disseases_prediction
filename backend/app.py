@@ -238,6 +238,8 @@ def debug_model():
     files = os.listdir(backend_dir)
     
     load_error = None
+    tf_version = tf.__version__
+    keras_version = tf.keras.__version__ if hasattr(tf.keras, "__version__") else "unknown"
     if model_exists:
         try:
             temp_model = tf.keras.models.load_model(model_path)
@@ -256,7 +258,9 @@ def debug_model():
         "backend_dir": backend_dir,
         "current_dir": os.getcwd(),
         "load_status": load_status,
-        "load_error": load_error
+        "load_error": load_error,
+        "tensorflow_version": tf_version,
+        "keras_version": keras_version
     })
 
 @app.route("/api/admin/login", methods=["POST"])
