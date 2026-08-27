@@ -229,18 +229,34 @@ def get_geological_conditions():
 
 @app.route("/api/debug-model", methods=["GET"])
 def debug_model():
+    import traceback
+    import tensorflow as tf
     backend_dir = os.path.dirname(os.path.abspath(__file__))
     model_path = os.path.join(backend_dir, "crop_disease_model.keras")
     model_exists = os.path.exists(model_path)
     classes_exists = os.path.exists(os.path.join(backend_dir, "class_names.json"))
     files = os.listdir(backend_dir)
+    
+    load_error = None
+    if model_exists:
+        try:
+            temp_model = tf.keras.models.load_model(model_path)
+            load_status = f"Loaded temp model successfully: {temp_model}"
+        except Exception as e:
+            load_error = str(e) + "\n" + traceback.format_exc()
+            load_status = "Failed to load model"
+    else:
+        load_status = "Model file does not exist"
+        
     return jsonify({
         "model_loaded": model_helper.model is not None,
         "model_exists": model_exists,
         "classes_exists": classes_exists,
         "files_in_backend": files,
         "backend_dir": backend_dir,
-        "current_dir": os.getcwd()
+        "current_dir": os.getcwd(),
+        "load_status": load_status,
+        "load_error": load_error
     })
 
 @app.route("/api/admin/login", methods=["POST"])
