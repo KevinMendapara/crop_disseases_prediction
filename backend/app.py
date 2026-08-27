@@ -39,8 +39,12 @@ def predict():
         return jsonify({"error": "No selected file"}), 400
         
     # Get location parameters if sent
-    latitude = request.form.get("latitude", 29.5)
-    longitude = request.form.get("longitude", 76.5)
+    try:
+        latitude = float(request.form.get("latitude", 29.5))
+        longitude = float(request.form.get("longitude", 76.5))
+    except (ValueError, TypeError):
+        latitude = 29.5
+        longitude = 76.5
     farmer_notes = request.form.get("farmer_notes", "")
     
     # Check if the uploaded image is a leaf/plant

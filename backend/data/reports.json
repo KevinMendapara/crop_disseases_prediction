@@ -236,5 +236,19 @@
         "confidence": 99.9982476234436,
         "farmer_notes": "",
         "expert_notes": "Validated by Extension Officer"
+    },
+    {
+        "id": "4ad945b1-e3a7-4c25-ab3c-b6c5324088d7",
+        "timestamp": "2026-08-27T14:39:34.463996Z",
+        "crop": "Grape",
+        "disease": "Grape___Esca_(Black_Measles)",
+        "severity": "Medium",
+        "status": "Unverified",
+        "latitude": 19.0896,
+        "longitude": 72.8358,
+        "image_url": "/api/uploaded-images/pred_512a935b.jpg",
+        "confidence": 99.9982476234436,
+        "farmer_notes": "",
+        "expert_notes": ""
     }
 ]

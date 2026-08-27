@@ -1550,7 +1550,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             // Draw marker
-            const marker = L.circleMarker([report.latitude, report.longitude], {
+            const marker = L.circleMarker([parseFloat(report.latitude), parseFloat(report.longitude)], {
                 radius: 10,
                 fillColor: color,
                 color: "#ffffff",
@@ -1587,6 +1587,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Geological Panel Handlers
     function showGeologicalConditions(lat, lng) {
+        const numLat = Number(lat);
+        const numLng = Number(lng);
+
         // Create custom pinpoint icon with crosshair and glowing pulse
         const customIcon = L.divIcon({
             className: 'pin-marker-custom',
@@ -1597,17 +1600,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Set or update marker on the map
         if (state.pinMarker) {
-            state.pinMarker.setLatLng([lat, lng]);
+            state.pinMarker.setLatLng([numLat, numLng]);
         } else {
-            state.pinMarker = L.marker([lat, lng], { icon: customIcon }).addTo(state.map);
+            state.pinMarker = L.marker([numLat, numLng], { icon: customIcon }).addTo(state.map);
         }
 
         // Show loading/open state in the floating panel
         const panel = document.getElementById("geological-panel");
         panel.classList.remove("hidden");
 
-        document.getElementById("geo-lat").innerText = lat.toFixed(4);
-        document.getElementById("geo-lng").innerText = lng.toFixed(4);
+        // Synchronize scanner input fields with this map pinpoint
+        if (latInput && lngInput) {
+            latInput.value = numLat.toFixed(6);
+            lngInput.value = numLng.toFixed(6);
+        }
+
+        document.getElementById("geo-lat").innerText = numLat.toFixed(6);
+        document.getElementById("geo-lng").innerText = numLng.toFixed(6);
 
         // Fetch from API
         fetch(`/api/geological-conditions?latitude=${lat}&longitude=${lng}`)
