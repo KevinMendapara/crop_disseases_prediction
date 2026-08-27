@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         uploadedFile: null,
         activeReportId: null,
         map: null,
+        pinMarker: null,
         markers: [],
         charts: {},
         reports: [],
@@ -526,7 +527,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getApiUrl(endpoint) {
         const config = (typeof AGROSHIELD_CONFIG !== "undefined" ? AGROSHIELD_CONFIG : null) || window.AGROSHIELD_CONFIG || {};
-        const base = config.API_BASE_URL || "";
+        const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        const base = isLocal ? (config.API_BASE_URL || "") : "";
         return base + endpoint;
     }
 
@@ -777,6 +779,10 @@ document.addEventListener("DOMContentLoaded", () => {
             
             state.currentView = clickedView;
             updateHeaderTitles();
+            
+            if (clickedView !== "map") {
+                clearGeologicalPin();
+            }
             
             if (clickedView === "map" && state.map) {
                 // Invalidate size to load leaflet correctly inside container
@@ -1481,6 +1487,11 @@ document.addEventListener("DOMContentLoaded", () => {
             subdomains: 'abcd',
             maxZoom: 20
         }).addTo(state.map);
+
+        // Bind click event to map for geological pinpointing
+        state.map.on("click", (e) => {
+            showGeologicalConditions(e.latlng.lat, e.latlng.lng);
+        });
     }
 
     function renderMapMarkers() {
@@ -1540,6 +1551,90 @@ document.addEventListener("DOMContentLoaded", () => {
 
     mapCropFilter.addEventListener("change", renderMapMarkers);
     mapStatusFilter.addEventListener("change", renderMapMarkers);
+
+    // Geological Panel Handlers
+    function showGeologicalConditions(lat, lng) {
+        // Create custom pinpoint icon with crosshair and glowing pulse
+        const customIcon = L.divIcon({
+            className: 'pin-marker-custom',
+            html: '<div class="pin-pulse"></div><i class="fa-solid fa-location-crosshairs pin-icon"></i>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // Set or update marker on the map
+        if (state.pinMarker) {
+            state.pinMarker.setLatLng([lat, lng]);
+        } else {
+            state.pinMarker = L.marker([lat, lng], { icon: customIcon }).addTo(state.map);
+        }
+
+        // Show loading/open state in the floating panel
+        const panel = document.getElementById("geological-panel");
+        panel.classList.remove("hidden");
+
+        document.getElementById("geo-lat").innerText = lat.toFixed(4);
+        document.getElementById("geo-lng").innerText = lng.toFixed(4);
+
+        // Fetch from API
+        fetch(`/api/geological-conditions?latitude=${lat}&longitude=${lng}`)
+            .then(res => {
+                if (!res.ok) throw new Error("API failed");
+                return res.json();
+            })
+            .then(data => {
+                // Populate text values
+                document.getElementById("geo-ph").innerText = data.soil_ph;
+                document.getElementById("geo-moisture").innerText = data.soil_moisture + "%";
+                document.getElementById("geo-type").innerText = data.soil_type;
+                document.getElementById("geo-organic").innerText = data.organic_matter + "%";
+                
+                document.getElementById("geo-nitrogen").innerText = data.nitrogen + " mg/kg";
+                document.getElementById("geo-phosphorus").innerText = data.phosphorus + " mg/kg";
+                document.getElementById("geo-potassium").innerText = data.potassium + " mg/kg";
+                
+                document.getElementById("geo-water-table").innerText = data.water_table_depth + "m";
+                document.getElementById("geo-elevation").innerText = data.elevation + "m";
+                document.getElementById("geo-zone").innerText = data.agro_ecological_zone;
+
+                // Populate soil composition percentages
+                document.getElementById("geo-clay").innerText = data.clay_content_percent;
+                document.getElementById("geo-silt").innerText = data.silt_content_percent;
+                document.getElementById("geo-sand").innerText = data.sand_content_percent;
+
+                // Set widths for soil composition bar parts
+                document.getElementById("geo-clay-bar").style.width = data.clay_content_percent + "%";
+                document.getElementById("geo-silt-bar").style.width = data.silt_content_percent + "%";
+                document.getElementById("geo-sand-bar").style.width = data.sand_content_percent + "%";
+
+                // Set widths for nutrient bars (scaled relative to standard maximums, e.g. 150 N, 60 P, 350 K)
+                const nPct = Math.min(100, (data.nitrogen / 150) * 100);
+                const pPct = Math.min(100, (data.phosphorus / 60) * 100);
+                const kPct = Math.min(100, (data.potassium / 350) * 100);
+
+                document.getElementById("geo-n-bar").style.width = nPct + "%";
+                document.getElementById("geo-p-bar").style.width = pPct + "%";
+                document.getElementById("geo-k-bar").style.width = kPct + "%";
+            })
+            .catch(err => {
+                console.error("Error fetching geological conditions:", err);
+            });
+    }
+
+    // Function to clear geological pin marker and panel
+    function clearGeologicalPin() {
+        if (state.pinMarker) {
+            state.map.removeLayer(state.pinMarker);
+            state.pinMarker = null;
+        }
+        document.getElementById("geological-panel").classList.add("hidden");
+    }
+
+    // Connect Close button
+    const closeGeoPanelBtn = document.getElementById("closeGeoPanelBtn");
+    if (closeGeoPanelBtn) {
+        closeGeoPanelBtn.addEventListener("click", clearGeologicalPin);
+    }
 
     // --- Official Dashboard Analytics & expert queue ---
     function loadDashboardStats() {

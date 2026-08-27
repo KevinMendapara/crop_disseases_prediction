@@ -1,0 +1,11 @@
+# Ignore python backend and machine learning files to prevent Vercel serverless build errors
+backend/
+dataset/
+requirements.txt
+Dockerfile
+train_model.py
+verify_backend.py
+.python-version
+.git
+.agents
+.gemini/

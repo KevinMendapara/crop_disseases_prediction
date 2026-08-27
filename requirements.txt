@@ -1,6 +1,7 @@
 Flask
 numpy
 pillow
-tensorflow
-gunicorn
+tensorflow-cpu
+gunicorn; sys_platform != 'win32'
 flask-cors
+

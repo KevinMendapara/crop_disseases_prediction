@@ -445,6 +445,112 @@
                                 <div><span class="legend-color legend-red"></span> High Severity Outbreak</div>
                                 <div><span class="legend-color legend-purple"></span> Pest Hotspot (Traps > 10)</div>
                             </div>
+                            <!-- Geological Conditions Floating Panel -->
+                            <div id="geological-panel" class="geo-panel glass hidden">
+                                <div class="geo-panel-header">
+                                    <h3><i class="fa-solid fa-mountain-sun"></i> Geological Analysis</h3>
+                                    <button id="closeGeoPanelBtn" class="close-btn">&times;</button>
+                                </div>
+                                <div class="geo-panel-body">
+                                    <div class="geo-coords">
+                                        <span class="geo-coord-badge">Lat: <span id="geo-lat">-</span></span>
+                                        <span class="geo-coord-badge">Lng: <span id="geo-lng">-</span></span>
+                                    </div>
+                                    
+                                    <div class="geo-section-title">Soil Texture</div>
+                                    <div class="soil-bar-container">
+                                        <div class="soil-bar-labels">
+                                            <span>Clay: <span id="geo-clay">-</span>%</span>
+                                            <span>Silt: <span id="geo-silt">-</span>%</span>
+                                            <span>Sand: <span id="geo-sand">-</span>%</span>
+                                        </div>
+                                        <div class="soil-composition-bar">
+                                            <div id="geo-clay-bar" class="soil-bar-part clay-color"></div>
+                                            <div id="geo-silt-bar" class="soil-bar-part silt-color"></div>
+                                            <div id="geo-sand-bar" class="soil-bar-part sand-color"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="geo-section-title">Soil Attributes</div>
+                                    <div class="geo-metrics-grid">
+                                        <div class="geo-metric-card">
+                                            <div class="geo-metric-icon"><i class="fa-solid fa-vial"></i></div>
+                                            <div class="geo-metric-info">
+                                                <span class="geo-metric-label">Soil pH</span>
+                                                <span class="geo-metric-value" id="geo-ph">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="geo-metric-card">
+                                            <div class="geo-metric-icon"><i class="fa-solid fa-droplet"></i></div>
+                                            <div class="geo-metric-info">
+                                                <span class="geo-metric-label">Moisture</span>
+                                                <span class="geo-metric-value" id="geo-moisture">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="geo-metric-card">
+                                            <div class="geo-metric-icon"><i class="fa-solid fa-seedling"></i></div>
+                                            <div class="geo-metric-info">
+                                                <span class="geo-metric-label">Soil Type</span>
+                                                <span class="geo-metric-value" id="geo-type">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="geo-metric-card">
+                                            <div class="geo-metric-icon"><i class="fa-solid fa-leaf"></i></div>
+                                            <div class="geo-metric-info">
+                                                <span class="geo-metric-label">Org. Matter</span>
+                                                <span class="geo-metric-value" id="geo-organic">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="geo-section-title">Nutrients (NPK)</div>
+                                    <div class="geo-nutrients-container">
+                                        <div class="nutrient-progress">
+                                            <div class="nutrient-info">
+                                                <span>Nitrogen (N)</span>
+                                                <span id="geo-nitrogen">-</span>
+                                            </div>
+                                            <div class="progress-track"><div id="geo-n-bar" class="progress-fill n-fill"></div></div>
+                                        </div>
+                                        <div class="nutrient-progress">
+                                            <div class="nutrient-info">
+                                                <span>Phosphorus (P)</span>
+                                                <span id="geo-phosphorus">-</span>
+                                            </div>
+                                            <div class="progress-track"><div id="geo-p-bar" class="progress-fill p-fill"></div></div>
+                                        </div>
+                                        <div class="nutrient-progress">
+                                            <div class="nutrient-info">
+                                                <span>Potassium (K)</span>
+                                                <span id="geo-potassium">-</span>
+                                            </div>
+                                            <div class="progress-track"><div id="geo-k-bar" class="progress-fill k-fill"></div></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="geo-section-title">Geographical Details</div>
+                                    <div class="geo-metrics-grid">
+                                        <div class="geo-metric-card">
+                                            <div class="geo-metric-icon"><i class="fa-solid fa-water-ladder"></i></div>
+                                            <div class="geo-metric-info">
+                                                <span class="geo-metric-label">Water Table</span>
+                                                <span class="geo-metric-value" id="geo-water-table">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="geo-metric-card">
+                                            <div class="geo-metric-icon"><i class="fa-solid fa-arrow-up-right-dots"></i></div>
+                                            <div class="geo-metric-info">
+                                                <span class="geo-metric-label">Elevation</span>
+                                                <span class="geo-metric-value" id="geo-elevation">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="geo-zone-card">
+                                        <div class="geo-zone-label">Agro-Ecological Zone</div>
+                                        <div class="geo-zone-value" id="geo-zone">-</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

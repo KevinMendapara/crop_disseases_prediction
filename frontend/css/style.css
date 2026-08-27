@@ -1491,3 +1491,263 @@ body {
     box-shadow: 0 0 15px var(--accent-glow);
 }
 
+/* Geological Floating Panel */
+.geo-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 350px;
+    max-height: calc(100% - 40px);
+    z-index: 1001; /* Above leaflet overlays */
+    background: rgba(13, 23, 17, 0.92); /* Dark forest glass background */
+    color: #f1f5f9;
+    border: 1px solid rgba(165, 214, 167, 0.2);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.geo-panel.hidden {
+    display: none !important;
+}
+
+.geo-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.geo-panel-header h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #81c784; /* Soft primary green */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.geo-panel-header .close-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.geo-panel-header .close-btn:hover {
+    color: #ef4444;
+}
+
+.geo-panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.geo-coords {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.geo-coord-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: monospace;
+    color: #cbd5e1;
+}
+
+.geo-section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    border-left: 3px solid #81c784;
+    padding-left: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+/* Soil Bar Graph styling */
+.soil-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.soil-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+}
+
+.soil-composition-bar {
+    display: flex;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.soil-bar-part {
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+.clay-color { background-color: #a1887f; } /* earthy clay color */
+.silt-color { background-color: #ffd54f; } /* silty yellow color */
+.sand-color { background-color: #e0e0e0; } /* sandy whitish gray */
+
+/* Grid elements */
+.geo-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.geo-metric-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.geo-metric-icon {
+    font-size: 1.1rem;
+    color: #81c784;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(129, 199, 132, 0.1);
+}
+
+.geo-metric-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.geo-metric-label {
+    font-size: 0.7rem;
+    color: #94a3b8;
+}
+
+.geo-metric-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+/* Nutrients Progress Bars */
+.geo-nutrients-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.nutrient-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nutrient-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+}
+
+.progress-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.5s ease-out;
+}
+
+.n-fill { background-color: #3b82f6; } /* Blue for N */
+.p-fill { background-color: #ef4444; } /* Red/Pink for P */
+.k-fill { background-color: #10b981; } /* Emerald/Green for K */
+
+/* Agro Zone card */
+.geo-zone-card {
+    background: rgba(129, 199, 132, 0.05);
+    border: 1px solid rgba(129, 199, 132, 0.15);
+    border-radius: 10px;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.geo-zone-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #81c784;
+    margin-bottom: 0.2rem;
+}
+
+.geo-zone-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+/* Custom glowing pinpoint marker on Leaflet map */
+.pin-marker-custom {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pin-pulse {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: rgba(59, 130, 246, 0.4);
+    border-radius: 50%;
+    animation: pinPulseAnim 1.8s infinite ease-out;
+}
+.pin-icon {
+    font-size: 24px;
+    color: #3b82f6;
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+    z-index: 2;
+}
+
+@keyframes pinPulseAnim {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+

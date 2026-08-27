@@ -151,5 +151,50 @@
         "soil_moisture": 40.0,
         "pest_count": 15,
         "notes": "Verification test reading"
+    },
+    {
+        "id": "c162056c-1c7d-43aa-ad2b-84a5bc4bb8db",
+        "timestamp": "2026-08-26T07:19:47.043345Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "4b77572e-0772-4d59-a61d-5649cdd752ec",
+        "timestamp": "2026-08-26T09:08:36.627734Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "780fc41a-e3df-475b-8e6e-4b65c5ec6813",
+        "timestamp": "2026-08-27T06:29:56.631230Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "bf5216f7-6b9a-4c73-a82b-1d862b59c683",
+        "timestamp": "2026-08-27T12:39:24.311595Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "aa7ba05e-2738-47b5-a197-c10465b4f959",
+        "timestamp": "2026-08-27T12:50:45.626585Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
     }
 ]

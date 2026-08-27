@@ -214,6 +214,18 @@ def get_weather_forecast():
         "projections": projections
     })
 
+@app.route("/api/geological-conditions", methods=["GET"])
+def get_geological_conditions():
+    latitude = request.args.get("latitude")
+    longitude = request.args.get("longitude")
+    if not latitude or not longitude:
+        return jsonify({"error": "Latitude and longitude query parameters are required"}), 400
+    try:
+        conditions = model_helper.get_geological_conditions(latitude, longitude)
+        return jsonify(conditions)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/api/admin/login", methods=["POST"])
 def admin_login():
     data = request.json or {}
@@ -297,4 +309,6 @@ def serve_static_image(filename):
     return send_from_directory(static_images_dir, filename)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
+

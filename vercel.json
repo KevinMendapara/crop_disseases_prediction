@@ -1,22 +1,20 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/css/(.*)",
-      "destination": "/frontend/css/$1"
+      "src": "frontend/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://your-backend-api-url.onrender.com/api/$1"
     },
     {
-      "source": "/js/(.*)",
-      "destination": "/frontend/js/$1"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "https://agroshield-backend.onrender.com/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
     }
   ]
 }
