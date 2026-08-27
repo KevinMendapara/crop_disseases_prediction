@@ -227,6 +227,22 @@ def get_geological_conditions():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/api/debug-model", methods=["GET"])
+def debug_model():
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(backend_dir, "crop_disease_model.keras")
+    model_exists = os.path.exists(model_path)
+    classes_exists = os.path.exists(os.path.join(backend_dir, "class_names.json"))
+    files = os.listdir(backend_dir)
+    return jsonify({
+        "model_loaded": model_helper.model is not None,
+        "model_exists": model_exists,
+        "classes_exists": classes_exists,
+        "files_in_backend": files,
+        "backend_dir": backend_dir,
+        "current_dir": os.getcwd()
+    })
+
 @app.route("/api/admin/login", methods=["POST"])
 def admin_login():
     data = request.json or {}
