@@ -6,8 +6,11 @@ import tensorflow as tf
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 class ModelHelper:
-    def __init__(self, backend_dir=r"d:\CropDiseaseProject\backend"):
-        self.backend_dir = backend_dir
+    def __init__(self, backend_dir=None):
+        if backend_dir is None:
+            self.backend_dir = os.path.dirname(os.path.abspath(__file__))
+        else:
+            self.backend_dir = backend_dir
         self.model_path = os.path.join(self.backend_dir, "crop_disease_model.keras")
         self.class_names_path = os.path.join(self.backend_dir, "class_names.json")
         

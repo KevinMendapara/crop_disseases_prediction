@@ -166,5 +166,19 @@
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
         "expert_notes": ""
+    },
+    {
+        "id": "5d45089c-2a1a-43de-a556-5d16b90b1c2e",
+        "timestamp": "2026-08-27T13:21:28.016019Z",
+        "crop": "Corn (maize)",
+        "disease": "Corn_(maize)___healthy",
+        "severity": "Low",
+        "status": "Unverified",
+        "latitude": 29.968,
+        "longitude": 76.818,
+        "image_url": "/api/uploaded-images/pred_939f6c5f.jpg",
+        "confidence": 89.96783494949341,
+        "farmer_notes": "Verification test leaf diagnostic",
+        "expert_notes": ""
     }
 ]

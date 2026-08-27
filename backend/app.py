@@ -16,7 +16,8 @@ data_store = DataStore()
 model_helper = ModelHelper()
 
 # Load recommendations
-recs_path = r"d:\CropDiseaseProject\backend\recommendations.json"
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+recs_path = os.path.join(backend_dir, "recommendations.json")
 try:
     with open(recs_path, "r") as f:
         recommendations = json.load(f)

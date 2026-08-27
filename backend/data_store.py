@@ -5,8 +5,12 @@ from datetime import datetime
 from threading import Lock
 
 class DataStore:
-    def __init__(self, data_dir=r"d:\CropDiseaseProject\backend\data"):
-        self.data_dir = data_dir
+    def __init__(self, data_dir=None):
+        if data_dir is None:
+            backend_dir = os.path.dirname(os.path.abspath(__file__))
+            self.data_dir = os.path.join(backend_dir, "data")
+        else:
+            self.data_dir = data_dir
         os.makedirs(self.data_dir, exist_ok=True)
         self.reports_file = os.path.join(self.data_dir, "reports.json")
         self.sensors_file = os.path.join(self.data_dir, "sensors.json")
