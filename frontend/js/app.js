@@ -1062,6 +1062,18 @@ document.addEventListener("DOMContentLoaded", () => {
         resDisease.innerText = data.disease_label;
         resScientific.innerText = data.advisory.scientific_name;
         resConfidence.innerText = `${data.confidence.toFixed(1)}%`;
+        
+        // Render precise GPS coordinates on the advisory card
+        const resGPS = document.getElementById("resGPS");
+        if (resGPS) {
+            const latVal = parseFloat(latInput.value);
+            const lngVal = parseFloat(lngInput.value);
+            if (!isNaN(latVal) && !isNaN(lngVal)) {
+                resGPS.innerText = `${latVal.toFixed(6)}, ${lngVal.toFixed(6)}`;
+            } else {
+                resGPS.innerText = "Simulated Location";
+            }
+        }
         state.activeReportId = data.report_id;
         
         severityBadge.className = "badge";
@@ -1559,6 +1571,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="popup-details">
                     <h4>${report.crop} - ${report.disease.split("___")[1]?.replace("_", " ") || "Healthy"}</h4>
                     <p style="margin-bottom: 5px;"><strong>Severity:</strong> ${report.severity} | <span class="badge ${statusBadge}" style="font-size:0.6em; padding:2px 4px;">${report.status}</span></p>
+                    <p style="margin-bottom: 5px;"><strong>GPS:</strong> ${Number(report.latitude).toFixed(6)}, ${Number(report.longitude).toFixed(6)}</p>
                     <p>Logged: ${new Date(report.timestamp).toLocaleDateString()}</p>
                     ${imgHtml}
                     ${report.farmer_notes ? `<p style="margin-top: 5px; font-style:italic;">"${report.farmer_notes}"</p>` : ""}

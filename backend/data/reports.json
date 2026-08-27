@@ -19,13 +19,13 @@
         "crop": "Blueberry",
         "disease": "Blueberry___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_2bb0f71d.jpg",
         "confidence": 99.99957084655762,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "60b92777-cda8-481f-a877-43bdca1f198f",
@@ -33,13 +33,13 @@
         "crop": "Blueberry",
         "disease": "Blueberry___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_65b91fbc.jpg",
         "confidence": 99.99957084655762,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "ffaab617-3ac8-4f59-b392-be4978869579",
@@ -47,13 +47,13 @@
         "crop": "Corn (maize)",
         "disease": "Corn_(maize)___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_431168c3.jpg",
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "53300e3d-a806-47f0-84ee-7f6d9f4d2079",
@@ -61,13 +61,13 @@
         "crop": "Blueberry",
         "disease": "Blueberry___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_1f246b1c.jpg",
         "confidence": 99.99957084655762,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "24b71bd6-ec86-4312-bcb4-f077391ccb0b",
@@ -75,13 +75,13 @@
         "crop": "Blueberry",
         "disease": "Blueberry___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_5f7fc104.jpg",
         "confidence": 99.99957084655762,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "afc3a1bf-2ea9-46a5-8f5c-bc1eaf90516e",
@@ -89,13 +89,13 @@
         "crop": "Blueberry",
         "disease": "Blueberry___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_365d082b.jpg",
         "confidence": 99.27762746810913,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "67a73ac1-a6a2-4890-84ad-ed66acbf0d19",
@@ -103,13 +103,13 @@
         "crop": "Cherry (including sour)",
         "disease": "Cherry_(including_sour)___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_383c3df2.jpg",
         "confidence": 99.94751811027527,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "9f1e9f7a-fcca-4140-90a0-1a5250908a37",
@@ -117,13 +117,13 @@
         "crop": "Corn (maize)",
         "disease": "Corn_(maize)___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_c43edc16.jpg",
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "f49528f1-498c-4d98-8e91-2f3a24b4aa41",
@@ -131,13 +131,13 @@
         "crop": "Cherry (including sour)",
         "disease": "Cherry_(including_sour)___Powdery_mildew",
         "severity": "Medium",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_2d34078d.jpg",
         "confidence": 99.85105395317078,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "406cfb53-0c7f-49aa-935d-f529b6eba669",
@@ -145,13 +145,13 @@
         "crop": "Corn (maize)",
         "disease": "Corn_(maize)___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_642b8401.jpg",
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "99b6f12f-419d-4c3a-8298-c3cc5a31707a",
@@ -159,13 +159,13 @@
         "crop": "Corn (maize)",
         "disease": "Corn_(maize)___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_1df13268.jpg",
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "5d45089c-2a1a-43de-a556-5d16b90b1c2e",
@@ -173,13 +173,13 @@
         "crop": "Corn (maize)",
         "disease": "Corn_(maize)___healthy",
         "severity": "Low",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_939f6c5f.jpg",
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "5fb5685f-e5b9-46a4-afdc-c954b42e1b1b",
@@ -187,13 +187,13 @@
         "crop": "Grape",
         "disease": "Grape___Esca_(Black_Measles)",
         "severity": "Medium",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 29.968,
         "longitude": 76.818,
         "image_url": "/api/uploaded-images/pred_f3e3e0a8.jpg",
         "confidence": 99.9982476234436,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "6a4d13ca-ebb6-4535-947c-5e5ac4904a64",
@@ -201,13 +201,13 @@
         "crop": "Grape",
         "disease": "Grape___Esca_(Black_Measles)",
         "severity": "Medium",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 19.0896,
         "longitude": 72.8358,
         "image_url": "/api/uploaded-images/pred_31d738ac.jpg",
         "confidence": 99.9982476234436,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
     },
     {
         "id": "5f35f96d-92b7-4bb4-993f-38791b17d839",
@@ -215,12 +215,26 @@
         "crop": "Grape",
         "disease": "Grape___Esca_(Black_Measles)",
         "severity": "Medium",
-        "status": "Unverified",
+        "status": "Rejected",
         "latitude": 19.0896,
         "longitude": 72.8358,
         "image_url": "/api/uploaded-images/pred_5aaa4757.jpg",
         "confidence": 99.9982476234436,
         "farmer_notes": "",
-        "expert_notes": ""
+        "expert_notes": "Validated by Extension Officer"
+    },
+    {
+        "id": "40fbe966-b4f2-4cef-ad26-44f18a3277a1",
+        "timestamp": "2026-08-27T14:35:42.399081Z",
+        "crop": "Grape",
+        "disease": "Grape___Esca_(Black_Measles)",
+        "severity": "Medium",
+        "status": "Rejected",
+        "latitude": 19.0896,
+        "longitude": 72.8358,
+        "image_url": "/api/uploaded-images/pred_8c894f13.jpg",
+        "confidence": 99.9982476234436,
+        "farmer_notes": "",
+        "expert_notes": "Validated by Extension Officer"
     }
 ]
