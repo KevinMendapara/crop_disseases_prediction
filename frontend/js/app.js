@@ -912,6 +912,9 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
             displayAdvisoryData(data);
+            // Re-fetch reports list and reload dashboard stats so the map and queue update immediately!
+            loadReports();
+            loadDashboardStats();
         })
         .catch(err => {
             // Check if this was a leaf validation error from the backend
@@ -1476,17 +1479,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Surveillance Geospatial Map (Leaflet) ---
     function initMap() {
         // Initialize map centering around Punjab area coordinates
         state.map = L.map("map").setView([30.1, 76.8], 8);
         
-        // CartoDB Dark Matter tile provider
-        L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
+        // Standard OpenStreetMap tile provider (Shows all cities, roads, names, and detail)
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
         }).addTo(state.map);
+
+        // Add floating coordinates display in bottom right corner
+        const coordDisplay = L.control({ position: "bottomright" });
+        coordDisplay.onAdd = function() {
+            const div = L.DomUtil.create("div", "map-coords-readout");
+            div.innerHTML = "Lat: 30.1000 | Lng: 76.8000";
+            return div;
+        };
+        coordDisplay.addTo(state.map);
+
+        // Update coordinate readout on mousemove
+        state.map.on("mousemove", (e) => {
+            const lat = e.latlng.lat.toFixed(4);
+            const lng = e.latlng.lng.toFixed(4);
+            const div = document.querySelector(".map-coords-readout");
+            if (div) {
+                div.innerHTML = `Lat: ${lat} | Lng: ${lng}`;
+            }
+        });
 
         // Bind click event to map for geological pinpointing
         state.map.on("click", (e) => {
@@ -1825,6 +1845,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function submitValidation(reportId, status, notes) {
+        try {
+            // 1. Try to update the Flask backend API first
+            const res = await fetch(getApiUrl(`/api/reports/${reportId}/validate`), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: status,
+                    expert_notes: notes || `Validated by Extension Officer`
+                })
+            });
+            if (res.ok) {
+                showToast("Validation Logged", `Case #${reportId.substring(0,8)} marked as ${status}.`, "fa-shield-halved");
+                loadReports();
+                loadDashboardStats();
+                return;
+            }
+        } catch (e) {
+            console.log("Flask backend validation update failed, trying Supabase fallback:", e);
+        }
+
+        // 2. Fallback to Supabase if Flask API is offline
         if (supabase) {
             try {
                 const { error } = await supabase
@@ -1846,37 +1889,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        fetch(getApiUrl(`/api/reports/${reportId}/validate`), {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                status: status,
-                expert_notes: notes || `Validated by Extension Officer`
-            })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error();
-            return res.json();
-        })
-        .then(data => {
-            showToast("Validation Logged", `Case #${reportId.substring(0,8)} marked as ${status}.`, "fa-shield-halved");
-            loadReports();
-            loadDashboardStats();
-        })
-        .catch(err => {
-            console.log("Simulating validation update client-side.");
-            const rep = state.reports.find(r => r.id === reportId);
-            if (rep) {
-                rep.status = status;
-                if (status === "Rejected") rep.severity = "Low";
-            }
-            showToast("Validation Logged (Offline)", `Case #${reportId.substring(0,8)} marked as ${status}.`, "fa-shield-halved");
-            renderMapMarkers();
-            renderExpertQueue();
-            loadDashboardStats();
-        });
+        // 3. Fallback to local client simulation
+        console.log("Simulating validation update client-side.");
+        const rep = state.reports.find(r => r.id === reportId);
+        if (rep) {
+            rep.status = status;
+            if (status === "Rejected") rep.severity = "Low";
+            rep.expert_notes = notes || "Validated by Extension Officer (Mock)";
+        }
+        showToast("Validation Logged (Offline)", `Mock verified case #${reportId.substring(0,8)} as ${status}.`, "fa-shield-halved");
+        renderMapMarkers();
+        renderExpertQueue();
+        loadDashboardStats();
     }
 
     // --- Notification Toast Helpers ---
@@ -1902,6 +1926,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Loading Backend Data ---
     async function loadReports() {
+        try {
+            // 1. Try to fetch from the Flask API first (which contains all prediction reports)
+            const res = await fetchWithTimeout(getApiUrl("/api/reports"));
+            if (res.ok) {
+                const data = await res.json();
+                state.reports = data;
+                renderMapMarkers();
+                renderExpertQueue();
+                return;
+            }
+        } catch (e) {
+            console.log("Flask backend loadReports failed, trying Supabase fallback:", e);
+        }
+
+        // 2. Fallback to Supabase if Flask API is offline
         if (supabase) {
             try {
                 const { data, error } = await supabase
@@ -1934,24 +1973,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        fetchWithTimeout("/api/reports")
-        .then(res => {
-            if (!res.ok) throw new Error();
-            return res.json();
-        })
-        .then(data => {
-            state.reports = data;
-            renderMapMarkers();
-            renderExpertQueue();
-        })
-        .catch(err => {
-            console.log("Failed to fetch reports from backend.");
-            if (!state.reports) {
-                state.reports = [];
-            }
-            renderMapMarkers();
-            renderExpertQueue();
-        });
+        // 3. Ultimate local mock fallback
+        if (!state.reports) {
+            state.reports = [];
+        }
+        renderMapMarkers();
+        renderExpertQueue();
     }
 
     // --- Extension Officer Admin Login Form ---

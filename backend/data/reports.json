@@ -180,5 +180,47 @@
         "confidence": 89.96783494949341,
         "farmer_notes": "Verification test leaf diagnostic",
         "expert_notes": ""
+    },
+    {
+        "id": "5fb5685f-e5b9-46a4-afdc-c954b42e1b1b",
+        "timestamp": "2026-08-27T14:15:43.072280Z",
+        "crop": "Grape",
+        "disease": "Grape___Esca_(Black_Measles)",
+        "severity": "Medium",
+        "status": "Unverified",
+        "latitude": 29.968,
+        "longitude": 76.818,
+        "image_url": "/api/uploaded-images/pred_f3e3e0a8.jpg",
+        "confidence": 99.9982476234436,
+        "farmer_notes": "",
+        "expert_notes": ""
+    },
+    {
+        "id": "6a4d13ca-ebb6-4535-947c-5e5ac4904a64",
+        "timestamp": "2026-08-27T14:28:18.752432Z",
+        "crop": "Grape",
+        "disease": "Grape___Esca_(Black_Measles)",
+        "severity": "Medium",
+        "status": "Unverified",
+        "latitude": 19.0896,
+        "longitude": 72.8358,
+        "image_url": "/api/uploaded-images/pred_31d738ac.jpg",
+        "confidence": 99.9982476234436,
+        "farmer_notes": "",
+        "expert_notes": ""
+    },
+    {
+        "id": "5f35f96d-92b7-4bb4-993f-38791b17d839",
+        "timestamp": "2026-08-27T14:30:43.666838Z",
+        "crop": "Grape",
+        "disease": "Grape___Esca_(Black_Measles)",
+        "severity": "Medium",
+        "status": "Unverified",
+        "latitude": 19.0896,
+        "longitude": 72.8358,
+        "image_url": "/api/uploaded-images/pred_5aaa4757.jpg",
+        "confidence": 99.9982476234436,
+        "farmer_notes": "",
+        "expert_notes": ""
     }
 ]

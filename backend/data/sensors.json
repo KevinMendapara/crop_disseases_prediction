@@ -205,5 +205,14 @@
         "soil_moisture": 40.0,
         "pest_count": 15,
         "notes": "Verification test reading"
+    },
+    {
+        "id": "5e145493-2a42-4a89-8b8d-bb45179cd061",
+        "timestamp": "2026-08-27T14:28:34.522895Z",
+        "temperature": 23.4,
+        "humidity": 82.0,
+        "soil_moisture": 48.0,
+        "pest_count": 4,
+        "notes": ""
     }
 ]

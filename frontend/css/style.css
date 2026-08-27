@@ -1750,4 +1750,17 @@ body {
     }
 }
 
+.map-coords-readout {
+    background: rgba(13, 23, 17, 0.9);
+    border: 1px solid rgba(165, 214, 167, 0.3);
+    color: #81c784;
+    padding: 0.4rem 0.8rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    pointer-events: none;
+    z-index: 1000;
+}
+
 
