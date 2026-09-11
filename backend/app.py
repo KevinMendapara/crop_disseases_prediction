@@ -39,6 +39,26 @@ def serve_home():
     """Serve the dashboard for home and authentication entry links."""
     return send_from_directory(app.static_folder, "index.html")
 
+@app.route("/api/auth/register", methods=["POST"])
+def register_farmer():
+    """Create a local farmer account when Supabase is not configured."""
+    data = request.get_json(silent=True) or {}
+    user, error = data_store.add_user(data)
+    if error:
+        return jsonify({"success": False, "error": error}), 400
+    return jsonify({"success": True, "user": user}), 201
+
+@app.route("/api/auth/login", methods=["POST"])
+def login_farmer():
+    """Authenticate a farmer account and always return a JSON response."""
+    data = request.get_json(silent=True) or {}
+    user, error = data_store.authenticate_user(
+        data.get("email", ""), data.get("password", "")
+    )
+    if error:
+        return jsonify({"success": False, "error": error}), 401
+    return jsonify({"success": True, "user": user})
+
 @app.route("/api/predict", methods=["POST"])
 def predict():
     if "image" not in request.files:
