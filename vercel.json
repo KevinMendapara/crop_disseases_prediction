@@ -14,11 +14,11 @@
     },
     {
       "src": "/",
-      "dest": "/frontend/landing.html"
+      "dest": "/frontend/landing"
     },
     {
       "src": "/(home|login|register)",
-      "dest": "/frontend/index.html"
+      "dest": "/frontend/index"
     },
     {
       "src": "/(.*)",
