@@ -107,6 +107,8 @@ def run_tests():
         print(f"AI Prediction: {res['prediction']} (Confidence: {res['confidence']:.1f}%)")
         print(f"Crop: {res['crop']}, Disease: {res['disease_label']}, Severity: {res['severity']}")
         print(f"Advisory Scientific Name: {res['advisory']['scientific_name']}")
+        assert "gradcam_image" in res
+        print(f"Explainable AI: Grad-CAM Saliency generated: {bool(res.get('gradcam_image'))}")
     except Exception as e:
         print(f"FAIL: {e}")
         return False
@@ -138,8 +140,71 @@ def run_tests():
         print(f"FAIL: {e}")
         return False
 
-    print("\nALL BACKEND VERIFICATION TESTS PASSED SUCCESSFULLY!")
+    # 7. Test /api/auth/register and /api/auth/login
+    print("\n[Test 7] POST /api/auth/register & /api/auth/login")
+    try:
+        test_email = f"test_farmer_{int(time.time())}@agroshield.org"
+        reg_payload = {
+            "email": test_email,
+            "password": "securepassword123",
+            "full_name": "Test Farmer",
+            "village": "Green Field",
+            "district": "Faridabad"
+        }
+        r = requests.post(f"{base_url}/api/auth/register", json=reg_payload)
+        print(f"Register Status: {r.status_code}")
+        assert r.status_code == 201
+        reg_data = r.json()
+        assert reg_data.get("success") is True
+        print(f"Registered User: {reg_data['user']['full_name']} ({reg_data['user']['email']})")
+
+        login_payload = {
+            "email": test_email,
+            "password": "securepassword123"
+        }
+        r2 = requests.post(f"{base_url}/api/auth/login", json=login_payload)
+        print(f"Login Status: {r2.status_code}")
+        assert r2.status_code == 200
+        login_data = r2.json()
+        assert login_data.get("success") is True
+        print(f"Authenticated User: {login_data['user']['full_name']}")
+    except Exception as e:
+        print(f"FAIL: {e}")
+        return False
+
+    # 8. Test /api/proximity-alerts
+    print("\n[Test 8] GET /api/proximity-alerts (Outbreak Early Warning)")
+    try:
+        r = requests.get(f"{base_url}/api/proximity-alerts?latitude=29.9680&longitude=76.8180&radius_km=25")
+        print(f"Status: {r.status_code}")
+        assert r.status_code == 200
+        alert_data = r.json()
+        print(f"Outbreak Detected: {alert_data['outbreak_detected']}")
+        print(f"Nearby Outbreaks: {alert_data['nearby_count']} within {alert_data['radius_km']}km")
+        print(f"Dominant Disease: {alert_data['dominant_disease']} (Closest: {alert_data['closest_distance_km']}km)")
+        print(f"Precaution: {alert_data['recommended_precaution']}")
+    except Exception as e:
+        print(f"FAIL: {e}")
+        return False
+
+    # 9. Test /api/kvk-locator
+    print("\n[Test 9] GET /api/kvk-locator (Krishi Vigyan Kendra Referral)")
+    try:
+        r = requests.get(f"{base_url}/api/kvk-locator?latitude=29.9680&longitude=76.8180")
+        print(f"Status: {r.status_code}")
+        assert r.status_code == 200
+        kvk_data = r.json()
+        nearest = kvk_data["nearest_kvk"]
+        print(f"Nearest KVK Hub: {nearest['name']} ({nearest['district']}, {nearest['state']})")
+        print(f"Distance: {nearest['distance_km']} km | Phone: {nearest['phone']}")
+        print(f"Scientist: {nearest['senior_scientist']}")
+    except Exception as e:
+        print(f"FAIL: {e}")
+        return False
+
+    print("\nALL 9 BACKEND VERIFICATION TESTS PASSED SUCCESSFULLY!")
     return True
 
 if __name__ == "__main__":
     run_tests()
+

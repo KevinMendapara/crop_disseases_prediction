@@ -30,6 +30,16 @@ class ModelHelper:
         else:
             print("Class names file not found.")
 
+        self.centroids_path = os.path.join(self.backend_dir, "centroids.json")
+        self.centroids = {}
+        if os.path.exists(self.centroids_path):
+            try:
+                with open(self.centroids_path, "r") as f:
+                    self.centroids = json.load(f)
+                print(f"Loaded {len(self.centroids)} class centroids.")
+            except Exception as e:
+                print(f"Error loading centroids: {e}")
+
         if os.path.exists(self.model_path):
             try:
                 # Load Keras model
@@ -41,57 +51,114 @@ class ModelHelper:
             print("Model file not found. Inference will not work until training completes.")
 
     def check_is_leaf(self, file_stream):
-        if not hasattr(self, "imagenet_model") or self.imagenet_model is None:
-            # Lazy load MobileNetV2 with ImageNet weights
-            self.imagenet_model = tf.keras.applications.MobileNetV2(weights="imagenet")
-            
         try:
             file_stream.seek(0)
-            img = Image.open(file_stream)
-            img = img.convert("RGB")
-            img = img.resize((224, 224))
+            img = Image.open(file_stream).convert("RGB")
             
-            arr = np.array(img, dtype=np.float32)
+            # Quick check for natural foliage / agricultural leaf tone distribution (green, yellow, brown)
+            arr_np = np.array(img.resize((100, 100)), dtype=np.float32)
+            r, g, b = arr_np[..., 0], arr_np[..., 1], arr_np[..., 2]
+            foliage_pixels = np.mean((g > b * 0.75) | (r > b * 0.85))
+            if foliage_pixels > 0.30:
+                return True, "Passed foliage validation"
+            
+            # If color distribution is unusual, check with MobileNetV2 for non-plant rejection
+            if not hasattr(self, "imagenet_model") or self.imagenet_model is None:
+                self.imagenet_model = tf.keras.applications.MobileNetV2(weights="imagenet")
+                
+            img_resized = img.resize((224, 224))
+            arr = np.array(img_resized, dtype=np.float32)
             arr = preprocess_input(arr)
             batch = np.expand_dims(arr, axis=0)
             
             preds = self.imagenet_model.predict(batch, verbose=0)
-            decoded = tf.keras.applications.mobilenet_v2.decode_predictions(preds, top=5)[0]
+            decoded = tf.keras.applications.mobilenet_v2.decode_predictions(preds, top=3)[0]
             
-            plant_keywords = {"leaf", "foliage", "plant", "tree", "flower", "vegetable", "fruit", 
-                              "cabbage", "broccoli", "cauliflower", "zucchini", "squash", "cucumber", 
-                              "pepper", "chili", "mushroom", "fungus", "corn", "maize", "banana", 
-                              "orange", "lemon", "pomegranate", "pineapple", "apple", "strawberry", 
-                              "peach", "fig", "grape", "pot", "flowerpot", "greenhouse", "acorn", "buckeye",
-                              "sprout", "wood", "forest", "cardoon", "artichoke", "herb", "shrub", "daisy",
-                              "head_cabbage", "buckeye", "acorn_squash", "butternut_squash"}
+            blocked_keywords = {"cellular_telephone", "notebook", "laptop", "mouse", "keyboard", 
+                                "car", "sports_car", "jeep", "truck", "motorcycle", "bicycle", 
+                                "dog", "cat", "tabby", "golden_retriever", "couch", "refrigerator"}
             
-            # Check if any top 5 prediction matches plant keywords with at least 3% probability
-            is_plant = False
-            matched_label = ""
-            for class_id, label, prob in decoded:
-                label_lower = label.lower()
-                if prob >= 0.03 and any(kw in label_lower for kw in plant_keywords):
-                    is_plant = True
-                    matched_label = label
-                    break
-            
-            if is_plant:
-                return True, f"Matched plant keyword: {matched_label}"
-            
-            # If not explicitly matched as a plant/leaf, reject it!
-            top_label = decoded[0][1].replace('_', ' ')
-            return False, f"Not a leaf/plant image (Identified as {top_label} with high probability)"
+            top_class, top_label, top_prob = decoded[0]
+            top_label_lower = top_label.lower()
+            if top_prob > 0.50 and any(bw in top_label_lower for bw in blocked_keywords):
+                return False, f"Not a leaf or crop plant (Identified as {top_label.replace('_', ' ')})"
+                
+            return True, "Passed validation"
         except Exception as e:
             print(f"Error checking if image is leaf: {e}")
-            return True, "Passed validation by default due to error"
+            return True, "Passed validation by default"
 
-    def predict_image(self, file_stream):
+    def generate_gradcam(self, file_stream, class_idx=None):
+        """
+        Generates Explainable AI (Grad-CAM) saliency heatmap superimposed on the original leaf image.
+        Returns a base64 encoded data URL (data:image/jpeg;base64,...).
+        """
+        try:
+            if not self.model:
+                return None
+            import io
+            import base64
+            
+            file_stream.seek(0)
+            orig_img = Image.open(file_stream).convert('RGB')
+            orig_w, orig_h = orig_img.size
+            
+            # 128x128 input for model
+            resized_img = orig_img.resize((128, 128))
+            arr = np.array(resized_img, dtype=np.float32)
+            arr = preprocess_input(arr)
+            batch = tf.convert_to_tensor(np.expand_dims(arr, axis=0))
+            
+            base_model = self.model.layers[0]
+            dense_model = self.model.layers[1]
+            
+            with tf.GradientTape() as tape:
+                conv_outputs = base_model(batch)
+                tape.watch(conv_outputs)
+                preds = dense_model(conv_outputs)
+                if class_idx is None:
+                    class_idx = int(tf.argmax(preds[0]))
+                loss = preds[:, class_idx]
+                
+            grads = tape.gradient(loss, conv_outputs)
+            pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+            
+            conv_outputs_val = conv_outputs[0]
+            cam = tf.reduce_sum(conv_outputs_val * pooled_grads, axis=-1)
+            cam = tf.maximum(cam, 0)
+            cam_max = tf.reduce_max(cam)
+            if cam_max > 0:
+                cam = cam / cam_max
+            cam_np = cam.numpy()
+            
+            # Resize CAM to original image dimensions using PIL
+            cam_pil = Image.fromarray(np.uint8(255 * cam_np)).resize((orig_w, orig_h), Image.Resampling.BILINEAR)
+            val = np.array(cam_pil, dtype=np.float32) / 255.0
+            
+            # Create Jet colormap using pure NumPy
+            r = np.clip(1.5 - np.abs(4.0 * val - 3.0), 0.0, 1.0)
+            g = np.clip(1.5 - np.abs(4.0 * val - 2.0), 0.0, 1.0)
+            b = np.clip(1.5 - np.abs(4.0 * val - 1.0), 0.0, 1.0)
+            heatmap = np.stack([r * 255.0, g * 255.0, b * 255.0], axis=-1)
+            
+            orig_np = np.array(orig_img, dtype=np.float32)
+            superimposed = np.uint8(0.45 * heatmap + 0.55 * orig_np)
+            
+            # Encode as JPEG base64
+            buffered = io.BytesIO()
+            Image.fromarray(superimposed).save(buffered, format="JPEG", quality=85)
+            img_b64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            return f"data:image/jpeg;base64,{img_b64}"
+        except Exception as e:
+            print(f"Error generating Grad-CAM: {e}")
+            return None
+
+    def predict_image(self, file_stream, return_gradcam=False):
         if not self.model or not self.class_names:
             # Reload in case it was created in the meantime
             self.load_model_and_classes()
             if not self.model:
-                return "Unknown", 0.0
+                return ("Unknown", 0.0, None) if return_gradcam else ("Unknown", 0.0)
         
         try:
             # Load and preprocess image
@@ -104,16 +171,53 @@ class ModelHelper:
             arr = preprocess_input(arr)
             batch = np.expand_dims(arr, axis=0)
             
-            # Predict
-            predictions = self.model.predict(batch)
+            # Predict base features using base model (first layer of sequential model)
+            base_model = self.model.layers[0]
+            feature_maps = base_model.predict(batch, verbose=0)
+            
+            # GAP feature representation
+            feature_gap = np.mean(feature_maps, axis=(1, 2))[0]
+            feature_norm = feature_gap / (np.linalg.norm(feature_gap) + 1e-8)
+            
+            # Check similarity if centroids exist
+            if self.centroids:
+                max_sim = -1.0
+                best_class = None
+                for name, centroid in self.centroids.items():
+                    centroid_arr = np.array(centroid)
+                    sim = np.dot(feature_norm, centroid_arr)
+                    if sim > max_sim:
+                        max_sim = sim
+                        best_class = name
+                
+                print(f"Centroid Similarity Check: Best similarity = {max_sim:.3f} to {best_class}")
+                
+                # Threshold check: if similarity is below 0.70, classify as unsupported crop
+                if max_sim < 0.70:
+                    print(f"OOD Outbreak: Similarity {max_sim:.3f} < 0.70. Reverting to unsupported crop.")
+                    res_class = "Unknown___Unsupported_Crop"
+                    res_conf = float(max_sim * 100.0)
+                    gradcam = None
+                    if return_gradcam:
+                        return res_class, res_conf, gradcam
+                    return res_class, res_conf
+            
+            # Predict category
+            predictions = self.model.predict(batch, verbose=0)
             class_idx = int(np.argmax(predictions[0]))
             confidence = float(predictions[0][class_idx]) * 100.0
             
             predicted_class = self.class_names[class_idx]
+            
+            gradcam = None
+            if return_gradcam:
+                gradcam = self.generate_gradcam(file_stream, class_idx)
+                return predicted_class, confidence, gradcam
+                
             return predicted_class, confidence
         except Exception as e:
             print(f"Error in prediction: {e}")
-            return "Unknown", 0.0
+            return ("Unknown", 0.0, None) if return_gradcam else ("Unknown", 0.0)
 
     def get_geological_conditions(self, latitude, longitude):
         try:

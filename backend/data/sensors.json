@@ -214,5 +214,68 @@
         "soil_moisture": 48.0,
         "pest_count": 4,
         "notes": ""
+    },
+    {
+        "id": "785cda7e-ada1-48f2-ac8e-f8c2fb291c28",
+        "timestamp": "2026-08-28T05:25:14.372883Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "e8781303-9d2c-4181-b414-1379092c1b88",
+        "timestamp": "2026-08-29T02:49:32.095705Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "6e450b78-6edd-4c34-925b-292674ffb0c1",
+        "timestamp": "2026-09-06T15:11:09.251166Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "480010d1-de6e-4d32-9d91-7cea6e474b62",
+        "timestamp": "2026-09-06T15:20:41.612239Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "6d4d60bc-174f-4b8d-a350-11fd833f87d5",
+        "timestamp": "2026-09-09T14:57:13.932779Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "d64597cc-962d-4126-be1c-c4eefcf8c806",
+        "timestamp": "2026-09-09T15:04:59.986757Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
+    },
+    {
+        "id": "9cce5e36-c9ac-45bb-b868-f4e64b4cf17e",
+        "timestamp": "2026-09-09T15:17:21.560063Z",
+        "temperature": 27.5,
+        "humidity": 68.0,
+        "soil_moisture": 40.0,
+        "pest_count": 15,
+        "notes": "Verification test reading"
     }
 ]

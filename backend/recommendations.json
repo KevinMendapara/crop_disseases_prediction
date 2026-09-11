@@ -416,5 +416,49 @@
         "chemical_control": "None.",
         "dosage": "N/A",
         "monitoring_interval": "Inspect every 7 days."
+    },
+    "Rice___Bacterial_leaf_blight": {
+        "scientific_name": "Xanthomonas oryzae pv. oryzae",
+        "disease": "Bacterial Leaf Blight",
+        "description": "A devastating bacterial disease of rice that causes wilting and yellowing of leaves, leading to severe yield loss, especially in wet conditions.",
+        "symptoms": "Linear, wavy, straw-colored stripes starting from leaf tips and margins. Droplets of bacterial ooze may form on leaves in early morning.",
+        "prevention": "Use balanced nitrogen fertilizer. Plant resistant varieties. Ensure proper drainage in the field.",
+        "biological_control": "Apply bio-pesticides containing Pseudomonas fluorescens or Bacillus subtilis to seeds or seedlings.",
+        "chemical_control": "Apply copper hydroxide mixed with streptocycline in case of severe outbreaks.",
+        "dosage": "Copper Hydroxide at 2g + Streptocycline at 0.1g per liter of water.",
+        "monitoring_interval": "Inspect fields twice a week during tillering and panicle initiation stages, especially after heavy rains."
+    },
+    "Rice___Brown_spot": {
+        "scientific_name": "Cochliobolus miyabeanus",
+        "disease": "Brown Spot",
+        "description": "A fungal disease typically associated with nutrient-deficient or water-stressed soils, causing oval spots on leaves.",
+        "symptoms": "Oval or circular dark brown spots with a yellow halo. Spots resemble sesame seeds. In severe cases, leaves dry out and die.",
+        "prevention": "Improve soil fertility by applying balanced NPK fertilizers and silicon. Ensure proper irrigation.",
+        "biological_control": "Treat seeds with Trichoderma harzianum or spray Pseudomonas fluorescens formulation.",
+        "chemical_control": "Apply fungicides containing Mancozeb, Propiconazole, or Edifenphos if symptoms spread.",
+        "dosage": "Propiconazole 25% EC at 1.0 ml per liter of water.",
+        "monitoring_interval": "Inspect fields every 7 days from transplanting to grain filling stage."
+    },
+    "Rice___Leaf_smut": {
+        "scientific_name": "Entyloma oryzae",
+        "disease": "Leaf Smut",
+        "description": "A minor fungal disease of rice that causes small, black, slightly raised spots on mature leaf blades.",
+        "symptoms": "Small, black, angular spots on both sides of the leaf. In severe infections, leaves turn yellow, dry out from the tip, and die prematurely.",
+        "prevention": "Avoid excessive nitrogen application. Clean and burn infected crop residue after harvest. Use clean seeds.",
+        "biological_control": "Seed treatment with Trichoderma viride can suppress early fungal development.",
+        "chemical_control": "Usually does not require chemical control, but severe cases can be treated with Propiconazole or Hexaconazole.",
+        "dosage": "Hexaconazole 5% EC at 2.0 ml per liter of water.",
+        "monitoring_interval": "Inspect weekly, particularly during late growth stages when leaves are mature."
+    },
+    "Unknown___Unsupported_Crop": {
+        "scientific_name": "N/A",
+        "disease": "Unsupported Leaf/Crop",
+        "description": "Our model detected a leaf, but it does not belong to any of the supported crops (Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Pepper, Potato, Raspberry, Rice, Soybean, Squash, Strawberry, Tomato).",
+        "symptoms": "Unrecognized leaf vein or spot pattern.",
+        "prevention": "Please upload a clear leaf image of one of the supported crop species listed above.",
+        "biological_control": "N/A",
+        "chemical_control": "N/A",
+        "dosage": "N/A",
+        "monitoring_interval": "N/A"
     }
 }

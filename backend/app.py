@@ -4,6 +4,8 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 from data_store import DataStore
 from model_helper import ModelHelper
@@ -26,7 +28,15 @@ except Exception as e:
     recommendations = {}
 
 @app.route("/")
-def serve_index():
+def serve_landing_page():
+    """Serve the public landing page as the application entry point."""
+    return send_from_directory(app.static_folder, "landing.html")
+
+@app.route("/home")
+@app.route("/login")
+@app.route("/register")
+def serve_home():
+    """Serve the dashboard for home and authentication entry links."""
     return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/api/predict", methods=["POST"])
@@ -164,10 +174,62 @@ def handle_sensor_logs():
 
 @app.route("/api/weather-forecast", methods=["GET"])
 def get_weather_forecast():
-    # Simulated current metrics
+    # The dashboard can send saved coordinates or any typed city name.
+    city = request.args.get("city", "New Delhi").strip() or "New Delhi"
+    latitude_arg = request.args.get("latitude")
+    longitude_arg = request.args.get("longitude")
+
+    try:
+        latitude = float(latitude_arg) if latitude_arg else None
+        longitude = float(longitude_arg) if longitude_arg else None
+    except (TypeError, ValueError):
+        latitude, longitude = None, None
+
+    # Resolve typed cities through Open-Meteo's public geocoding service.
+    # If a city cannot be found (or the service is offline), use Delhi as a
+    # safe fallback while retaining the chosen name in the dashboard.
+    if latitude is None or longitude is None:
+        try:
+            geocode_query = urlencode({"name": city, "count": 1, "language": "en", "format": "json"})
+            with urlopen(f"https://geocoding-api.open-meteo.com/v1/search?{geocode_query}", timeout=4) as response:
+                place = json.load(response).get("results", [])[0]
+            latitude = float(place["latitude"])
+            longitude = float(place["longitude"])
+            city = place.get("name", city)
+        except Exception as exc:
+            print(f"City lookup unavailable: {exc}")
+            latitude, longitude = 28.6139, 77.2090
+
+    # Fallback figures keep the diagnostic risk guide usable offline.
     temp = 19.5  # Cool weather
     humidity = 87.0  # Very humid/wet
     soil_moist = 54.0  # Moist
+    forecast = "Cloudy with light showers expected."
+    weather_source = "Offline estimate"
+
+    try:
+        query = urlencode({
+            "latitude": latitude,
+            "longitude": longitude,
+            "current": "temperature_2m,relative_humidity_2m,weather_code",
+            "timezone": "auto"
+        })
+        with urlopen(f"https://api.open-meteo.com/v1/forecast?{query}", timeout=4) as response:
+            current = json.load(response).get("current", {})
+        temp = float(current["temperature_2m"])
+        humidity = float(current["relative_humidity_2m"])
+        weather_code = int(current.get("weather_code", -1))
+        weather_labels = {
+            0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+            45: "Foggy", 48: "Rime fog", 51: "Light drizzle", 53: "Drizzle",
+            55: "Heavy drizzle", 61: "Light rain", 63: "Rain", 65: "Heavy rain",
+            71: "Light snow", 73: "Snow", 80: "Rain showers", 81: "Heavy showers",
+            95: "Thunderstorm"
+        }
+        forecast = weather_labels.get(weather_code, "Current conditions updated")
+        weather_source = "Live weather"
+    except Exception as exc:
+        print(f"Weather service unavailable: {exc}")
     
     # Compute risks
     # Late Blight: favored by cool wet weather (humidity > 80, temp 10-22)
@@ -193,11 +255,13 @@ def get_weather_forecast():
     }
     
     return jsonify({
+        "city": city,
         "temperature": temp,
         "humidity": humidity,
+        "source": weather_source,
         "soil_moisture": soil_moist,
         "wind_speed": 12.4, # km/h
-        "forecast": "Cloudy with light showers expected.",
+        "forecast": forecast,
         "risks": {
             "Late Blight (Potato/Tomato)": {
                 "level": late_blight_risk,

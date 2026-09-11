@@ -21,8 +21,21 @@
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
+    <!-- jsPDF for 1-Click PMFBY Insurance Claim Dossier -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Web App Manifest for PWA Offline Resilience -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#059669">
+    <!-- Cache Invalidation for Clean Reloads -->
+    <script>
+        if ('caches' in window) {
+            caches.keys().then(keys => keys.forEach(k => { if (k !== 'agroshield-v14') caches.delete(k); }));
+        }
+    </script>
+    
     <!-- Custom Style -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=14">
 </head>
 <body>
     <div class="app-container">
@@ -54,6 +67,10 @@
                 <a href="#" class="nav-item" data-view="map">
                     <i class="fa-solid fa-map-location-dot"></i>
                     <span data-translate="nav_map">Disease Map</span>
+                </a>
+                <a href="#" class="nav-item" data-view="history">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>My Scan History</span>
                 </a>
 
                 <!-- Extension Officer Admin Panel Links -->
@@ -128,7 +145,66 @@
                     <p id="viewSubtitle" data-translate="farmer_subtitle">Upload leaf symptoms for instant AI treatment protocols and local risk indexes.</p>
                 </div>
                 
-                <div class="header-actions">
+                    <div class="header-actions">
+                        <button class="header-icon-btn" id="themeToggleBtn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+                    <div class="location-wrap">
+                        <button class="location-chip" id="locationToggleBtn" type="button" title="Change area or city" aria-expanded="false">
+                            <span class="location-icon"><i class="fa-solid fa-location-dot"></i></span>
+                            <span class="location-copy"><small>Weather for</small><strong id="headerLocationName">New Delhi</strong></span>
+                            <i class="fa-solid fa-chevron-down location-chevron"></i>
+                        </button>
+                        <div class="location-panel" id="locationPanel" style="display: none;">
+                            <div class="location-panel-title"><i class="fa-solid fa-map-location-dot"></i><div><strong>Change area</strong><span>Select your nearest city for local weather.</span></div></div>
+                            <label for="citySelect">City</label>
+                            <input id="citySelect" list="cityOptions" value="New Delhi" placeholder="Search any city">
+                            <datalist id="cityOptions">
+                                <option value="Agra"><option value="Ahmedabad"><option value="Ajmer"><option value="Amritsar"><option value="Bengaluru"><option value="Bhopal"><option value="Bhubaneswar"><option value="Chandigarh"><option value="Chennai"><option value="Coimbatore"><option value="Dehradun"><option value="Faridabad"><option value="Ghaziabad"><option value="Gurugram"><option value="Guwahati"><option value="Gwalior"><option value="Hyderabad"><option value="Indore"><option value="Jaipur"><option value="Jammu"><option value="Jodhpur"><option value="Kanpur"><option value="Kochi"><option value="Kolkata"><option value="Lucknow"><option value="Ludhiana"><option value="Madurai"><option value="Meerut"><option value="Mumbai"><option value="Mysuru"><option value="Nagpur"><option value="Nashik"><option value="New Delhi"><option value="Noida"><option value="Patna"><option value="Pune"><option value="Raipur"><option value="Ranchi"><option value="Srinagar"><option value="Surat"><option value="Thiruvananthapuram"><option value="Udaipur"><option value="Vadodara"><option value="Varanasi"><option value="Vijayawada"><option value="Visakhapatnam">
+                            </datalist>
+                            <button class="location-apply-btn" id="applyCityBtn" type="button"><i class="fa-solid fa-check"></i> Update weather</button>
+                        </div>
+                    </div>
+                    <div class="notification-wrap">
+                        <button class="header-icon-btn" id="notificationBtn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="notification-dot" id="notificationDot"></span></button>
+                        <div class="notification-panel" id="notificationPanel" style="display: none;">
+                            <div class="notif-header">
+                                <strong><i class="fa-solid fa-bell" style="color: var(--primary); margin-right: 0.4rem;"></i> Notifications</strong>
+                                <span class="badge badge-sm badge-emerald" id="notifCountBadge">2 new</span>
+                            </div>
+                            <div class="notif-list">
+                                <div class="notif-item">
+                                    <i class="fa-solid fa-cloud-rain" style="color: #38bdf8;"></i>
+                                    <div>
+                                        <strong>Rain alert within 48h</strong>
+                                        <p>Avoid spray applications before expected rainfall.</p>
+                                        <small>15m ago</small>
+                                    </div>
+                                </div>
+                                <div class="notif-item">
+                                    <i class="fa-solid fa-seedling" style="color: #4ade80;"></i>
+                                    <div>
+                                        <strong>Diagnostic advisory updated</strong>
+                                        <p>Organic recovery guide for your crop is ready.</p>
+                                        <small>1h ago</small>
+                                    </div>
+                                </div>
+                                <div class="notif-item">
+                                    <i class="fa-solid fa-bug" style="color: #fb923c;"></i>
+                                    <div>
+                                        <strong>Pest vector trap warning</strong>
+                                        <p>Surveillance sensor logged elevated aphid activity.</p>
+                                        <small>3h ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notif-footer">
+                                <button type="button" class="btn-text-sm" id="clearNotifBtn"><i class="fa-solid fa-check-double"></i> Mark all as read</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-user-chip" id="headerUserChip" style="display: none;">
+                        <span class="header-user-icon"><i class="fa-solid fa-user"></i></span>
+                        <span id="headerUserName">Farmer Friend</span>
+                    </div>
                     <div class="quick-stat">
                         <i class="fa-solid fa-cloud-sun"></i>
                         <div>
@@ -147,7 +223,7 @@
             </header>
 
             <!-- Views Container -->
-            <div class="content-body">
+            <div class="content-body" id="workspaceStart">
                 <!-- View 0: Home Landing Portal -->
                 <section id="view-home" class="view-section active">
                     <div class="hero-section">
@@ -199,6 +275,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="home-insights-grid">
+                        <section class="recent-scans-card"><div class="section-heading"><div><p class="eyebrow">ACTIVITY</p><h3>Recent scans</h3></div><button class="text-action" id="viewHistoryBtn">View all</button></div><div id="recentScansList" class="recent-scans-list"></div></section>
+                        <section class="empty-illustration-card" id="fieldFocusCard"><i class="fa-solid fa-camera-retro"></i><h3>Keep your field in focus</h3><p>Upload a follow-up photo after treatment to track recovery over time.</p><button class="btn btn-secondary btn-sm" id="followUpScanBtn">Add follow-up</button></section>
+                    </div>
                 </section>
                 
                 <!-- View 1: Check Crop Health (Leaf Scan Upload) -->
@@ -215,7 +295,7 @@
                                 <div class="upload-prompt">
                                     <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
                                     <h3 data-translate="upload_prompt_title">Upload or drop photo of sick leaf</h3>
-                                    <p data-translate="upload_prompt_desc">Supports Tomato, Potato, Pepper, Corn, Apple, Grape, Peach, Squash, Strawberry</p>
+                                    <p data-translate="upload_prompt_desc">Upload any leaf photo. The model recognizes its 42 trained classes across Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Pepper, Potato, Raspberry, Rice, Soybean, Squash, Strawberry, and Tomato.</p>
                                     <button class="btn btn-primary" id="browseBtn" data-translate="browse_btn">Choose Photo</button>
                                 </div>
                                 <div class="upload-preview" id="uploadPreview" style="display: none;">
@@ -226,8 +306,15 @@
                                 </div>
                             </div>
                             
-                            <div class="form-group" style="margin-top: 1.5rem;">
-                                <label for="farmerNotes" data-translate="field_notes"><i class="fa-solid fa-pen"></i> Write any observations / notes (optional)</label>
+                            <p class="scan-model-note"><i class="fa-solid fa-circle-info"></i> Each photo is analyzed by the trained model. A leaf outside its trained crop and disease classes is marked as unsupported instead of being assigned a demo diagnosis.</p>
+                            
+                            <div class="form-group" style="margin-top: 1.25rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <label for="farmerNotes" data-translate="field_notes"><i class="fa-solid fa-pen"></i> Write observations or speak notes</label>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="voiceNotesBtn" title="Speak in Hindi or English" style="padding: 0.25rem 0.65rem; font-size: 0.8rem; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
+                                        <i class="fa-solid fa-microphone"></i> <span id="voiceNotesTxt">Speak Notes (Kisan Vani)</span>
+                                    </button>
+                                </div>
                                 <textarea id="farmerNotes" placeholder="e.g., Spots appearing on lower leaves after rain..."></textarea>
                             </div>
 
@@ -266,7 +353,11 @@
                                 <i class="fa-solid fa-hourglass-start animate-pulse"></i>
                                 <h3 data-translate="awaiting_input">Waiting for leaf photo</h3>
                                 <p data-translate="awaiting_input_desc">Upload a photo of the sick leaf and click the button to see the disease and the treatment.</p>
-                                <button class="btn btn-primary" onclick="document.querySelector('[data-view=scan]').click()"><i class="fa-solid fa-camera-retro"></i> Go to Leaf Scanner</button>
+                                <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center;">
+                                    <button class="btn btn-primary" onclick="document.querySelector('[data-view=scan]').click()"><i class="fa-solid fa-camera-retro"></i> Go to Leaf Scanner</button>
+                                    <button class="btn btn-secondary" id="loadDemoAdvisoryBtn" style="border-color: rgba(59, 130, 246, 0.5); color: #93c5fd;"><i class="fa-solid fa-flask"></i> Load Demo Report</button>
+                                    <button class="btn btn-secondary" id="directDemoWhatsAppBtn" style="background: rgba(34, 197, 94, 0.25); border-color: #22c55e; color: #86efac; font-weight: 700;"><i class="fa-brands fa-whatsapp"></i> ⚡ Test WhatsApp (To Phone)</button>
+                                </div>
                             </div>
 
                             <!-- Loading State -->
@@ -332,19 +423,179 @@
                                         <p><span data-translate="recheck_lbl">Check again after:</span> <strong id="advMonitoring">Every 7 days</strong></p>
                                     </div>
                                 </div>
+
+                                <!-- Explainable AI (Grad-CAM Saliency Map) -->
+                                <div class="adv-section" id="gradcamContainer" style="display: none; margin-top: 1.5rem; background: rgba(15, 23, 42, 0.5); border-radius: 12px; padding: 1.25rem; border: 1px solid rgba(16, 185, 129, 0.25);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                                        <h4><i class="fa-solid fa-brain"></i> Explainable AI (Grad-CAM Saliency)</h4>
+                                        <button class="btn btn-secondary btn-sm" id="toggleGradcamBtn" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;">
+                                            <i class="fa-solid fa-eye"></i> Show AI Attention Heatmap
+                                        </button>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.75rem;">
+                                        Inspect the exact convolutional feature activations that drove the model's diagnostic verdict.
+                                    </p>
+                                    <div id="gradcamBox" style="text-align: center; display: none;">
+                                        <img id="gradcamDisplayImg" src="" alt="AI Focus Heatmap" style="max-height: 280px; max-width: 100%; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+                                        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem;">
+                                            <i class="fa-solid fa-circle-check"></i> Warm color spots (Red / Yellow) highlight the pathological lesions identified on this leaf.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Smart Dosage & Acreage Calculator Card -->
+                                <div class="adv-section highlight-border" id="dosageCalculatorCard" style="background: rgba(6, 78, 59, 0.22); border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.35);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                                        <h4><i class="fa-solid fa-calculator"></i> Smart Dosage & Acreage Calculator</h4>
+                                        <span class="badge badge-emerald">Field Tailored</span>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 1rem;">
+                                        Calculate precise chemical grams, water liters, and pump tank measurements for your specific field acreage.
+                                    </p>
+                                    <div class="form-row">
+                                        <div class="form-group" style="flex: 1; min-width: 100px;">
+                                            <label for="landAreaInput"><i class="fa-solid fa-vector-square"></i> Land Area</label>
+                                            <input type="number" id="landAreaInput" min="0.1" step="0.1" value="1.0">
+                                        </div>
+                                        <div class="form-group" style="flex: 1; min-width: 120px;">
+                                            <label for="landUnitSelect"><i class="fa-solid fa-ruler-combined"></i> Unit</label>
+                                            <select id="landUnitSelect">
+                                                <option value="acre" selected>Acre</option>
+                                                <option value="bigha">Bigha (0.4 Acre)</option>
+                                                <option value="guntha">Guntha (0.025 Acre)</option>
+                                                <option value="hectare">Hectare (2.47 Acre)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" style="flex: 1.5; min-width: 170px;">
+                                            <label for="pumpTypeSelect"><i class="fa-solid fa-spray-can-sparkles"></i> Sprayer Pump</label>
+                                            <select id="pumpTypeSelect">
+                                                <option value="16" selected>16L Manual Knapsack</option>
+                                                <option value="20">20L Battery / Power Sprayer</option>
+                                                <option value="100">100L Tractor Boom Sprayer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="calc-results-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+                                        <div class="calc-box">
+                                            <span class="calc-lbl">Total Water</span>
+                                            <strong class="calc-val" id="calcWater">200 L</strong>
+                                        </div>
+                                        <div class="calc-box">
+                                            <span class="calc-lbl">Pump Fills</span>
+                                            <strong class="calc-val" id="calcTanks">12.5 Tanks</strong>
+                                        </div>
+                                        <div class="calc-box">
+                                            <span class="calc-lbl">Total Chemical</span>
+                                            <strong class="calc-val" id="calcChemical">400 g / ml</strong>
+                                        </div>
+                                        <div class="calc-box">
+                                            <span class="calc-lbl">Per Tank Mix</span>
+                                            <strong class="calc-val" id="calcPerTank">32 g (2 scoops)</strong>
+                                        </div>
+                                        <div class="calc-box">
+                                            <span class="calc-lbl">Estimated Cost</span>
+                                            <strong class="calc-val" id="calcCost">₹180 - ₹240</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stage-Wise 7-Day Treatment Plan & Tracker -->
+                                <div class="adv-section" id="treatmentTrackerCard" style="margin-top: 1.5rem; background: rgba(15, 23, 42, 0.4); border-radius: 12px; padding: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.08);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                                        <h4><i class="fa-solid fa-list-check"></i> 7-Day Recovery & Treatment Plan</h4>
+                                        <span class="badge badge-teal" id="treatmentProgressBadge">0% Complete</span>
+                                    </div>
+                                    <div class="progress-bar-container" style="background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 1rem;">
+                                        <div id="treatmentProgressBar" style="width: 0%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                                    </div>
+                                    <div class="tracker-steps" id="trackerStepsContainer" style="display: flex; flex-direction: column; gap: 0.65rem;">
+                                        <!-- Injected dynamically -->
+                                    </div>
+                                </div>
+
+                                <!-- Nearest Krishi Vigyan Kendra (KVK) Referral Card -->
+                                <div class="adv-section" id="kvkCard" style="margin-top: 1.5rem; background: rgba(30, 41, 59, 0.45); border-radius: 12px; padding: 1.25rem; border-left: 4px solid #3b82f6;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.4rem;">
+                                        <h4><i class="fa-solid fa-building-wheat"></i> Nearest Krishi Vigyan Kendra (KVK)</h4>
+                                        <span class="badge badge-indigo" id="kvkDistanceBadge">KVK Hub</span>
+                                    </div>
+                                    <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 0.6rem;">Official ICAR agricultural science center for lab diagnostics, seed certification, and expert referral.</p>
+                                    <div style="font-size: 0.88rem; line-height: 1.6;" id="kvkDetails">
+                                        <p><strong id="kvkName" style="color: #93c5fd;">ICAR-NDRI Krishi Vigyan Kendra</strong> (<span id="kvkDistKm">Nearby</span>)</p>
+                                        <p><i class="fa-solid fa-user-doctor"></i> <span id="kvkScientist">Dr. Ramesh Kumar (Senior Agronomist)</span></p>
+                                        <p><i class="fa-solid fa-phone"></i> <a href="tel:+911842259023" id="kvkPhoneLink" style="color: #60a5fa; font-weight: 600;">+91-184-2259023</a> &nbsp;|&nbsp; <i class="fa-solid fa-envelope"></i> <span id="kvkEmail">kvkkarnal@icar.gov.in</span></p>
+                                    </div>
+                                </div>
                                 
-                                <div class="advisory-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                                    <button class="btn btn-secondary" id="speakAdvisoryBtn" style="flex: 1;"><i class="fa-solid fa-volume-high"></i> <span data-translate="speak_advisory">Listen to Advisory (Voice)</span></button>
-                                    <button class="btn btn-warning" id="flagExpertBtn" style="flex: 1;"><i class="fa-solid fa-circle-exclamation"></i> Flag for Expert Review</button>
-                                    <button class="btn btn-secondary" id="downloadPDFBtn" style="display: none;"><i class="fa-solid fa-file-pdf"></i> Download</button>
+                                <!-- 1-Click Kisan Phone Alert Section (WhatsApp Advisory) -->
+                                <div class="adv-section" id="phoneAdvisoryCard" style="margin-top: 1.5rem; background: linear-gradient(135deg, rgba(20, 83, 45, 0.3), rgba(15, 23, 42, 0.65)); border-radius: 12px; padding: 1.25rem; border: 1px solid rgba(34, 197, 94, 0.4); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(34, 197, 94, 0.2); display: flex; align-items: center; justify-content: center; color: #4ade80; font-size: 1.25rem;">
+                                                <i class="fa-brands fa-whatsapp"></i>
+                                            </div>
+                                            <div>
+                                                <h4 style="margin: 0; color: #f8fafc; font-size: 1rem;"><i class="fa-brands fa-whatsapp" style="color: #4ade80; margin-right: 4px;"></i> 1-Click Kisan Phone Advisory (WhatsApp)</h4>
+                                                <p style="margin: 0; font-size: 0.78rem; color: #94a3b8;">Instantly send diagnosis, chemical dosage & natural remedies directly to your mobile via WhatsApp</p>
+                                            </div>
+                                        </div>
+                                        <span class="badge badge-emerald"><i class="fa-brands fa-whatsapp"></i> Free & Instant</span>
+                                    </div>
+
+                                    <!-- 1-Click Send Input Group -->
+                                    <div style="display: flex; gap: 0.6rem; align-items: stretch; flex-wrap: wrap; margin-top: 0.75rem;">
+                                        <div style="position: relative; flex: 1 1 220px; min-width: 180px;">
+                                            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem; font-weight: 600;">+91</span>
+                                            <input type="tel" id="smsDirectPhone" value="9876543210" maxlength="10" placeholder="10-digit Mobile Number" style="width: 100%; height: 44px; padding-left: 2.8rem; padding-right: 0.75rem; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: 8px; color: #f8fafc; font-size: 0.95rem; font-weight: 500; font-family: monospace;">
+                                        </div>
+                                        <button class="btn btn-primary" id="sendWhatsAppBtn" style="flex: 1 1 auto; height: 44px; padding: 0 1.5rem; background: linear-gradient(135deg, #16a34a, #15803d); border: 1px solid #4ade80; color: #ffffff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.6rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35); cursor: pointer; transition: all 0.2s ease;">
+                                            <i class="fa-brands fa-whatsapp" style="font-size: 1.25rem;"></i>
+                                            <span>Send Advisory to Phone (WhatsApp)</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Live Delivery Confirmation Box -->
+                                    <div id="smsDeliveryReceipt" style="display: none; margin-top: 1rem; background: rgba(6, 78, 59, 0.35); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 8px; padding: 0.9rem 1rem; transition: all 0.3s ease;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.4rem;">
+                                            <span style="color: #6ee7b7; font-weight: 600; font-size: 0.88rem;" id="smsReceiptTitle"><i class="fa-brands fa-whatsapp"></i> WhatsApp Advisory Dispatched!</span>
+                                            <span style="font-size: 0.75rem; color: #a7f3d0; background: rgba(16, 185, 129, 0.2); padding: 0.15rem 0.5rem; border-radius: 4px;" id="smsReceiptId">Ref: WA-IND-OK</span>
+                                        </div>
+                                        <div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;">
+                                            <p style="margin: 0.2rem 0;"><strong>Recipient:</strong> <span id="smsReceiptPhone" style="color: #93c5fd;">+91-9876543210</span> &nbsp;|&nbsp; <strong>Channel:</strong> <span id="smsReceiptGateway" style="color: #6ee7b7;">WhatsApp Direct Handset Protocol</span></p>
+                                            <p style="margin: 0.2rem 0; font-size: 0.78rem; color: #94a3b8;" id="smsReceiptNote"></p>
+                                            <p style="margin: 0.3rem 0 0 0; background: rgba(0, 0, 0, 0.35); padding: 0.5rem 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; color: #e2e8f0; border-left: 3px solid #10b981; white-space: pre-wrap;" id="smsReceiptText">
+                                                Advisory message sent to WhatsApp...
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="advisory-actions" style="margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                                    <button class="btn btn-secondary" id="speakAdvisoryBtn" style="flex: 1 1 180px;"><i class="fa-solid fa-volume-high"></i> <span data-translate="speak_advisory">Listen (Voice)</span></button>
+                                    <button class="btn btn-primary" id="downloadPDFBtn" style="flex: 1 1 230px; background: linear-gradient(135deg, #059669, #0d9488); border-color: #10b981;"><i class="fa-solid fa-file-shield"></i> <span>PMFBY Claim PDF</span></button>
+                                    <button class="btn btn-warning" id="flagExpertBtn" style="flex: 1 1 160px;"><i class="fa-solid fa-circle-exclamation"></i> Flag Expert Review</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
+                <section id="view-history" class="view-section">
+                    <div class="card glass"><div class="card-header"><h2><i class="fa-solid fa-clock-rotate-left"></i> My Scan History</h2><span class="badge badge-emerald" id="historyCount">0 scans</span></div><div class="card-content"><div id="scanHistoryList" class="history-list"></div></div></div>
+                    <div class="treatment-tracker-card"><div><p class="eyebrow">RECOVERY TRACKER</p><h3>7-day treatment follow-up</h3><p>Track each action and upload a fresh leaf photo when you are ready.</p></div><div class="tracker-steps"><label><input type="checkbox" class="tracker-check"> Day 1: Apply recommended treatment</label><label><input type="checkbox" class="tracker-check"> Day 3: Inspect affected leaves</label><label><input type="checkbox" class="tracker-check"> Day 7: Upload a follow-up scan</label></div></div>
+                </section>
+
                 <!-- View 1.8: Weather Risk Forecast & Sensors -->
                 <section id="view-alerts" class="view-section">
+                    <div id="outbreakAlertBanner" class="outbreak-banner" style="display: none; margin-bottom: 1.5rem;">
+                        <div class="banner-icon"><i class="fa-solid fa-triangle-exclamation fa-beat-fade"></i></div>
+                        <div class="banner-content">
+                            <strong id="bannerTitle">Regional Disease Alert</strong>
+                            <p id="bannerDesc">High incidence of disease reported in nearby fields.</p>
+                            <span class="banner-tag" id="bannerTag">Preventive Advisory Active</span>
+                        </div>
+                        <button class="banner-action-btn" id="bannerActionBtn"><i class="fa-solid fa-map-location-dot"></i> Inspect Map Hotspots</button>
+                    </div>
                     <div class="grid-2col">
                         <!-- Sensor Input Card -->
                         <div class="card glass">
@@ -558,6 +809,7 @@
 
                 <!-- View 3: Official Analytics & Expert Validation -->
                 <section id="view-official" class="view-section">
+                    <div class="admin-toolbar"><div><p class="eyebrow">OFFICER WORKSPACE</p><h2>Monitor field reports</h2></div><div class="admin-filter-chips"><button class="admin-filter-chip active" data-admin-filter="all">All reports</button><button class="admin-filter-chip" data-admin-filter="Unverified">Needs review</button><button class="admin-filter-chip" data-admin-filter="High">High risk</button></div></div>
                     <!-- Dashboard Indicators -->
                     <div class="indicators-row">
                         <div class="indicator-card glass">
@@ -657,6 +909,7 @@
                                 <span id="authToggleText">New Farmer?</span> 
                                 <a href="#" id="authToggleLink">Register here</a>
                             </div>
+                            <a class="auth-back-link" href="/"><i class="fa-solid fa-arrow-left"></i> Back to landing page</a>
                         </div>
                     </div>
                 </section>
@@ -708,6 +961,13 @@
         </main>
     </div>
 
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <a href="#" class="mobile-nav-item" data-mobile-view="home"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="#" class="mobile-nav-item" data-mobile-view="scan"><i class="fa-solid fa-camera"></i><span>Scan</span></a>
+        <a href="#" class="mobile-nav-item" data-mobile-view="history"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></a>
+        <a href="#" class="mobile-nav-item" data-mobile-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
+    </nav>
+
     <!-- Notification Toast -->
     <div id="toast" class="toast">
         <i class="fa-solid fa-circle-check toast-icon"></i>
@@ -721,6 +981,6 @@
     <script src="js/config.js"></script>
     
     <!-- Custom JS App -->
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=14"></script>
 </body>
 </html>

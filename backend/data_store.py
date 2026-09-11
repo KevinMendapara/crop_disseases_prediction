@@ -3,6 +3,7 @@ import json
 import uuid
 from datetime import datetime
 from threading import Lock
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class DataStore:
     def __init__(self, data_dir=None):
@@ -14,11 +15,13 @@ class DataStore:
         os.makedirs(self.data_dir, exist_ok=True)
         self.reports_file = os.path.join(self.data_dir, "reports.json")
         self.sensors_file = os.path.join(self.data_dir, "sensors.json")
+        self.users_file = os.path.join(self.data_dir, "users.json")
         self.lock = Lock()
         
         # Initialize files with empty arrays if they don't exist
         self._init_file(self.reports_file, [])
         self._init_file(self.sensors_file, [])
+        self._init_file(self.users_file, [])
         
         # Seed default reports if file is empty
         self._seed_default_data()
@@ -115,5 +118,58 @@ class DataStore:
         self._write_json(self.sensors_file, logs)
         return log
 
+    def get_all_users(self):
+        return self._read_json(self.users_file)
+
+    def get_user_by_email(self, email):
+        if not email:
+            return None
+        users = self.get_all_users()
+        clean_email = email.strip().lower()
+        for u in users:
+            if u.get("email", "").lower() == clean_email:
+                return u
+        return None
+
+    def add_user(self, user_data):
+        email = user_data.get("email", "").strip().lower()
+        if not email:
+            return None, "Email is required"
+        if self.get_user_by_email(email):
+            return None, "An account with this email already exists"
+
+        password = user_data.get("password", "")
+        if not password or len(password) < 6:
+            return None, "Password must be at least 6 characters long"
+
+        users = self.get_all_users()
+        user = {
+            "id": str(uuid.uuid4()),
+            "email": email,
+            "password_hash": generate_password_hash(password),
+            "full_name": user_data.get("full_name", "").strip() or "Farmer Friend",
+            "village": user_data.get("village", "").strip() or "Local Village",
+            "district": user_data.get("district", "").strip() or "Local District",
+            "role": user_data.get("role", "farmer"),
+            "created_at": datetime.utcnow().isoformat() + "Z"
+        }
+        users.append(user)
+        if self._write_json(self.users_file, users):
+            clean_user = {k: v for k, v in user.items() if k != "password_hash"}
+            return clean_user, None
+        return None, "Failed to save user"
+
+    def authenticate_user(self, email, password):
+        user = self.get_user_by_email(email)
+        if not user:
+            return None, "Account not found with this email"
+        if not check_password_hash(user.get("password_hash", ""), password):
+            return None, "Invalid password"
+        clean_user = {k: v for k, v in user.items() if k != "password_hash"}
+        return clean_user, None
+
     def _seed_default_data(self):
         pass
+
+
+

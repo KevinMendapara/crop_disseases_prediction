@@ -1,0 +1,23 @@
+[
+    {
+        "id": "90a077e8-1fb9-421a-ab4d-723c7a019356",
+        "timestamp": "2026-08-27T17:06:41.987874Z",
+        "author_name": "Test Farmer",
+        "author_email": "test@farmer.com",
+        "content": "Checking crops in section B. All tomato leaves looking very healthy this morning!",
+        "crop": "Tomato",
+        "disease": "Healthy",
+        "image_url": "",
+        "likes": [],
+        "comments": [
+            {
+                "id": "6eabf8e8-a7d7-4713-845c-33a75d7afd53",
+                "timestamp": "2026-08-27T17:06:50.142441Z",
+                "author_name": "Reviewer Farmer",
+                "author_email": "reviewer@farmer.com",
+                "content": "Thanks for sharing! Glad to hear."
+            }
+        ],
+        "reports": []
+    }
+]

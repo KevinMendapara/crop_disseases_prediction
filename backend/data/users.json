@@ -1,0 +1,72 @@
+[
+    {
+        "id": "db64ae9a-657c-4f40-bb57-190afdd5e55a",
+        "email": "ram@farmer.com",
+        "password_hash": "scrypt:32768:8:1$2YEBA2xt7PBbmWzV$764b76f94c02dbb306957a855e5a0e34c7281d128a46c0c8f1cfc9c004e32f37a1e2a0ee82a2e1e8276bfaaa9ce8f9b61e992b2d75b093c85a449d9e7e18b275",
+        "full_name": "Ram Singh",
+        "village": "Kila Zafargarh",
+        "district": "Jind",
+        "role": "farmer",
+        "created_at": "2026-09-06T15:19:40.163604Z"
+    },
+    {
+        "id": "a309f90f-fc6d-4270-af61-6e2138a9cf4e",
+        "email": "test_farmer_1788708049@agroshield.org",
+        "password_hash": "scrypt:32768:8:1$Rx62kcX39wpI7uGB$b9a9c2bdac33581c04a4d5594a4d7827e8f065ce06e45b3fc7ad9765d132d23e7f1e9a442ef0649a5536d8210c109a6b836ad46eaf3c67fedbc2155c15c63345",
+        "full_name": "Test Farmer",
+        "village": "Green Field",
+        "district": "Faridabad",
+        "role": "farmer",
+        "created_at": "2026-09-06T15:20:51.190799Z"
+    },
+    {
+        "id": "d7b8f542-87ab-4128-8156-390fa1a225af",
+        "email": "kevinmendapara54@gmail.com",
+        "password_hash": "scrypt:32768:8:1$5SXo6LJH7SbPR9Mo$6d9b2cb64e29203c2e9cd45ab8de43f39f8ed2600a9c6c0cf29e091a24f005148d600e0b6a81146b976ad9f1bcabbfc5010628997c890f3e414d75a46adcabd4",
+        "full_name": "Kevin",
+        "village": "Santacruz",
+        "district": "Andheri",
+        "role": "farmer",
+        "created_at": "2026-09-06T15:22:19.961066Z"
+    },
+    {
+        "id": "d02109cb-7c4d-4950-8f7c-1c59fc9c2580",
+        "email": "test_farmer_1788965842@agroshield.org",
+        "password_hash": "scrypt:32768:8:1$7JvDI3uxlTrjugNf$166aa7546352b549654b5a349661a3a1a5185beffa67ce7798245677ea7f86c372668218913b09b7d5b57f2f34d2b9621555fe61008a842203f319e0ea5940d2",
+        "full_name": "Test Farmer",
+        "village": "Green Field",
+        "district": "Faridabad",
+        "role": "farmer",
+        "created_at": "2026-09-09T14:57:24.282864Z"
+    },
+    {
+        "id": "48254cc5-c0e5-4abf-ba91-a54b5d9030cb",
+        "email": "test_farmer_1788966305@agroshield.org",
+        "password_hash": "scrypt:32768:8:1$FsXZblK3tePgeCNv$2901f83f5dc4ab85f8f55cef5a1f4bad90ba091cf23f46f557f75427c701f5d624d4c29e3afba286c7a8f8dfd470a246f54618e8371225f80309eb43466062e0",
+        "full_name": "Test Farmer",
+        "village": "Green Field",
+        "district": "Faridabad",
+        "role": "farmer",
+        "created_at": "2026-09-09T15:05:08.065906Z"
+    },
+    {
+        "id": "08f299b6-e41d-4a7f-99a4-39737a56e89b",
+        "email": "test_farmer_1788967058@agroshield.org",
+        "password_hash": "scrypt:32768:8:1$t7FEm2sFRm3Ejfo8$a3c3278f9d99c1ec5716474825f4034ab8cd4813d1580bce4713a6d4bae03c47c56b7272f3744e8d49231ad83c29111e19171749d5fbf0f6ffa6069368e71c84",
+        "full_name": "Test Farmer",
+        "village": "Green Field",
+        "district": "Faridabad",
+        "role": "farmer",
+        "created_at": "2026-09-09T15:17:40.839446Z"
+    },
+    {
+        "id": "9d5db1fb-389e-4e1a-b9c9-086fb43893c6",
+        "email": "meetparikh522@gmail.com",
+        "password_hash": "scrypt:32768:8:1$vsE8cWWFlnwg7NV6$52d8b9c2942281b25a22a78749aec53bf252e0f6e5defcbc15fcb4e753a9df7833d5af7371c49be50fa5917f5db81f34808fa2b7bdad4d643fe421a0fffa2fb7",
+        "full_name": "meet",
+        "village": "borivali",
+        "district": "mumbai",
+        "role": "farmer",
+        "created_at": "2026-09-11T17:32:32.298062Z"
+    }
+]
