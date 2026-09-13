@@ -1,5 +1,7 @@
 import os
 import json
+import tempfile
+import zipfile
 import numpy as np
 from PIL import Image
 import tensorflow as tf
@@ -46,9 +48,48 @@ class ModelHelper:
                 self.model = tf.keras.models.load_model(self.model_path)
                 print("TensorFlow model loaded successfully.")
             except Exception as e:
-                print(f"Error loading TensorFlow model: {e}")
+                # Models saved by a newer Keras release can have a config the
+                # deployed runtime cannot deserialize.  The archive still
+                # contains standard H5 weights, so reconstruct the documented
+                # MobileNetV2 classifier and load those weights directly.
+                print(f"Standard model loading failed: {e}")
+                try:
+                    self.model = self._load_model_from_archive_weights()
+                    print("TensorFlow model loaded from archive weights.")
+                except Exception as fallback_error:
+                    self.model = None
+                    print(f"Error loading TensorFlow model weights: {fallback_error}")
         else:
             print("Model file not found. Inference will not work until training completes.")
+
+    def _load_model_from_archive_weights(self):
+        """Load weights without deserializing the version-sensitive model config."""
+        base_model = tf.keras.applications.MobileNetV2(
+            input_shape=(128, 128, 3), include_top=False, weights=None
+        )
+        base_model.trainable = False
+        classification_head = tf.keras.Sequential([
+            tf.keras.layers.InputLayer(input_shape=(4, 4, 1280)),
+            tf.keras.layers.GlobalAveragePooling2D(),
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(len(self.class_names), activation="softmax"),
+        ])
+        model = tf.keras.Sequential([base_model, classification_head])
+        model.build((None, 128, 128, 3))
+
+        weights_path = None
+        try:
+            with zipfile.ZipFile(self.model_path) as archive:
+                with archive.open("model.weights.h5") as source:
+                    with tempfile.NamedTemporaryFile(suffix=".weights.h5", delete=False) as weights_file:
+                        weights_file.write(source.read())
+                        weights_path = weights_file.name
+            model.load_weights(weights_path)
+            return model
+        finally:
+            if weights_path and os.path.exists(weights_path):
+                os.remove(weights_path)
 
     def check_is_leaf(self, file_stream):
         try:
