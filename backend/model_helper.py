@@ -179,7 +179,11 @@ class ModelHelper:
             feature_gap = np.mean(feature_maps, axis=(1, 2))[0]
             feature_norm = feature_gap / (np.linalg.norm(feature_gap) + 1e-8)
             
-            # Check similarity if centroids exist
+            # Keep centroid similarity only as diagnostic information.  The
+            # centroids were generated in a different feature pass and are not
+            # calibrated as a rejection classifier.  Using them as a hard gate
+            # rejects valid PlantVillage photos before the trained 42-class
+            # classifier is allowed to make its prediction.
             if self.centroids:
                 max_sim = -1.0
                 best_class = None
@@ -192,16 +196,6 @@ class ModelHelper:
                 
                 print(f"Centroid Similarity Check: Best similarity = {max_sim:.3f} to {best_class}")
                 
-                # Threshold check: if similarity is below 0.70, classify as unsupported crop
-                if max_sim < 0.70:
-                    print(f"OOD Outbreak: Similarity {max_sim:.3f} < 0.70. Reverting to unsupported crop.")
-                    res_class = "Unknown___Unsupported_Crop"
-                    res_conf = float(max_sim * 100.0)
-                    gradcam = None
-                    if return_gradcam:
-                        return res_class, res_conf, gradcam
-                    return res_class, res_conf
-            
             # Predict category
             predictions = self.model.predict(batch, verbose=0)
             class_idx = int(np.argmax(predictions[0]))
