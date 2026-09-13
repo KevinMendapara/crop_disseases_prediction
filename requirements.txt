@@ -1,7 +1,10 @@
 Flask
 numpy
 pillow
-tensorflow-cpu==2.15.0
+# The bundled .keras model was saved by Keras 3.  TensorFlow 2.15 ships
+# Keras 2 and cannot deserialize its InputLayer configuration, causing every
+# deployed prediction to fall back to Unknown.  TensorFlow 2.16 ships Keras 3.
+tensorflow-cpu==2.16.1
 gunicorn; sys_platform != 'win32'
 flask-cors
 
