@@ -2714,7 +2714,8 @@ body.dark-theme select:focus {
 .orbit-one { width: 88%; transform: rotateX(64deg) rotateZ(-18deg); }
 .orbit-two { width: 64%; border-color: rgba(255,255,255,.78); transform: rotateX(64deg) rotateZ(38deg); animation-delay: -5s; }
 
-.leaf-sculpture { position: relative; z-index: 2; width: min(20rem, 56vw); aspect-ratio: .78; border-radius: 82% 18% 82% 18%; background: linear-gradient(135deg, #b9e6a6 0%, #76ba70 45%, #36765b 100%); transform: rotate(-34deg) rotateX(14deg) rotateY(-17deg); box-shadow: inset 1.35rem 1rem 2rem rgba(255,255,255,.32), inset -1.4rem -1.7rem 2.7rem rgba(8, 69, 45, .24), 1.8rem 2.4rem 3.5rem rgba(31, 89, 57, .24); animation: leaf-float 6.5s ease-in-out infinite; }
+.landing-visual > img.farmer-hero-image { position: relative; z-index: 2; width: min(100%, 26rem); aspect-ratio: .82; object-fit: cover; object-position: 53% center; border: .7rem solid rgba(251, 248, 234, .82); border-radius: 2.2rem; box-shadow: 1.6rem 2.2rem 4rem rgba(20, 73, 46, .24), inset 0 0 0 1px rgba(255,255,255,.5); transform: rotateY(-8deg) rotateX(3deg); animation: farmer-float 7.5s ease-in-out infinite; }
+.leaf-sculpture { position: absolute; z-index: 4; right: -1%; bottom: 0; width: clamp(7.75rem, 17vw, 10.25rem); aspect-ratio: .78; border-radius: 82% 18% 82% 18%; background: linear-gradient(135deg, #b9e6a6 0%, #76ba70 45%, #36765b 100%); transform: rotate(-34deg) rotateX(14deg) rotateY(-17deg); box-shadow: inset 1.35rem 1rem 2rem rgba(255,255,255,.32), inset -1.4rem -1.7rem 2.7rem rgba(8, 69, 45, .24), 1.8rem 2.4rem 3.5rem rgba(31, 89, 57, .24); animation: leaf-float 6.5s ease-in-out infinite; }
 .leaf-sculpture::after { position: absolute; content: ""; width: 78%; height: .38rem; left: 12%; top: 50%; border-radius: 999px; background: rgba(231, 255, 210, .58); transform: rotate(-14deg); box-shadow: 0 1px 2px rgba(17, 75, 43, .18); }
 .leaf-vein { position: absolute; z-index: 1; height: .19rem; border-radius: 999px; background: rgba(229,255,207,.48); transform-origin: left center; }
 .leaf-vein-main { width: 68%; left: 18%; top: 49%; transform: rotate(-14deg); }
@@ -2723,8 +2724,8 @@ body.dark-theme select:focus {
 
 .scan-card, .landing-stat, .confidence-card { border: 1px solid rgba(255,255,255,.78); background: rgba(255,255,255,.66); box-shadow: 0 1.2rem 2.8rem rgba(20, 70, 45, .13); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
 .scan-card { top: 15%; left: -2%; }
-.landing-stat { right: 0; bottom: 18%; color: #effff0; background: rgba(24,77,61,.89); }
-.confidence-card { position: absolute; z-index: 3; right: 4%; top: 11%; display: grid; grid-template-columns: 1fr auto; gap: .1rem .8rem; min-width: 8.6rem; padding: .7rem .85rem; border-radius: .9rem; color: #316548; animation: card-float 7s ease-in-out infinite; }
+.landing-stat { right: -3%; bottom: 19%; color: #effff0; background: rgba(24,77,61,.89); }
+.confidence-card { position: absolute; z-index: 3; right: -2%; top: 11%; display: grid; grid-template-columns: 1fr auto; gap: .1rem .8rem; min-width: 8.6rem; padding: .7rem .85rem; border-radius: .9rem; color: #316548; animation: card-float 7s ease-in-out infinite; }
 .confidence-card span { grid-column: 1 / -1; color: #73877b; font-size: .6rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .confidence-card strong { font-family: var(--font-heading); font-size: 1.05rem; }
 .confidence-card i { align-self: center; color: #54a972; font-size: .85rem; }
@@ -2732,11 +2733,12 @@ body.dark-theme select:focus {
 .floating-card-two { animation: card-float 8s ease-in-out infinite -3s; }
 
 @keyframes leaf-float { 0%, 100% { transform: translateY(0) rotate(-34deg) rotateX(14deg) rotateY(-17deg); } 50% { transform: translateY(-1.05rem) rotate(-30deg) rotateX(17deg) rotateY(-13deg); } }
+@keyframes farmer-float { 0%, 100% { transform: translateY(0) rotateY(-8deg) rotateX(3deg); } 50% { transform: translateY(-.75rem) rotateY(-6deg) rotateX(4deg); } }
 @keyframes card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.7rem); } }
 @keyframes orbit-drift { 0%, 100% { margin-top: 0; } 50% { margin-top: -.65rem; } }
-@media (prefers-reduced-motion: reduce) { .leaf-sculpture, .landing-orbit, .floating-card-one, .floating-card-two, .confidence-card { animation: none; } }
-@media (max-width: 820px) { .landing-hero { grid-template-columns: 1fr; } .landing-visual { min-height: 30rem; } .leaf-sculpture { width: 17rem; } }
-@media (max-width: 510px) { .landing-visual { min-height: 24rem; } .leaf-sculpture { width: 13.5rem; } .confidence-card { top: 5%; right: 1%; transform: scale(.86); transform-origin: right top; } .scan-card { top: 19%; } }
+@media (prefers-reduced-motion: reduce) { .leaf-sculpture, .landing-orbit, .farmer-hero-image, .floating-card-one, .floating-card-two, .confidence-card { animation: none; } }
+@media (max-width: 820px) { .landing-hero { grid-template-columns: 1fr; } .landing-visual { min-height: 30rem; } .landing-visual > img.farmer-hero-image { width: min(100%, 23rem); } .leaf-sculpture { width: 9rem; right: 3%; } }
+@media (max-width: 510px) { .landing-visual { min-height: 24rem; } .landing-visual > img.farmer-hero-image { width: 14rem; border-width: .55rem; border-radius: 1.6rem; } .leaf-sculpture { width: 6.9rem; right: 1%; bottom: 1%; } .confidence-card { top: 5%; right: 1%; transform: scale(.86); transform-origin: right top; } .scan-card { top: 19%; } }
 
 .stage-pills-grid {
     display: grid;
