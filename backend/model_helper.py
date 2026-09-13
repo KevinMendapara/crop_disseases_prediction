@@ -17,6 +17,7 @@ class ModelHelper:
         self.class_names_path = os.path.join(self.backend_dir, "class_names.json")
         
         self.model = None
+        self.model_load_error = None
         self.class_names = []
         
         self.load_model_and_classes()
@@ -58,6 +59,7 @@ class ModelHelper:
                     print("TensorFlow model loaded from archive weights.")
                 except Exception as fallback_error:
                     self.model = None
+                    self.model_load_error = str(fallback_error)
                     print(f"Error loading TensorFlow model weights: {fallback_error}")
         else:
             print("Model file not found. Inference will not work until training completes.")

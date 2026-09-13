@@ -340,6 +340,7 @@ def debug_model():
         
     return jsonify({
         "model_loaded": model_helper.model is not None,
+        "model_load_error": model_helper.model_load_error,
         "model_exists": model_exists,
         "classes_exists": classes_exists,
         "files_in_backend": files,
