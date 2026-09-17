@@ -38,6 +38,13 @@
     <link rel="stylesheet" href="css/style.css?v=14">
 </head>
 <body>
+    <div class="agro-preloader" id="agroPreloader" role="status" aria-live="polite" aria-label="Preparing your crop health workspace">
+        <div class="preloader-sun" aria-hidden="true"></div><div class="preloader-cloud preloader-cloud-left" aria-hidden="true"></div><div class="preloader-cloud preloader-cloud-right" aria-hidden="true"></div>
+        <div class="preloader-field" aria-hidden="true"><span class="field-row field-row-one"></span><span class="field-row field-row-two"></span><span class="field-row field-row-three"></span></div>
+        <div class="preloader-crops" aria-hidden="true"><span class="crop crop-one"><i class="fa-solid fa-wheat-awn"></i></span><span class="crop crop-two"><i class="fa-solid fa-leaf"></i></span><span class="crop crop-three"><i class="fa-solid fa-seedling"></i></span><span class="crop crop-four"><i class="fa-solid fa-wheat-awn"></i></span><span class="crop crop-five"><i class="fa-solid fa-leaf"></i></span></div>
+        <figure class="preloader-farmer" aria-hidden="true"><img src="images/farmer_hero.jpg" alt=""><figcaption><i class="fa-solid fa-heart-pulse"></i> Field health ready</figcaption></figure>
+        <div class="preloader-content"><div class="preloader-mark" aria-hidden="true"><i class="fa-solid fa-seedling"></i></div><p class="preloader-kicker">AGRICULTURE INTELLIGENCE</p><h1>AgroShield <em>AI</em></h1><p class="preloader-message">Preparing your crop health workspace</p><div class="preloader-progress" aria-hidden="true"><span></span></div></div>
+    </div>
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
@@ -72,6 +79,7 @@
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>My Scan History</span>
                 </a>
+
 
                 <!-- Extension Officer Admin Panel Links -->
                 <a href="#" class="nav-item admin-only" data-view="official" style="display: none;">
@@ -117,6 +125,7 @@
                     </a>
                 </div>
 
+
                 <!-- Language Selector -->
                 <div class="lang-selector">
                     <i class="fa-solid fa-globe"></i>
@@ -135,6 +144,7 @@
                 </div>
             </div>
         </aside>
+
 
         <!-- Main Workspace -->
         <main class="workspace">
@@ -222,6 +232,7 @@
                 </div>
             </header>
 
+
             <!-- Views Container -->
             <div class="content-body" id="workspaceStart">
                 <!-- View 0: Home Landing Portal -->
@@ -230,6 +241,7 @@
                         <h2 class="hero-title" data-translate="welcome_title">Welcome to AgroShield Portal</h2>
                         <p class="hero-subtitle" data-translate="welcome_desc">Your digital crop doctor. Get instant leaf diagnostics and regional disease risk metrics in your language.</p>
                     </div>
+
 
                     <div class="home-grid">
                         <div class="home-card" id="homeDiagCard">
@@ -248,6 +260,7 @@
                             <p class="home-card-desc" data-translate="card_dash_desc">View aggregated village crop reports, microclimate metrics, and specialist queues.</p>
                         </div>
                     </div>
+
 
                     <!-- Step-by-Step Instructions -->
                     <div class="guide-section">
@@ -318,6 +331,7 @@
                                 <textarea id="farmerNotes" placeholder="e.g., Spots appearing on lower leaves after rain..."></textarea>
                             </div>
 
+
                             <div class="form-row" style="margin-top: 1rem;">
                                 <div class="form-group">
                                     <label for="latInput"><i class="fa-solid fa-location-dot"></i> Latitude</label>
@@ -338,6 +352,7 @@
                         </div>
                     </div>
                 </section>
+
 
                 <!-- View 1.5: Simple Treatment Guide -->
                 <section id="view-treatment" class="view-section">
@@ -360,12 +375,14 @@
                                 </div>
                             </div>
 
+
                             <!-- Loading State -->
                             <div class="empty-state" id="advisoryLoading" style="display: none;">
                                 <i class="fa-solid fa-circle-notch fa-spin spinner"></i>
                                 <h3 data-translate="analyzing_foliage">Analyzing leaf pattern...</h3>
                                 <p data-translate="matching_features">Checking patterns with our plant database...</p>
                             </div>
+
 
                             <!-- Results State -->
                             <div id="advisoryContent" style="display: none;">
@@ -381,6 +398,7 @@
                                     </div>
                                 </div>
 
+
                                 <div class="advisory-sections">
                                     <!-- Description -->
                                     <div class="adv-section">
@@ -394,17 +412,20 @@
                                         <p id="advSymptoms">Concentric target board pattern starting on lower foliage.</p>
                                     </div>
 
+
                                     <!-- Natural / Organic Prevention Tips -->
                                     <div class="adv-section">
                                         <h4><i class="fa-solid fa-arrows-spin"></i> <span data-translate="cultural_hdr">Natural / Organic Prevention Tips</span></h4>
                                         <p id="advPrevention">Rotate crops out of Solanaceae family for 3 years. Stake plants.</p>
                                     </div>
 
+
                                     <!-- Biological Control / Organic Remedies -->
                                     <div class="adv-section">
                                         <h4><i class="fa-solid fa-leaf"></i> <span data-translate="biological_hdr">Biological Treatment (Natural Remedies)</span></h4>
                                         <p id="advBiological">Apply bio-agents like Bacillus subtilis.</p>
                                     </div>
+
 
                                     <!-- Chemical Control -->
                                     <div class="adv-section">
@@ -417,12 +438,14 @@
                                         </div>
                                     </div>
 
+
                                     <!-- Follow-up Monitoring -->
                                     <div class="adv-section highlight-border">
                                         <h4><i class="fa-solid fa-calendar-check"></i> <span data-translate="monitoring_hdr">Regular Inspection & Watch Checklist</span></h4>
                                         <p><span data-translate="recheck_lbl">Check again after:</span> <strong id="advMonitoring">Every 7 days</strong></p>
                                     </div>
                                 </div>
+
 
                                 <!-- Explainable AI (Grad-CAM Saliency Map) -->
                                 <div class="adv-section" id="gradcamContainer" style="display: none; margin-top: 1.5rem; background: rgba(15, 23, 42, 0.5); border-radius: 12px; padding: 1.25rem; border: 1px solid rgba(16, 185, 129, 0.25);">
@@ -442,6 +465,7 @@
                                         </p>
                                     </div>
                                 </div>
+
 
                                 <!-- Smart Dosage & Acreage Calculator Card -->
                                 <div class="adv-section highlight-border" id="dosageCalculatorCard" style="background: rgba(6, 78, 59, 0.22); border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.35);">
@@ -499,6 +523,7 @@
                                     </div>
                                 </div>
 
+
                                 <!-- Stage-Wise 7-Day Treatment Plan & Tracker -->
                                 <div class="adv-section" id="treatmentTrackerCard" style="margin-top: 1.5rem; background: rgba(15, 23, 42, 0.4); border-radius: 12px; padding: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.08);">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -512,6 +537,7 @@
                                         <!-- Injected dynamically -->
                                     </div>
                                 </div>
+
 
                                 <!-- Nearest Krishi Vigyan Kendra (KVK) Referral Card -->
                                 <div class="adv-section" id="kvkCard" style="margin-top: 1.5rem; background: rgba(30, 41, 59, 0.45); border-radius: 12px; padding: 1.25rem; border-left: 4px solid #3b82f6;">
@@ -542,6 +568,7 @@
                                         <span class="badge badge-emerald"><i class="fa-brands fa-whatsapp"></i> Free & Instant</span>
                                     </div>
 
+
                                     <!-- 1-Click Send Input Group -->
                                     <div style="display: flex; gap: 0.6rem; align-items: stretch; flex-wrap: wrap; margin-top: 0.75rem;">
                                         <div style="position: relative; flex: 1 1 220px; min-width: 180px;">
@@ -553,6 +580,7 @@
                                             <span>Send Advisory to Phone (WhatsApp)</span>
                                         </button>
                                     </div>
+
 
                                     <!-- Live Delivery Confirmation Box -->
                                     <div id="smsDeliveryReceipt" style="display: none; margin-top: 1rem; background: rgba(6, 78, 59, 0.35); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 8px; padding: 0.9rem 1rem; transition: all 0.3s ease;">
@@ -580,10 +608,12 @@
                     </div>
                 </section>
 
+
                 <section id="view-history" class="view-section">
                     <div class="card glass"><div class="card-header"><h2><i class="fa-solid fa-clock-rotate-left"></i> My Scan History</h2><span class="badge badge-emerald" id="historyCount">0 scans</span></div><div class="card-content"><div id="scanHistoryList" class="history-list"></div></div></div>
                     <div class="treatment-tracker-card"><div><p class="eyebrow">RECOVERY TRACKER</p><h3>7-day treatment follow-up</h3><p>Track each action and upload a fresh leaf photo when you are ready.</p></div><div class="tracker-steps"><label><input type="checkbox" class="tracker-check"> Day 1: Apply recommended treatment</label><label><input type="checkbox" class="tracker-check"> Day 3: Inspect affected leaves</label><label><input type="checkbox" class="tracker-check"> Day 7: Upload a follow-up scan</label></div></div>
                 </section>
+
 
                 <!-- View 1.8: Weather Risk Forecast & Sensors -->
                 <section id="view-alerts" class="view-section">
@@ -636,6 +666,7 @@
                             </div>
                         </div>
 
+
                         <!-- Risk Forecasting Card -->
                         <div class="card glass">
                             <div class="card-header">
@@ -667,6 +698,7 @@
                         </div>
                     </div>
                 </section>
+
 
                 <!-- View 2: Geospatial Hotspot Map -->
                 <section id="view-map" class="view-section">
@@ -723,6 +755,7 @@
                                         </div>
                                     </div>
 
+
                                     <div class="geo-section-title">Soil Attributes</div>
                                     <div class="geo-metrics-grid">
                                         <div class="geo-metric-card">
@@ -755,6 +788,7 @@
                                         </div>
                                     </div>
 
+
                                     <div class="geo-section-title">Nutrients (NPK)</div>
                                     <div class="geo-nutrients-container">
                                         <div class="nutrient-progress">
@@ -779,6 +813,7 @@
                                             <div class="progress-track"><div id="geo-k-bar" class="progress-fill k-fill"></div></div>
                                         </div>
                                     </div>
+
 
                                     <div class="geo-section-title">Geographical Details</div>
                                     <div class="geo-metrics-grid">
@@ -806,6 +841,7 @@
                         </div>
                     </div>
                 </section>
+
 
                 <!-- View 3: Official Analytics & Expert Validation -->
                 <section id="view-official" class="view-section">
@@ -842,6 +878,7 @@
                         </div>
                     </div>
 
+
                     <!-- Charts Row -->
                     <div class="grid-2col" style="margin-top: 1.5rem;">
                         <div class="card glass">
@@ -862,7 +899,9 @@
                         </div>
                     </div>
 
+
                 </section>
+
 
                 <!-- View 4: Authentication (Farmer Login / Register) -->
                 <section id="view-auth" class="view-section">
@@ -914,6 +953,7 @@
                     </div>
                 </section>
 
+
                 <!-- View 5: Extension Officer Admin Login -->
                 <section id="view-admin-auth" class="view-section">
                     <div class="auth-container">
@@ -942,6 +982,7 @@
                     </div>
                 </section>
 
+
                 <!-- View 6: Validation Queue (Expert Verification) -->
                 <section id="view-admin-queue" class="view-section">
                     <div class="card glass">
@@ -957,9 +998,11 @@
                     </div>
                 </section>
 
+
             </div>
         </main>
     </div>
+
 
     <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
         <a href="#" class="mobile-nav-item" data-mobile-view="home"><i class="fa-solid fa-house"></i><span>Home</span></a>
@@ -967,6 +1010,7 @@
         <a href="#" class="mobile-nav-item" data-mobile-view="history"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></a>
         <a href="#" class="mobile-nav-item" data-mobile-view="alerts"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
     </nav>
+
 
     <!-- Notification Toast -->
     <div id="toast" class="toast">
@@ -982,5 +1026,13 @@
     
     <!-- Custom JS App -->
     <script src="js/app.js?v=14"></script>
+    <script>
+        (function () {
+            const dismissPreloader = () => { const preloader = document.getElementById('agroPreloader'); if (!preloader || preloader.classList.contains('is-hidden')) return; preloader.classList.add('is-hidden'); window.setTimeout(() => preloader.remove(), 650); };
+            window.addEventListener('load', () => window.setTimeout(dismissPreloader, 4000), { once: true });
+            window.addEventListener('pageshow', event => { if (event.persisted) dismissPreloader(); });
+            window.setTimeout(dismissPreloader, 9000);
+        }());
+    </script>
 </body>
 </html>
